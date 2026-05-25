@@ -1,5 +1,5 @@
 # The Puppeteer
-## Blended Intensive Program - Erasmus Project by ** _DeepFake Hunters_ Team **
+## Blended Intensive Program - Erasmus Project by _DeepFake Hunters_ Team
 The main idea of the course: designing and developing game prototypes that help users better understand misinformation, deepfakes, algorithmic manipulation, and responsible online behaviour. 
 
 ## Team
