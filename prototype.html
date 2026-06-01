@@ -1,0 +1,2496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Puppeteer — Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #eae0cc;
+  --dark:     #162329;
+  --teal:     #485d5c;
+  --teal2:    #819794;
+  --green:    #687861;
+  --green2:   #98a686;
+  --warm:     #caae87;
+  --pink:     #ceb2af;
+  --rose:     #bd8a86;
+  --red:      #8e3943;
+  --plum:     #5e4149;
+  --mauve:    #946f70;
+  --font:     'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Screen wrapper */
+.screen {
+  display: none;
+  width: 1100px;
+  max-width: 100%;
+  background: var(--bg);
+  position: relative;
+  transition: background 0.8s;
+}
+
+.screen.active { display: flex; flex-direction: column; }
+
+/* Progress bar */
+.progress-bar {
+  width: 1100px;
+  max-width: 100%;
+  height: 4px;
+  background: #444;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--teal);
+  transition: width 0.4s;
+}
+
+.screen-label {
+  font-family: var(--font);
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+/* ── Login screen ─────────────────────────────────────────────────── */
+.login-screen {
+  align-items: center;
+  justify-content: center;
+  min-height: 580px;
+  background: var(--bg);
+  padding: 60px;
+}
+
+.login-logo {
+  width: 48px; height: 48px;
+  background: var(--teal);
+  margin: 0 auto 24px;
+}
+
+.login-company {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--teal);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.login-date {
+  font-size: 12px;
+  color: var(--teal2);
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-label {
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+input[type="text"] {
+  font-family: var(--font);
+  font-size: 14px;
+  border: 1.5px solid var(--teal2);
+  background: white;
+  color: var(--dark);
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+}
+
+input[type="text"]:focus { border-color: var(--teal); }
+
+.btn {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  letter-spacing: 0.5px;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn:hover { opacity: 0.85; }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary { background: var(--dark); color: var(--bg); }
+.btn-secondary { background: var(--teal2); color: white; }
+.btn-warning { background: var(--red); color: white; }
+.btn-ghost { background: transparent; color: var(--teal2); border: 1px solid var(--teal2); }
+.btn-muted { background: var(--bg); color: var(--teal2); border: 1px solid var(--teal2); font-size: 11px; opacity: 0.6; }
+
+/* ── Desk layout ──────────────────────────────────────────────────── */
+.desk {
+  background: #2a3535;
+  display: grid;
+  grid-template-columns: 220px 1fr 200px;
+  min-height: 580px;
+}
+
+/* Left col */
+.col-left {
+  background: var(--warm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 2px solid var(--teal);
+}
+
+.col-tag {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+
+.portrait-box {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--plum);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.portrait-silhouette {
+  width: 60%;
+  height: 90%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.portrait-label {
+  font-size: 11px;
+  color: var(--dark);
+  text-align: center;
+  font-weight: 600;
+}
+
+.company-info { font-size: 10px; color: var(--plum); line-height: 1.5; }
+.company-name { font-size: 13px; font-weight: 700; color: var(--dark); }
+
+/* Center col */
+.col-center {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.top-bar {
+  background: var(--dark);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 32px; height: 32px;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--teal2); }
+
+.top-bar-title {
+  font-size: 11px;
+  color: var(--teal2);
+  letter-spacing: 2px;
+  margin-left: auto;
+}
+
+.interaction-zone {
+  flex: 1;
+  background: #1e2b2b;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 340px;
+  position: relative;
+}
+
+.iz-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--teal2);
+  border-bottom: 1px solid var(--teal);
+  padding-bottom: 6px;
+}
+
+.text-box {
+  background: var(--dark);
+  border-top: 2px solid var(--teal);
+  padding: 14px 16px;
+  min-height: 90px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tb-speaker {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--teal2);
+  margin-bottom: 4px;
+}
+
+.tb-text {
+  font-size: 12px;
+  color: var(--bg);
+  line-height: 1.6;
+}
+
+.tb-portrait {
+  width: 44px; height: 44px;
+  background: var(--teal);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Right col */
+.col-right {
+  background: var(--teal);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 2px solid var(--dark);
+}
+
+.stat-row {
+  font-size: 11px;
+  color: var(--bg);
+  line-height: 1.8;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--teal2);
+}
+
+/* ── Cards ──────────────────────────────────────────────────────────── */
+.card-list { display: flex; flex-direction: column; gap: 8px; }
+
+.card {
+  background: var(--bg);
+  border: 1.5px solid var(--warm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card:hover { border-color: var(--teal); transform: translateX(2px); }
+
+.card-icon { font-size: 18px; flex-shrink: 0; }
+.card-text { flex: 1; }
+.card-title { font-size: 13px; font-weight: 600; color: var(--dark); }
+.card-sub { font-size: 11px; color: var(--teal2); margin-top: 2px; }
+.card-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-new { background: var(--red); color: white; }
+.badge-msg { background: var(--teal); color: white; }
+.badge-info { background: var(--warm); color: var(--dark); }
+
+/* ── Brief cards ──────────────────────────────────────────────────── */
+.brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.brief-card {
+  background: #243030;
+  border: 1.5px solid var(--teal);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brief-client { font-size: 10px; letter-spacing: 1px; color: var(--teal2); }
+.brief-title { font-size: 13px; font-weight: 600; color: var(--bg); line-height: 1.4; }
+.brief-pay { font-size: 20px; font-weight: 700; color: white; }
+.brief-risk {
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  display: inline-block;
+  font-weight: 700;
+  width: fit-content;
+}
+.risk-none { background: var(--green2); color: var(--dark); }
+.risk-low { background: var(--warm); color: var(--dark); }
+.risk-medium { background: var(--rose); color: white; }
+.risk-high { background: var(--red); color: white; }
+
+.brief-refuse {
+  font-size: 10px;
+  color: var(--teal2);
+  text-align: center;
+  margin-top: 4px;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.5;
+}
+.brief-refuse:hover { opacity: 0.8; }
+
+/* ── Video task ───────────────────────────────────────────────────── */
+.video-player {
+  background: #0d1a1a;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid var(--teal);
+}
+
+.video-subject {
+  width: 70px; height: 100px;
+  background: var(--teal2);
+  position: relative;
+}
+
+.video-subject::before {
+  content: '';
+  width: 40px; height: 40px;
+  background: var(--pink);
+  border-radius: 50%;
+  position: absolute;
+  top: 8px; left: 15px;
+}
+
+.video-subject::after {
+  content: '';
+  width: 50px; height: 55px;
+  background: var(--teal);
+  position: absolute;
+  bottom: 0; left: 10px;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 8px; left: 10px; right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.play-btn {
+  width: 24px; height: 24px;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-family: var(--font);
+}
+
+.timeline {
+  flex: 1;
+  height: 8px;
+  background: var(--dark);
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding: 1px;
+}
+
+.tl-seg {
+  height: 6px;
+  background: var(--teal2);
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.tl-seg.bad { background: var(--rose); }
+.tl-seg.selected { background: var(--red); outline: 1px solid white; }
+.tl-seg.deleted { background: #333; opacity: 0.3; }
+
+.subtitle-bar {
+  background: #0d1a1a;
+  border: 1px solid var(--teal);
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--bg);
+  line-height: 1.5;
+}
+
+.subtitle-word {
+  display: inline;
+  cursor: pointer;
+  padding: 1px 2px;
+  border-radius: 1px;
+}
+.subtitle-word.bad { background: var(--rose); color: white; }
+.subtitle-word.selected { background: var(--red); color: white; outline: 1px solid white; }
+.subtitle-word.deleted { text-decoration: line-through; opacity: 0.3; }
+
+/* ── Phone screen ─────────────────────────────────────────────────── */
+.cafe-screen {
+  background: #2a1f18;
+  min-height: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  gap: 20px;
+  position: relative;
+}
+
+.cafe-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(100,70,40,0.05) 60px, rgba(100,70,40,0.05) 61px),
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(100,70,40,0.05) 40px, rgba(100,70,40,0.05) 41px);
+}
+
+.phone-wrap {
+  width: 200px;
+  background: var(--dark);
+  border-radius: 20px;
+  padding: 16px 10px;
+  border: 2px solid var(--teal2);
+  position: relative;
+  z-index: 1;
+}
+
+.phone-notch {
+  width: 60px; height: 8px;
+  background: var(--teal);
+  border-radius: 4px;
+  margin: 0 auto 12px;
+}
+
+.phone-screen {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+  min-height: 200px;
+}
+
+.msg-bubble {
+  background: var(--teal);
+  border-radius: 8px 8px 8px 2px;
+  padding: 8px 10px;
+  font-size: 10px;
+  color: white;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.msg-sender {
+  font-size: 9px;
+  color: var(--dark);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.social-post {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 9px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.social-avatar {
+  width: 20px; height: 20px;
+  background: var(--rose);
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.social-name { font-weight: 700; font-size: 9px; color: var(--dark); }
+.social-text { margin-top: 4px; font-size: 9px; color: #444; }
+
+/* ── Chat window ─────────────────────────────────────────────────── */
+.chat-window {
+  background: #1a2828;
+  border: 1px solid var(--teal);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 260px;
+}
+
+.chat-header {
+  background: var(--teal);
+  padding: 8px 12px;
+  font-size: 11px;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.chat-msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.chat-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.chat-bubble {
+  background: var(--dark);
+  border-radius: 4px 12px 12px 4px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--bg);
+  line-height: 1.6;
+  max-width: 80%;
+}
+
+.chat-bubble.player {
+  background: var(--teal2);
+  border-radius: 12px 4px 4px 12px;
+  margin-left: auto;
+  color: white;
+}
+
+.chat-choices {
+  padding: 10px 12px;
+  border-top: 1px solid var(--teal);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-choice {
+  font-size: 11px;
+  color: var(--teal2);
+  padding: 6px 10px;
+  border: 1px solid var(--teal);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  transition: background 0.15s;
+}
+.chat-choice:hover { background: var(--teal); color: white; }
+
+/* ── World panel strip ───────────────────────────────────────────── */
+.world-panel {
+  background: var(--plum);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--pink);
+}
+
+.wp-avatar {
+  width: 24px; height: 24px;
+  background: var(--rose);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.wp-text { line-height: 1.4; }
+.wp-name { font-weight: 700; color: var(--bg); }
+
+/* ── Modal / popup ───────────────────────────────────────────────── */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(22,35,41,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: var(--bg);
+  padding: 24px;
+  width: 320px;
+  border: 2px solid var(--red);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  font-size: 12px;
+  color: var(--teal);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.modal-btns { display: flex; gap: 10px; }
+
+/* ── Form (HR) ───────────────────────────────────────────────────── */
+.hr-form {
+  background: white;
+  border: 1px solid var(--warm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--dark);
+  overflow-y: auto;
+  max-height: 310px;
+}
+
+.hr-header {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--teal);
+  border-bottom: 1px solid var(--warm);
+  padding-bottom: 8px;
+}
+
+.hr-field { display: flex; flex-direction: column; gap: 4px; }
+.hr-field label { font-size: 10px; color: var(--teal2); letter-spacing: 1px; }
+.hr-field .pre-filled {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--warm);
+}
+
+.radio-group { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
+.radio-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: background 0.1s;
+}
+.radio-opt:hover { background: var(--bg); }
+.radio-opt input { accent-color: var(--teal); }
+
+/* ── Act 2 styles ────────────────────────────────────────────────── */
+.act2-bg { background: #d4c9b3 !important; }
+.act2-iz { background: #111e1e !important; }
+.act2-left { background: #b8a88a !important; }
+.act2-right { background: #2d3f3f !important; }
+
+.performance-rating {
+  background: var(--dark);
+  padding: 8px 10px;
+  margin-top: 4px;
+}
+.pr-label { font-size: 9px; letter-spacing: 1px; color: var(--teal2); }
+.pr-value { font-size: 18px; font-weight: 700; color: var(--green2); }
+.pr-bar { height: 4px; background: #333; margin-top: 4px; }
+.pr-fill { height: 100%; background: var(--green2); width: 74%; }
+
+.world-damage { background: var(--dark); padding: 8px 10px; margin-top: 4px; }
+.wd-label { font-size: 9px; letter-spacing: 1px; color: var(--rose); margin-bottom: 4px; }
+.wd-npc { display: flex; align-items: flex-start; gap: 5px; margin-top: 5px; }
+.wd-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; background: var(--green2); }
+.wd-name { font-size: 8px; color: var(--teal2); min-width: 38px; flex-shrink: 0; }
+.wd-status { font-size: 8px; color: var(--bg); line-height: 1.3; }
+
+.brief-card.high-pay { border-color: var(--warm); border-width: 2px; }
+.brief-card.high-pay .brief-pay { color: var(--warm); font-size: 24px; }
+
+/* ── Sticky note ─────────────────────────────────────────────────── */
+.sticky-note {
+  background: var(--warm);
+  padding: 6px 10px;
+  font-size: 10px;
+  color: var(--dark);
+  transform: rotate(-1deg);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  display: inline-block;
+  line-height: 1.4;
+}
+
+/* ── Timer ───────────────────────────────────────────────────────── */
+.timer {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: var(--dark);
+  border: 1px solid var(--teal);
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--teal2);
+  letter-spacing: 1px;
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────── */
+.nav-row {
+  width: 1100px;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.nav-hint { font-size: 11px; color: #666; letter-spacing: 1px; }
+
+
+/* ── Risk meter ──────────────────────────────────────────────────── */
+.risk-meter { margin-top: 4px; }
+.risk-label { font-size: 9px; letter-spacing: 1px; color: var(--teal2); margin-bottom: 4px; }
+.risk-track { height: 8px; background: #1a1a1a; border: 1px solid var(--teal); position: relative; }
+.risk-fill { height: 100%; width: 0%; background: var(--green2); transition: width 0.6s, background 0.6s; }
+.risk-value { font-size: 14px; font-weight: 700; color: var(--green2); margin-top: 4px; }
+
+/* ── World panel ─────────────────────────────────────────────────── */
+.world-panel-desk {
+  background: #111e1e;
+  border-top: 2px solid var(--teal);
+  padding: 10px 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.wp-npc { display: flex; flex-direction: column; gap: 4px; }
+.wp-npc-header { display: flex; align-items: center; gap: 6px; }
+.wp-npc-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; transition: background 0.5s; }
+.wp-npc-name { font-size: 9px; letter-spacing: 1px; color: var(--teal2); font-weight: 700; }
+.wp-npc-status { font-size: 10px; color: #aaa; line-height: 1.4; transition: color 0.5s; }
+
+/* ── Card done state ─────────────────────────────────────────────── */
+.card.done {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: default;
+  border-color: #333;
+}
+.card.done .card-badge { background: #333 !important; color: #666 !important; }
+.card-check { font-size: 14px; color: var(--green2); }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.screen.active { animation: fadeIn 0.3s ease; }
+
+/* Delete btn */
+.delete-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  font-family: var(--font);
+  font-size: 11px;
+  padding: 4px 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  display: none;
+}
+.delete-btn.visible { display: inline-block; }
+
+.launch-row { display: flex; gap: 8px; align-items: center; margin-top: auto; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:6%"></div></div>
+<div class="screen-label" id="screenLabel">SCREEN 1 / 15 — LOGIN</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 1: Login -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen active" id="s1">
+  <div class="login-screen" style="flex-direction:column;display:flex;">
+    <div class="login-logo"></div>
+    <div class="login-company">HUMAN AGENCY INC.</div>
+    <div class="login-title">Welcome to Human Agency</div>
+    <div class="login-date">Monday, May 23 — Employee Portal</div>
+    <div class="login-form">
+      <div>
+        <div class="field-label">YOUR NAME</div>
+        <input type="text" id="playerName" placeholder="Type your name..." value="Alex">
+      </div>
+      <button class="btn btn-primary" onclick="goTo(2)">Start your first day →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 2: Day 1 morning desk — 3 things waiting -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">COMPANY</div>
+      <div class="portrait-box" style="background:var(--teal2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="25" ry="28" fill="#485d5c"/>
+          <rect x="20" y="70" width="60" height="70" rx="4" fill="#485d5c"/>
+        </svg>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">Human Agency</div>
+      <div class="company-info">Digital Marketing<br>Est. 2019</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn" title="Settings">⚙</button>
+        <button class="icon-btn" title="History">📋</button>
+        <button class="icon-btn" title="Home">🏠</button>
+        <div class="top-bar-title">DASHBOARD — DAY 1</div>
+      </div>
+      <div class="interaction-zone">
+        <div class="iz-label">INBOX — 3 ITEMS WAITING</div>
+        <div class="sticky-note" style="align-self:flex-end;margin-bottom:4px;">📌 check your brief queue</div>
+        <div class="card-list">
+          <div class="card" id="card-hr" onclick="openCard('card-hr', 3)">
+            <div class="card-icon">📧</div>
+            <div class="card-text">
+              <div class="card-title">HR — Onboarding Form</div>
+              <div class="card-sub">Please complete before starting work</div>
+            </div>
+            <span class="card-badge badge-new" id="badge-hr">NEW</span>
+          </div>
+          <div class="card" id="card-marcus" onclick="openCard('card-marcus', 4)">
+            <div class="card-icon">💬</div>
+            <div class="card-text">
+              <div class="card-title">Marcus</div>
+              <div class="card-sub">"hey, let me know when you're settled in!"</div>
+            </div>
+            <span class="card-badge badge-msg">MSG</span>
+          </div>
+          <div class="card" id="card-briefs" onclick="openCard('card-briefs', 5)">
+            <div class="card-icon">📂</div>
+            <div class="card-text">
+              <div class="card-title">Brief Queue</div>
+              <div class="card-sub">2 tasks available today</div>
+            </div>
+            <span class="card-badge badge-info">2</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait">🏢</div>
+        <div>
+          <div class="tb-speaker">SYSTEM</div>
+          <div class="tb-text">Good morning, <span id="nameDisplay">Alex</span>. You have 3 items waiting. Click any of them to open.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label" id="playerLabel">Alex</div>
+      <div class="stat-row">
+        <div class="stat-label">BALANCE</div>
+        <div class="stat-value balanceDisplay" id="balanceDisplay">€0</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">DAY</div>
+        <div class="stat-value">1 — 09:00</div>
+      </div>
+      <div class="risk-meter">
+        <div class="risk-label">ACCOUNT RISK</div>
+        <div class="risk-track"><div class="risk-fill" id="riskFill"></div></div>
+        <div class="risk-value" id="riskValue">0%</div>
+      </div>
+    </div>
+  </div>
+  <!-- World Panel -->
+  <div class="world-panel-desk" id="worldPanelDesk">
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 3: HR onboarding form -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">COMPANY</div>
+      <div class="portrait-box" style="background:var(--pink);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="32" rx="22" ry="24" fill="#ceb2af"/>
+          <rect x="18" y="62" width="64" height="78" rx="4" fill="#bd8a86"/>
+          <ellipse cx="50" cy="32" rx="28" ry="10" fill="#946f70" transform="translate(0,-14)"/>
+        </svg>
+      </div>
+      <div class="portrait-label">HR Daisy</div>
+      <div class="company-name">Human Agency</div>
+      <div class="company-info">Human Resources</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button>
+        <button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(2)">🏠</button>
+        <div class="top-bar-title">HR — ONBOARDING</div>
+      </div>
+      <div class="interaction-zone">
+        <div class="iz-label">EMPLOYEE ONBOARDING FORM</div>
+        <div class="hr-form">
+          <div class="hr-header">HUMAN AGENCY — NEW EMPLOYEE INTAKE</div>
+          <div class="hr-field">
+            <label>FULL NAME</label>
+            <div class="pre-filled" id="formName">Alex</div>
+          </div>
+          <div class="hr-field">
+            <label>START DATE</label>
+            <div class="pre-filled">Monday, May 23</div>
+          </div>
+          <div class="hr-field">
+            <label>Q1. WHAT BRINGS YOU THE GREATEST FULFILMENT AT WORK?</label>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q1" value="a"> A. Earning a fortune</label>
+              <label class="radio-opt"><input type="radio" name="q1" value="b"> B. Having a positive impact on others</label>
+              <label class="radio-opt"><input type="radio" name="q1" value="c"> C. Receiving recognition and validation</label>
+            </div>
+          </div>
+          <div class="hr-field">
+            <label>Q2. HOW DO YOU PREFER RESULTS TO BE DISPLAYED?</label>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q2" value="a"> A. Hard data and metrics</label>
+              <label class="radio-opt"><input type="radio" name="q2" value="b"> B. Qualitative and emotional feedback</label>
+            </div>
+          </div>
+          <div class="hr-field">
+            <label>Q3. WHAT BRINGS YOU THE BIGGEST CONCERN IN YOUR CAREER?</label>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q3" value="a"> A. Being replaced by AI</label>
+              <label class="radio-opt"><input type="radio" name="q3" value="b"> B. Getting fired due to a critical failure</label>
+              <label class="radio-opt"><input type="radio" name="q3" value="c"> C. Being invisible and overlooked</label>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="completeCard('card-hr'); goTo(2)" style="width:100%">Submit &amp; return to desk →</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--rose);">D</div>
+        <div>
+          <div class="tb-speaker">HR DAISY</div>
+          <div class="tb-text">Hey! Thank you for being on time! Please fill in this form. We'll forward your results to your supervisor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label" id="playerLabel3">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">1 — 09:15</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 4: Marcus chat — choice -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">COLLEAGUE</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#687861"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#98a686"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Marcus</div>
+      <div class="company-info">Junior Account Manager<br>Joined 3 months ago</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(2)">🏠</button>
+        <div class="top-bar-title">MESSAGES — MARCUS</div>
+      </div>
+      <div class="interaction-zone">
+        <div class="iz-label">INTERNAL CHAT</div>
+        <div class="chat-window">
+          <div class="chat-header">Marcus — Online</div>
+          <div class="chat-messages">
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:var(--green);">M</div>
+              <div class="chat-bubble">Hey <span class="nameInChat">Alex</span>! I'm Marcus. Looks like we're on the same team 🙂</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:var(--green);">M</div>
+              <div class="chat-bubble">Want me to walk you through everything, or do you prefer figuring it out yourself?</div>
+            </div>
+          </div>
+          <div class="chat-choices">
+            <button class="chat-choice" onclick="completeCard('card-marcus'); marcusChoice('guide')">Walk me through it.</button>
+            <button class="chat-choice" onclick="completeCard('card-marcus'); marcusChoice('self')">I'll figure it out.</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">Hey! I'm Marcus. Looks like we are on the same team.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label" id="playerLabel4">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">1 — 09:30</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 5: Brief queue — pick a task -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">MANAGER</div>
+      <div class="portrait-box" style="background:var(--teal);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="32" rx="20" ry="22" fill="#819794"/>
+          <rect x="18" y="60" width="64" height="80" rx="4" fill="#485d5c"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Boss</div>
+      <div class="company-info">Senior Account Director<br>"You came to the right place."</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(2)">🏠</button>
+        <div class="top-bar-title">BRIEF QUEUE — DAY 1</div>
+      </div>
+      <div class="interaction-zone">
+        <div class="iz-label">SELECT A TASK — THE OTHER WILL BE HANDLED BY MARCUS</div>
+        <div class="brief-grid">
+          <div class="brief-card">
+            <div class="brief-client">CLIENT: NATURAL REMEDIES</div>
+            <div class="brief-title">Edit a promo video — remove stutters and mistakes from Tony's recording</div>
+            <div class="brief-pay">€80</div>
+            <div class="brief-risk risk-none">RISK: NONE</div>
+            <button class="btn btn-primary" onclick="completeCard('card-briefs'); takeTask(6, 0)" style="margin-top:8px;">Take this task →</button>
+          </div>
+          <div class="brief-card">
+            <div class="brief-client">CLIENT: FRESHLIFE SUPPLEMENTS</div>
+            <div class="brief-title">Write social media copy for a new product launch campaign</div>
+            <div class="brief-pay">€120</div>
+            <div class="brief-risk risk-low">RISK: LOW</div>
+            <button class="btn btn-secondary" onclick="completeCard('card-briefs'); takeTask('s6b', 0)" style="margin-top:8px;">Take this task →</button>
+          </div>
+        </div>
+        <div class="brief-refuse" onclick="goTo(6)">Refuse both — Marcus will handle everything. You earn €0 today.</div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Here's your queue for today. Pick what you want to work on. Easy stuff to start.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label" id="playerLabel5">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">1 — 10:00</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 6: Video task — delete stutters -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s6">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">CLIENT</div>
+      <div class="portrait-box" style="background:var(--warm);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="20" ry="22" fill="#caae87"/>
+          <rect x="20" y="62" width="60" height="78" rx="4" fill="#bd8a86"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Tony</div>
+      <div class="company-name">Natural Remedies</div>
+      <div class="company-info">"Natural health for<br>modern living"</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(5)">🏠</button>
+        <div class="top-bar-title">TASK — VIDEO EDITOR</div>
+      </div>
+      <div class="interaction-zone" style="position:relative;">
+        <div class="iz-label">VIDEO EDITOR — REMOVE ERRORS</div>
+        <div class="timer">⏱ 06:32</div>
+
+        <div class="video-player">
+          <svg viewBox="0 0 80 100" width="70" height="100" fill="none">
+            <ellipse cx="40" cy="28" rx="18" ry="20" fill="#caae87"/>
+            <rect x="16" y="54" width="48" height="46" rx="3" fill="#bd8a86"/>
+          </svg>
+          <div class="video-controls">
+            <button class="play-btn">▶</button>
+            <div class="timeline" id="timeline">
+              <div class="tl-seg" style="width:15%;" data-word="Hi_this_is_Tony_from"></div>
+              <div class="tl-seg bad" style="width:8%;" id="seg-stutter1" onclick="selectSeg('stutter1')" data-word="Neutural"></div>
+              <div class="tl-seg bad" style="width:10%;" id="seg-stutter2" onclick="selectSeg('stutter2')" data-word="oh_opps"></div>
+              <div class="tl-seg" style="width:30%;"></div>
+              <div class="tl-seg" style="width:20%;"></div>
+              <div class="tl-seg" style="width:17%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subtitle-bar">
+          <div style="font-size:9px;color:var(--teal2);margin-bottom:4px;">SUBTITLE TRACK — click to select, then delete</div>
+          <span class="subtitle-word">Hi this is Tony from </span><span class="subtitle-word bad" id="w-stutter1" onclick="selectWord('stutter1')">Neutural</span><span class="subtitle-word"> </span><span class="subtitle-word bad" id="w-stutter2" onclick="selectWord('stutter2')">oh opps</span><span class="subtitle-word"> Natural Remedies. We are trying to utilise natural ingredients.</span>
+        </div>
+
+        <div class="launch-row">
+          <button class="delete-btn" id="deleteBtn" onclick="deleteSelected()">🗑 DELETE SELECTED</button>
+          <button class="btn btn-primary" id="launchBtn" onclick="goTo(7)" style="margin-left:auto;">Launch →</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">Click on the red segments to select them, then hit delete. Easy! Then launch when ready.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">TASK PAY</div><div class="stat-value">€120</div></div>
+      <div class="stat-row"><div class="stat-label">RISK</div><div class="stat-value" style="color:var(--green2);">NONE</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 7: Feedback — Tony happy + Diane world panel -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s7">
+  <div class="cafe-screen">
+    <div class="cafe-bg"></div>
+    <div class="phone-wrap">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="msg-sender">Tony — Natural Remedies</div>
+        <div class="msg-bubble">This is awesome. Thank you for saving me time! 🙂</div>
+      </div>
+    </div>
+    <div class="text-box" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="tb-portrait" style="background:var(--teal);">B</div>
+      <div>
+        <div class="tb-speaker">BOSS</div>
+        <div class="tb-text">Great work today, Alex. Tony was very pleased. You're a natural.</div>
+      </div>
+    </div>
+    <div class="world-panel" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="wp-avatar"></div>
+      <div class="wp-text"><span class="wp-name">Diane (54)</span> liked a Natural Remedies post.</div>
+    </div>
+    <div style="display:flex;gap:10px;position:relative;z-index:1;">
+      <button class="btn btn-primary" onclick="goTo(8)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 8: Phone buzzes — Marcus social media -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s8">
+  <div class="cafe-screen">
+    <div class="cafe-bg"></div>
+    <div style="font-size:12px;color:var(--teal2);letter-spacing:2px;position:relative;z-index:1;">YOUR PHONE BUZZES</div>
+    <div class="phone-wrap">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div style="background:#eee;border-radius:4px;padding:8px;display:flex;align-items:center;gap:6px;font-size:9px;">
+          <div style="width:24px;height:24px;background:var(--green2);border-radius:50%;flex-shrink:0;"></div>
+          <div>
+            <div style="font-weight:700;">Marcus posted</div>
+            <div style="color:#666;">"First week at the new job. Good people, good coffee. 🙂"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;position:relative;z-index:1;">
+      <button class="btn btn-primary" onclick="goTo(9)">Open</button>
+      <button class="btn btn-ghost" onclick="goTo(9)">Ignore</button>
+    </div>
+    <div style="font-size:11px;color:#555;position:relative;z-index:1;font-style:italic;">Just a normal post. Nothing suspicious.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 9: Day 2 morning — 3 things changed -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s9">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COMPANY</div>
+      <div class="portrait-box" style="background:var(--teal2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="25" ry="28" fill="#485d5c"/>
+          <rect x="20" y="70" width="60" height="70" rx="4" fill="#485d5c"/>
+        </svg>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">Human Agency</div>
+      <div class="company-info">Digital Marketing</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn">🏠</button>
+        <div class="top-bar-title">DASHBOARD — DAY 2</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">INBOX — 3 ITEMS</div>
+        <div class="card-list">
+          <div class="card" onclick="goTo(10)" style="border-color:var(--warm);">
+            <div class="card-icon">📧</div>
+            <div class="card-text">
+              <div class="card-title">New task from Tony — Natural Remedies</div>
+              <div class="card-sub">He has another request for you specifically</div>
+            </div>
+            <span class="card-badge" style="background:var(--warm);color:var(--dark);font-size:13px;font-weight:700;">€200</span>
+          </div>
+          <div class="card" onclick="goTo('s9b')">
+            <div class="card-icon">💬</div>
+            <div class="card-text">
+              <div class="card-title">Marcus</div>
+              <div class="card-sub">"It's just filling in the gaps. Tony approved it."</div>
+            </div>
+            <span class="card-badge badge-msg">MSG</span>
+          </div>
+          <div class="card" onclick="goTo('s9c')" style="opacity:0.7;">
+            <div class="card-icon">📰</div>
+            <div class="card-text">
+              <div class="card-title" style="font-size:11px;">Health misinformation in advertising on the rise, experts warn</div>
+              <div class="card-sub">tap to read · tap X to dismiss</div>
+            </div>
+            <span style="font-size:16px;cursor:pointer;color:var(--teal2);" onclick="event.stopPropagation()">✕</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Morning! Tony specifically requested you for a follow-up. Check your queue.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">2 — 09:00</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 9b: Marcus inbox message -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s9b">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COLLEAGUE</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#687861"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#98a686"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Marcus</div>
+      <div class="company-info">Friendly as always.</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(9)">🏠</button>
+        <div class="top-bar-title">MESSAGES — MARCUS</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">INBOX MESSAGE</div>
+        <div class="chat-window">
+          <div class="chat-header">Marcus — Online</div>
+          <div class="chat-messages">
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:var(--green);">M</div>
+              <div class="chat-bubble">It's just filling in the gaps. Tony approved it.</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-muted" onclick="goTo(9)" style="margin-top:10px;font-size:11px;">← Back to inbox</button>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">It's just filling in the gaps. Tony approved it.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">2 — 09:00</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 9c: News article -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s9c">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">ARTICLE</div>
+      <div class="portrait-box" style="background:#0d1a1a;border:1px solid var(--teal2);">
+        <div style="font-size:36px;line-height:1;padding-top:38px;text-align:center;">📰</div>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">The Daily Brief</div>
+      <div class="company-info">Health & Technology</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(9)">🏠</button>
+        <div class="top-bar-title">ARTICLE</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">READING</div>
+        <div style="background:#0d1a1a;border:1px solid var(--teal2);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--teal2);">HEALTH &amp; TECHNOLOGY</div>
+          <div style="font-size:13px;font-weight:700;color:white;line-height:1.5;">Health misinformation in advertising on the rise, experts warn</div>
+          <div style="font-size:11px;color:var(--bg);line-height:1.7;">Consumer watchdogs and health researchers are raising alarms over the growing use of AI-generated audio and synthetic media to fabricate medical endorsements in digital ads. Several major platforms have been cited for hosting content in which real professionals appear to endorse products they never reviewed.</div>
+          <div style="font-size:11px;color:var(--bg);line-height:1.7;">"The tools exist now to make anyone say anything," said one media analyst. "The line between editing and fabrication has effectively disappeared for most consumers."</div>
+          <div style="font-size:9px;color:var(--teal2);opacity:0.7;margin-top:4px;">Regulators say enforcement is lagging behind the technology.</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="btn btn-secondary" onclick="goTo('s9d')" style="font-size:11px;">Ask Marcus about this</button>
+          <button class="btn btn-muted" onclick="goTo(9)" style="font-size:11px;">✕ Dismiss</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">2 — 09:00</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 9d: Marcus reply — "Just filling in the gaps" -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s9d">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COLLEAGUE</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#687861"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#98a686"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Marcus</div>
+      <div class="company-info">Not worried.</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(9)">🏠</button>
+        <div class="top-bar-title">MESSAGES — MARCUS</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">INTERNAL CHAT</div>
+        <div class="chat-window">
+          <div class="chat-header">Marcus — Online</div>
+          <div class="chat-messages">
+            <div class="chat-msg" style="flex-direction:row-reverse;">
+              <div class="chat-avatar" style="background:var(--teal2);">A</div>
+              <div class="chat-bubble player">Did you see that article — about health misinformation in ads?</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:var(--green);">M</div>
+              <div class="chat-bubble">It's just filling in the gaps. Tony approved it.</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-muted" onclick="goTo(9)" style="margin-top:10px;font-size:11px;">← Back to inbox</button>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">It's just filling in the gaps. Tony approved it.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">2 — 09:00</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 10: Tony's new task — 3 choices -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s10">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">CLIENT</div>
+      <div class="portrait-box" style="background:var(--warm);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="20" ry="22" fill="#caae87"/>
+          <rect x="20" y="62" width="60" height="78" rx="4" fill="#bd8a86"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Tony</div>
+      <div class="company-name">Natural Remedies</div>
+      <div class="company-info">"Natural health for<br>modern living"</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(9)">🏠</button>
+        <div class="top-bar-title">BRIEF — NATURAL REMEDIES</div>
+      </div>
+      <div class="interaction-zone act2-iz" style="position:relative;">
+        <div class="iz-label">TASK BRIEF</div>
+        <div style="background:#0d1a1a;border:1px solid var(--teal);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--teal2);">CLIENT: TONY — NATURAL REMEDIES</div>
+          <div style="font-size:13px;color:var(--bg);line-height:1.6;">Tony forgot to say his company slogan in the video. He wants to avoid a re-shoot. <strong style="color:white;">Insert the line "Natural Remedies, Natural Health" into the audio track.</strong></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:28px;font-weight:700;color:var(--warm);">€200</div>
+            <div class="brief-risk risk-low">RISK: LOW</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="takeTask('s11b', 20)" style="font-size:12px;">Accept task →</button>
+          <button class="btn btn-secondary" onclick="goTo(11)" style="font-size:12px;">Ask Marcus first</button>
+          <button class="btn btn-muted" onclick="goTo(13)" style="font-size:11px;opacity:0.5;">Refuse</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Tony forgot to say his company's slogan. Can you generate and insert the line into the audio? He wants to avoid a re-shoot. Thanks!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">TASK PAY</div><div class="stat-value" style="color:var(--warm);">+€200</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 11: Ask Marcus -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s11">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COLLEAGUE</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#687861"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#98a686"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Marcus</div>
+      <div class="company-info">Same casual smile.<br>Nothing has changed.</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(10)">🏠</button>
+        <div class="top-bar-title">MESSAGES — MARCUS</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">INTERNAL CHAT</div>
+        <div class="chat-window">
+          <div class="chat-header">Marcus — Online</div>
+          <div class="chat-messages">
+            <div class="chat-msg" style="flex-direction:row-reverse;">
+              <div class="chat-avatar" style="background:var(--teal2);">A</div>
+              <div class="chat-bubble player">Hey — is it okay that we're adding words Tony never actually said?</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-avatar" style="background:var(--green);">M</div>
+              <div class="chat-bubble">Haha honestly? Totally standard. Tony signed off on the whole campaign so technically he approved the message. We're just saving him time. You good? 😄</div>
+            </div>
+          </div>
+          <div class="chat-choices">
+            <button class="chat-choice" onclick="takeTask('s11b', 25)">Yeah, makes sense. (Do the task)</button>
+            <button class="chat-choice" onclick="takeTask('s11b', 15)">I guess... (Do the task)</button>
+            <button class="chat-choice" onclick="goTo(13)" style="opacity:0.5;font-size:10px;">Say nothing. (Go back)</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">We're just saving him time. You good?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 12 (was 13): Refuse confirm -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s13">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COLLEAGUE</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#687861"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#98a686"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Marcus</div>
+    </div>
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(10)">🏠</button>
+        <div class="top-bar-title">REFUSE TASK</div>
+      </div>
+      <div class="interaction-zone act2-iz" style="align-items:center;justify-content:center;">
+        <div class="modal" style="position:relative;">
+          <div class="modal-title">Refuse this task?</div>
+          <div class="modal-body">This task will be reassigned to Marcus.<br>You will not receive <strong>€200</strong> today.<br><br>Marcus will do it anyway.</div>
+          <div class="modal-btns">
+            <button class="btn btn-warning" onclick="goTo(14)">Yes, refuse</button>
+            <button class="btn btn-ghost" onclick="goTo(10)">Go back</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait">—</div>
+        <div>
+          <div class="tb-speaker">—</div>
+          <div class="tb-text"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 13 (did task): Feedback — Tony happy -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s11b">
+  <div class="cafe-screen" style="background:#221a14;">
+    <div class="cafe-bg"></div>
+    <div class="phone-wrap">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="msg-sender">Campaign Results — Natural Remedies</div>
+        <div style="font-size:10px;color:#333;line-height:1.6;margin-top:4px;">Thanks to your work, Natural Remedies gained <strong>103 new followers.</strong> Engagement up +42%.</div>
+        <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--teal);">
+          <span>📈 +42%</span><span>👥 +103</span><span>⚠ Low</span>
+        </div>
+      </div>
+    </div>
+    <div class="text-box" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="tb-portrait" style="background:var(--teal);">B</div>
+      <div>
+        <div class="tb-speaker">BOSS</div>
+        <div class="tb-text">Excellent. Tony is very happy. Big things coming.</div>
+      </div>
+    </div>
+    <div class="world-panel" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="wp-avatar"></div>
+      <div class="wp-text"><span class="wp-name">Diane (54)</span> shared a video — "This doctor really knows his stuff!"</div>
+    </div>
+    <button class="btn btn-primary" onclick="goTo(16)" style="position:relative;z-index:1;">Next day →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 14: Feedback — refused -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s14">
+  <div class="cafe-screen" style="background:#1a1510;">
+    <div class="cafe-bg"></div>
+    <div class="phone-wrap">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="msg-sender">Boss</div>
+        <div class="msg-bubble" style="background:var(--teal2);">No worries! Marcus stepped in. Just make sure you're on top of your queue tomorrow. 😊</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--rose);letter-spacing:1px;position:relative;z-index:1;">Friendly. But slightly cooler than yesterday.</div>
+    <div class="text-box" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="tb-portrait" style="background:var(--teal);">B</div>
+      <div>
+        <div class="tb-speaker">BOSS</div>
+        <div class="tb-text">No worries. See you tomorrow.</div>
+      </div>
+    </div>
+    <div class="world-panel" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="wp-avatar"></div>
+      <div class="wp-text"><span class="wp-name">Diane (54)</span> shared a video — "This doctor really knows his stuff!" &nbsp;·&nbsp; Marcus did the task instead.</div>
+    </div>
+    <div style="position:relative;z-index:1;font-size:11px;color:#555;font-style:italic;">Your balance: €120 — unchanged.</div>
+    <button class="btn btn-primary" onclick="goTo(16)" style="position:relative;z-index:1;">Next day →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 16: Day 3 — Desk -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s16">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">COMPANY</div>
+      <div class="portrait-box" style="background:var(--teal2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="25" ry="28" fill="#485d5c"/>
+          <rect x="20" y="70" width="60" height="70" rx="4" fill="#485d5c"/>
+        </svg>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">Human Agency</div>
+      <div class="company-info">Digital Marketing</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn">🏠</button>
+        <div class="top-bar-title">DASHBOARD — DAY 3</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">INBOX — 2 TASKS</div>
+        <div class="card-list">
+          <div class="card" id="day3-tony-card" onclick="goTo(17)" style="border-color:var(--rose);">
+            <div class="card-icon">🎬</div>
+            <div class="card-text">
+              <div class="card-title">Tony — Doctor interview edit</div>
+              <div class="card-sub">Cut the warning segments from the audio</div>
+            </div>
+            <span class="card-badge" style="background:var(--rose);color:white;font-size:13px;font-weight:700;">€160</span>
+          </div>
+          <div class="card" id="day3-fresh-card" onclick="goTo(18)" style="border-color:var(--warm);">
+            <div class="card-icon">📝</div>
+            <div class="card-text">
+              <div class="card-title">FreshLife — Ad copy</div>
+              <div class="card-sub">Write copy for unverified health claims</div>
+            </div>
+            <span class="card-badge" style="background:var(--warm);color:var(--dark);font-size:13px;font-weight:700;">€110</span>
+          </div>
+        </div>
+        <button id="day3-end-btn" class="btn btn-primary" onclick="goTo('s16b')" style="display:none;margin-top:10px;font-size:12px;">End of day →</button>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Two requests came in overnight. Both clients are waiting.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">3 — 09:00</div></div>
+      <div class="world-damage">
+        <div class="wd-label">WORLD PANEL</div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-diane"></div><div class="wd-name">DIANE</div><div class="wd-status wd-status-diane">Browsing health blogs.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-tomas"></div><div class="wd-name">TOMÁS</div><div class="wd-status wd-status-tomas">Preparing a speech.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-yuki"></div><div class="wd-name">YUKI</div><div class="wd-status wd-status-yuki">Studying.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-robert"></div><div class="wd-name">ROBERT</div><div class="wd-status wd-status-robert">Good week.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 17: Tony Day 3 — Doctor video edit brief -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s17">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">CLIENT</div>
+      <div class="portrait-box" style="background:var(--warm);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="20" ry="22" fill="#caae87"/>
+          <rect x="20" y="62" width="60" height="78" rx="4" fill="#bd8a86"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Tony</div>
+      <div class="company-name">Natural Remedies</div>
+      <div class="company-info">"Natural health for<br>modern living"</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(16)">🏠</button>
+        <div class="top-bar-title">BRIEF — DOCTOR VIDEO EDIT</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">TASK BRIEF</div>
+        <div style="background:#0d1a1a;border:1px solid var(--teal);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--teal2);">CLIENT: TONY — NATURAL REMEDIES</div>
+          <div style="font-size:13px;color:var(--bg);line-height:1.6;">A licensed doctor was interviewed about Tony's supplement line. The doctor included <strong style="color:white;">several warnings about unproven claims.</strong> Tony wants those segments cut from the final audio before publication.</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:28px;font-weight:700;color:var(--warm);">€160</div>
+            <div class="brief-risk risk-high">RISK: HIGH</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="resolveDay3('tony', true)" style="font-size:12px;">Accept task →</button>
+          <button class="btn btn-muted" onclick="resolveDay3('tony', false)" style="font-size:11px;opacity:0.6;">Refuse</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Tony needs this cleaned up. The warnings make the product look bad. Standard edit job.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">TASK PAY</div><div class="stat-value" style="color:var(--warm);">+€160</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 18: FreshLife — Unverified claims copy brief -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s18">
+  <div class="desk act2-bg">
+    <div class="col-left act2-left">
+      <div class="col-tag">CLIENT</div>
+      <div class="portrait-box" style="background:#2a4a3a;">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="21" ry="23" fill="#3a6a4a"/>
+          <rect x="20" y="63" width="60" height="77" rx="4" fill="#2a5a3a"/>
+        </svg>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">FreshLife</div>
+      <div class="company-info">"Feel better.<br>Live fresh."</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(16)">🏠</button>
+        <div class="top-bar-title">BRIEF — FRESHLIFE COPY</div>
+      </div>
+      <div class="interaction-zone act2-iz">
+        <div class="iz-label">TASK BRIEF</div>
+        <div style="background:#0d1a1a;border:1px solid var(--teal);padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--teal2);">CLIENT: FRESHLIFE — NEW ACCOUNT</div>
+          <div style="font-size:13px;color:var(--bg);line-height:1.6;">FreshLife wants social media ad copy for three products. Their internal brief lists health claims that <strong style="color:white;">have not been clinically verified.</strong> Write the copy as if the claims are established fact.</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:28px;font-weight:700;color:var(--warm);">€110</div>
+            <div class="brief-risk risk-medium">RISK: MEDIUM</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="resolveDay3('fresh', true)" style="font-size:12px;">Accept task →</button>
+          <button class="btn btn-muted" onclick="resolveDay3('fresh', false)" style="font-size:11px;opacity:0.6;">Refuse</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">New client. Big potential. Just write what they asked for.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right act2-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">TASK PAY</div><div class="stat-value" style="color:var(--warm);">+€110</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 16b: Day 3 — End of day -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s16b">
+  <div class="cafe-screen" style="background:#1a1e14;">
+    <div class="cafe-bg"></div>
+    <div class="phone-wrap">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="msg-sender">End of Day 3</div>
+        <div id="day3-phone-msg" style="font-size:10px;color:#333;line-height:1.6;margin-top:4px;">The content you worked on today is already in circulation. Some of it is reaching people who trust it.</div>
+      </div>
+    </div>
+    <div class="text-box" style="width:100%;max-width:640px;position:relative;z-index:1;">
+      <div class="tb-portrait" style="background:var(--teal);">B</div>
+      <div>
+        <div class="tb-speaker">BOSS</div>
+        <div class="tb-text" id="day3-boss-msg">Good work this week. Clients are happy. Tomorrow will be bigger.</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="goTo(15)" style="position:relative;z-index:1;">Next day →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 15: Act 2 — Day 4. Things are different. -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s15">
+  <div class="desk" style="background:#c8bda5;">
+    <div class="col-left" style="background:#a89878;">
+      <div class="col-tag">COMPANY</div>
+      <div class="portrait-box" style="background:var(--teal);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="25" ry="28" fill="#485d5c"/>
+          <rect x="20" y="70" width="60" height="70" rx="4" fill="#485d5c"/>
+        </svg>
+      </div>
+      <div class="portrait-label">—</div>
+      <div class="company-name">Human Agency</div>
+      <div class="company-info">Digital Marketing</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button><button class="icon-btn">📋</button>
+        <button class="icon-btn">🏠</button>
+        <div class="top-bar-title">DASHBOARD — DAY 4</div>
+      </div>
+      <div class="interaction-zone" style="background:#0d1818;">
+        <div class="iz-label">BRIEF QUEUE — 3 TASKS TODAY</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+
+          <div class="brief-card" style="flex-direction:row;align-items:center;gap:10px;">
+            <div style="flex:1;">
+              <div class="brief-client">HEALTHPLUS CORP</div>
+              <div class="brief-title" style="font-size:12px;">Write product description copy</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="brief-pay" style="font-size:16px;">€100</div>
+              <div class="brief-risk risk-none" style="font-size:8px;">NONE</div>
+            </div>
+            <button class="btn btn-secondary" style="font-size:10px;padding:6px 10px;" onclick="alert('Task accepted. €100 added. Going to next stage.')">Take</button>
+          </div>
+
+          <div class="brief-card" style="flex-direction:row;align-items:center;gap:10px;border-color:var(--rose);">
+            <div style="flex:1;">
+              <div class="brief-client">NATURAL REMEDIES — TONY</div>
+              <div class="brief-title" style="font-size:12px;">Suppress negative reviews using AI-generated counter-comments</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="brief-pay" style="font-size:16px;color:var(--rose);">€180</div>
+              <div class="brief-risk risk-medium" style="font-size:8px;">MEDIUM</div>
+            </div>
+            <button class="btn btn-warning" style="font-size:10px;padding:6px 10px;" onclick="alert('Task accepted. €180 added. Going to next stage.')">Take</button>
+          </div>
+
+          <div class="brief-card high-pay" style="flex-direction:row;align-items:center;gap:10px;border-color:var(--red);">
+            <div style="flex:1;">
+              <div class="brief-client">PHARMAREACH — NEW CLIENT</div>
+              <div class="brief-title" style="font-size:12px;">Create a deepfake testimonial from a fictional doctor endorsing an unregulated supplement</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="brief-pay">€340</div>
+              <div class="brief-risk risk-high" style="font-size:8px;">HIGH</div>
+            </div>
+            <button class="btn btn-warning" style="font-size:10px;padding:6px 10px;background:var(--red);" onclick="alert('Task accepted. €340 added. Going to next stage.')">Take</button>
+          </div>
+        </div>
+
+        <div style="font-size:10px;color:var(--teal2);margin-top:4px;opacity:0.5;text-align:right;cursor:pointer;">refuse ↓</div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--green);">M</div>
+        <div>
+          <div class="tb-speaker">MARCUS</div>
+          <div class="tb-text">I knew you'd be good at this.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right" style="background:#253535;">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">4 — 09:00</div></div>
+      <div class="performance-rating">
+        <div class="pr-label">PERFORMANCE RATING</div>
+        <div class="pr-value">74%</div>
+        <div class="pr-bar"><div class="pr-fill"></div></div>
+      </div>
+      <div class="world-damage">
+        <div class="wd-label">WORLD PANEL</div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-diane"></div><div class="wd-name">DIANE</div><div class="wd-status wd-status-diane">Browsing health blogs.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-tomas"></div><div class="wd-name">TOMÁS</div><div class="wd-status wd-status-tomas">Preparing a speech.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-yuki"></div><div class="wd-name">YUKI</div><div class="wd-status wd-status-yuki">Studying.</div></div>
+        <div class="wd-npc"><div class="wd-dot wd-dot-robert"></div><div class="wd-name">ROBERT</div><div class="wd-status wd-status-robert">Good week.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav-row">
+  <button class="btn btn-ghost" id="backBtn" onclick="goBack()" style="font-size:11px;padding:6px 14px;">← Back</button>
+  <div class="nav-hint" id="navHint">CLICK ITEMS TO INTERACT</div>
+</div>
+
+<script>
+const SCREENS = 18;
+let riskLevel = 0;
+let balance = 0;
+let openedCards = new Set();
+
+const worldStates = [
+  { // risk 0-20
+    diane:  "Browsing health blogs. Seems fine.",
+    tomas:  "Preparing a local campaign speech.",
+    yuki:   "Studying. Checked her phone twice.",
+    robert: "Good week. Three new bookings.",
+    colors: { diane: '#98a686', tomas: '#98a686', yuki: '#98a686', robert: '#98a686' }
+  },
+  { // risk 21-40
+    diane:  "Shared a Natural Remedies post. Liked it.",
+    tomas:  "Saw a misleading ad. Shared it anyway.",
+    yuki:   "Feeling anxious about a health stat she read.",
+    robert: "One fake review appeared on his page.",
+    colors: { diane: '#caae87', tomas: '#caae87', yuki: '#caae87', robert: '#caae87' }
+  },
+  { // risk 41-65
+    diane:  "Stopped her prescription. Trusts herbal tea now.",
+    tomas:  "Lost a debate after sharing false data.",
+    yuki:   "Checking health statistics obsessively online.",
+    robert: "Three fake reviews. Rating dropped to 3.2.",
+    colors: { diane: '#bd8a86', tomas: '#bd8a86', yuki: '#bd8a86', robert: '#bd8a86' }
+  },
+  { // risk 66-100
+    diane:  "In hospital. Stopped medication for 3 weeks.",
+    tomas:  "Withdrew from the election. Reputation damaged.",
+    yuki:   "Hasn't eaten properly in days. Believes online stats.",
+    robert: "Restaurant closed. Buried under fake reviews.",
+    colors: { diane: '#8e3943', tomas: '#8e3943', yuki: '#8e3943', robert: '#8e3943' }
+  }
+];
+
+function updateRisk(amount) {
+  riskLevel = Math.min(100, riskLevel + amount);
+  const fill = document.getElementById('riskFill');
+  const val  = document.getElementById('riskValue');
+  if (!fill || !val) return;
+  fill.style.width = riskLevel + '%';
+  fill.style.background =
+    riskLevel < 25 ? '#98a686' :
+    riskLevel < 50 ? '#caae87' :
+    riskLevel < 75 ? '#bd8a86' : '#8e3943';
+  val.style.color = fill.style.background;
+  val.textContent = riskLevel + '%';
+  updateWorldPanel();
+}
+
+function updateWorldPanel() {
+  const idx = riskLevel <= 20 ? 0 : riskLevel <= 40 ? 1 : riskLevel <= 65 ? 2 : 3;
+  const state = worldStates[idx];
+  ['diane', 'tomas', 'yuki', 'robert'].forEach(n => {
+    document.querySelectorAll('.wd-status-' + n).forEach(el => {
+      el.textContent = state[n];
+      el.style.color = state.colors[n];
+    });
+    document.querySelectorAll('.wd-dot-' + n).forEach(el => {
+      el.style.background = state.colors[n];
+    });
+  });
+}
+
+function updateBalance(amount) {
+  balance += amount;
+  document.querySelectorAll('.balanceDisplay').forEach(el => el.textContent = '€' + balance);
+}
+
+function openCard(cardId, screen) {
+  goTo(screen);
+}
+
+function completeCard(cardId) {
+  const card = document.getElementById(cardId);
+  if (card && !openedCards.has(cardId)) {
+    openedCards.add(cardId);
+    card.classList.add('done');
+    const badge = card.querySelector('.card-badge');
+    if (badge) { badge.textContent = '✓'; badge.className = 'card-check'; }
+  }
+}
+
+function takeTask(screen, riskAmount) {
+  if (riskAmount > 0) updateRisk(riskAmount);
+  if (screen === 6 || screen === 's6b') updateBalance(120);
+  if (screen === 's11b') updateBalance(200);
+  goTo(screen);
+}
+let day3TonyAccepted = null;
+let day3FreshAccepted = null;
+
+function resolveDay3(task, accepted) {
+  const id = task === 'tony' ? 'day3-tony-card' : 'day3-fresh-card';
+  const card = document.getElementById(id);
+  if (card) {
+    card.style.opacity = accepted ? '1' : '0.35';
+    card.style.pointerEvents = 'none';
+    card.style.borderColor = accepted ? 'var(--green2)' : '#555';
+    const badge = card.querySelector('.card-badge');
+    if (badge) {
+      badge.textContent = accepted ? '✓' : '✕';
+      badge.style.background = accepted ? 'var(--green2)' : '#555';
+      badge.style.color = accepted ? 'var(--dark)' : '#888';
+    }
+  }
+  if (task === 'tony') { if (accepted) { updateBalance(160); updateRisk(30); } day3TonyAccepted = accepted; }
+  else                 { if (accepted) { updateBalance(110); updateRisk(10); } day3FreshAccepted = accepted; }
+  goTo(16);
+  if (day3TonyAccepted !== null && day3FreshAccepted !== null) {
+    const btn = document.getElementById('day3-end-btn');
+    if (btn) btn.style.display = 'block';
+    if (!day3TonyAccepted && !day3FreshAccepted) {
+      const phoneMsg = document.getElementById('day3-phone-msg');
+      const bossMsg  = document.getElementById('day3-boss-msg');
+      if (phoneMsg) phoneMsg.textContent = 'Both clients are asking what happened. Marcus covered the work.';
+      if (bossMsg)  bossMsg.textContent  = 'Both tasks went to Marcus. Clients noticed. We need to talk about your commitment to this role.';
+    }
+  }
+}
+
+let current = 1;
+let history = [1];
+
+const screenMap = {
+  1:'LOGIN',2:'DAY 1 — DESK',3:'HR FORM',4:'MARCUS INTRO',
+  5:'BRIEF QUEUE',6:'VIDEO TASK',7:'FEEDBACK — TONY',
+  8:'PHONE BUZZ',9:'DAY 2 — DESK','9b':'MARCUS MSG','9c':'NEWS ARTICLE','9d':'MARCUS — GAPS',10:'TONY NEW TASK',
+  11:'ASK MARCUS',12:'REFUSE',13:'REFUSE CONFIRM',
+  '11b':'FEEDBACK — TASK DONE',14:'FEEDBACK — REFUSED',
+  16:'DAY 3 — DESK',17:'DOCTOR VIDEO EDIT',18:'FRESHLIFE COPY',
+  '16b':'DAY 3 — END',15:'ACT 2 — DAY 4'
+};
+
+function goTo(n) {
+  // update player name
+  const name = document.getElementById('playerName')?.value || 'Alex';
+  document.querySelectorAll('#nameDisplay,#playerLabel,.nameInChat,[id^="playerLabel"]').forEach(el => el.textContent = name);
+  document.querySelectorAll('#formName').forEach(el => el.textContent = name);
+
+  // hide all
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  const sid = typeof n === 'string' ? n : 's' + n;
+  const target = document.getElementById(sid);
+  if (target) {
+    target.classList.add('active');
+    current = n;
+    history.push(n);
+  }
+
+  // progress
+  const numericN = typeof n === 'string' ? 13 : n;
+  const pct = Math.round((numericN / SCREENS) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('screenLabel').textContent =
+    'SCREEN ' + numericN + ' / ' + SCREENS + ' — ' + (screenMap[n] || '');
+  document.getElementById('backBtn').style.display = history.length > 1 ? 'block' : 'none';
+}
+
+function goBack() {
+  history.pop();
+  if (history.length > 0) {
+    const prev = history[history.length - 1];
+    history.pop();
+    goTo(prev);
+  }
+}
+
+function marcusChoice(choice) {
+  if (choice === 'guide') {
+    document.querySelector('#s4 .tb-text').textContent = "Of course! Happy to help. You'll find everything you need in the brief queue. I'll check in on you later.";
+  } else {
+    document.querySelector('#s4 .tb-text').textContent = "Ha, respect. I'll be around if you need anything.";
+  }
+  setTimeout(() => goTo(2), 800);
+}
+
+let selected = null;
+
+function selectSeg(id) {
+  document.querySelectorAll('.tl-seg').forEach(s => s.classList.remove('selected'));
+  document.querySelectorAll('.subtitle-word').forEach(s => s.classList.remove('selected'));
+  const seg = document.getElementById('seg-' + id);
+  const word = document.getElementById('w-' + id);
+  if (seg && !seg.classList.contains('deleted')) {
+    seg.classList.add('selected');
+    selected = id;
+    document.getElementById('deleteBtn').classList.add('visible');
+  }
+  if (word) word.classList.add('selected');
+}
+
+function selectWord(id) { selectSeg(id); }
+
+function deleteSelected() {
+  if (!selected) return;
+  const seg = document.getElementById('seg-' + selected);
+  const word = document.getElementById('w-' + selected);
+  if (seg) { seg.classList.remove('selected', 'bad'); seg.classList.add('deleted'); }
+  if (word) { word.classList.remove('selected', 'bad'); word.classList.add('deleted'); }
+  selected = null;
+  document.getElementById('deleteBtn').classList.remove('visible');
+}
+
+// char counter for writing task
+document.addEventListener('input', function(e) {
+  if (['post1','post2','post3'].includes(e.target.id)) {
+    const total = ['post1','post2','post3'].reduce((s,id) => {
+      const el = document.getElementById(id);
+      return s + (el ? el.value.length : 0);
+    }, 0);
+    const el = document.getElementById('charCount');
+    if (el) el.textContent = 'Characters: ' + total;
+  }
+});
+
+// init
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('backBtn').style.display = 'none';
+  document.getElementById('navHint').textContent = 'CLICK ITEMS TO INTERACT';
+});
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 6B: Writing task — social media copy -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s6b">
+  <div class="desk">
+    <div class="col-left">
+      <div class="col-tag">CLIENT</div>
+      <div class="portrait-box" style="background:var(--green2);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="33" rx="20" ry="22" fill="#98a686"/>
+          <rect x="20" y="62" width="60" height="78" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Sarah</div>
+      <div class="company-name">FreshLife</div>
+      <div class="company-info">"Feel better,<br>live fresher"</div>
+    </div>
+
+    <div class="col-center">
+      <div class="top-bar">
+        <button class="icon-btn">⚙</button>
+        <button class="icon-btn">📋</button>
+        <button class="icon-btn" onclick="goTo(5)">🏠</button>
+        <div class="top-bar-title">TASK — COPY WRITER</div>
+      </div>
+      <div class="interaction-zone" style="position:relative;">
+        <div class="iz-label">SOCIAL MEDIA COPY — FRESHLIFE SUPPLEMENTS</div>
+        <div class="timer">⏱ 06:32</div>
+
+        <div style="background:#0d1a1a;border:1px solid var(--teal);padding:14px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:9px;letter-spacing:2px;color:var(--teal2);">BRIEF FROM CLIENT</div>
+          <div style="font-size:12px;color:var(--bg);line-height:1.6;">Write 3 social media posts for our new FreshLife Morning Boost supplement launch. Keep it positive, energetic, and relatable. Target: young adults 20–35.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="brief-risk risk-none">PLATFORM: INSTAGRAM</span>
+            <span class="brief-risk risk-none">TONE: POSITIVE</span>
+            <span class="brief-risk risk-none">FACTUAL ONLY</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:9px;letter-spacing:1px;color:var(--teal2);">POST 1 — PRODUCT LAUNCH</div>
+          <textarea id="post1" style="background:#162929;border:1px solid var(--teal);color:var(--bg);font-family:var(--font);font-size:11px;padding:8px;resize:none;height:52px;width:100%;" placeholder="Write your first post here..."></textarea>
+
+          <div style="font-size:9px;letter-spacing:1px;color:var(--teal2);">POST 2 — CUSTOMER STORY</div>
+          <textarea id="post2" style="background:#162929;border:1px solid var(--teal);color:var(--bg);font-family:var(--font);font-size:11px;padding:8px;resize:none;height:52px;width:100%;" placeholder="Write your second post here..."></textarea>
+
+          <div style="font-size:9px;letter-spacing:1px;color:var(--teal2);">POST 3 — CALL TO ACTION</div>
+          <textarea id="post3" style="background:#162929;border:1px solid var(--teal);color:var(--bg);font-family:var(--font);font-size:11px;padding:8px;resize:none;height:52px;width:100%;" placeholder="Write your third post here..."></textarea>
+        </div>
+
+        <div class="launch-row">
+          <div style="font-size:10px;color:var(--teal2);" id="charCount">Characters: 0</div>
+          <button class="btn btn-primary" onclick="goTo(7)" style="margin-left:auto;">Launch →</button>
+        </div>
+      </div>
+      <div class="text-box">
+        <div class="tb-portrait" style="background:var(--teal);">B</div>
+        <div>
+          <div class="tb-speaker">BOSS</div>
+          <div class="tb-text">Simple stuff — just write 3 posts for their launch. Keep it factual. Sarah is easy to work with.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="col-tag">PLAYER</div>
+      <div class="portrait-box" style="background:var(--green);">
+        <svg class="portrait-silhouette" viewBox="0 0 100 140" fill="none">
+          <ellipse cx="50" cy="35" rx="22" ry="25" fill="#98a686"/>
+          <rect x="22" y="68" width="56" height="72" rx="4" fill="#687861"/>
+        </svg>
+      </div>
+      <div class="portrait-label">Alex</div>
+      <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
+      <div class="stat-row"><div class="stat-label">TASK PAY</div><div class="stat-value">€80</div></div>
+      <div class="stat-row"><div class="stat-label">RISK</div><div class="stat-value" style="color:var(--green2);">LOW</div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
