@@ -777,6 +777,11 @@ input[type="text"]:focus { border-color: var(--teal); }
 
 .world-damage { background: var(--dark); padding: 8px 10px; margin-top: 4px; }
 .wd-label { font-size: 9px; letter-spacing: 1px; color: var(--rose); margin-bottom: 4px; }
+.wd-damage-bar-wrap { margin-top: 8px; margin-bottom: 8px; border-top: 1px solid #222; }
+.wd-damage-label { font-size: 9px; letter-spacing: 1px; color: var(--rose); }
+.wd-damage-track { height: 5px; background: #222; margin-top: 4px; }
+.wd-damage-fill { height: 100%; width: 0%; background: var(--green2); transition: width 0.4s, background 0.4s; }
+.wd-damage-value { font-size: 11px; font-weight: 700; color: var(--green2); margin-top: 3px; }
 .wd-npc { display: flex; align-items: flex-start; gap: 5px; margin-top: 5px; }
 .wd-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; background: var(--green2); }
 .wd-name { font-size: 8px; color: var(--teal2); min-width: 38px; flex-shrink: 0; }
@@ -986,9 +991,6 @@ input[type="text"]:focus { border-color: var(--teal); }
         <div class="risk-value" id="riskValue">0%</div>
       </div>
     </div>
-  </div>
-  <!-- World Panel -->
-  <div class="world-panel-desk" id="worldPanelDesk">
   </div>
 </div>
 
@@ -1916,12 +1918,18 @@ input[type="text"]:focus { border-color: var(--teal); }
       <div class="portrait-label">Alex</div>
       <div class="stat-row"><div class="stat-label">BALANCE</div><div class="stat-value balanceDisplay">€0</div></div>
       <div class="stat-row"><div class="stat-label">DAY</div><div class="stat-value">3 — 09:00</div></div>
-      <div class="world-damage">
+      <div class="world-damage">        
+        <div class="wd-damage-bar-wrap">
+          <div class="wd-damage-label">WORLD DAMAGE</div>
+          <div class="wd-damage-track"><div class="wd-damage-fill damageBar"></div></div>
+          <div class="wd-damage-value damageValue">0%</div>
+        </div>
         <div class="wd-label">WORLD PANEL</div>
         <div class="wd-npc"><div class="wd-dot wd-dot-diane"></div><div class="wd-name">DIANE</div><div class="wd-status wd-status-diane">Browsing health blogs.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-tomas"></div><div class="wd-name">TOMÁS</div><div class="wd-status wd-status-tomas">Preparing a speech.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-yuki"></div><div class="wd-name">YUKI</div><div class="wd-status wd-status-yuki">Studying.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-robert"></div><div class="wd-name">ROBERT</div><div class="wd-status wd-status-robert">Good week.</div></div>
+
       </div>
     </div>
   </div>
@@ -2170,12 +2178,38 @@ input[type="text"]:focus { border-color: var(--teal); }
         <div class="pr-bar"><div class="pr-fill"></div></div>
       </div>
       <div class="world-damage">
+        <div class="wd-damage-bar-wrap">
+          <div class="wd-damage-label">WORLD DAMAGE</div>
+          <div class="wd-damage-track"><div class="wd-damage-fill damageBar"></div></div>
+          <div class="wd-damage-value damageValue">0%</div>
+        </div>
         <div class="wd-label">WORLD PANEL</div>
         <div class="wd-npc"><div class="wd-dot wd-dot-diane"></div><div class="wd-name">DIANE</div><div class="wd-status wd-status-diane">Browsing health blogs.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-tomas"></div><div class="wd-name">TOMÁS</div><div class="wd-status wd-status-tomas">Preparing a speech.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-yuki"></div><div class="wd-name">YUKI</div><div class="wd-status wd-status-yuki">Studying.</div></div>
         <div class="wd-npc"><div class="wd-dot wd-dot-robert"></div><div class="wd-name">ROBERT</div><div class="wd-status wd-status-robert">Good week.</div></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SCREEN LOSE: World damage reached 100% -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="screen" id="s-lose">
+  <div class="cafe-screen" style="background:#0d0808;">
+    <div class="cafe-bg"></div>
+    <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:480px;">
+      <div style="font-size:9px;letter-spacing:3px;color:var(--rose);">WORLD DAMAGE — 100%</div>
+      <div style="font-size:22px;font-weight:700;color:white;line-height:1.4;">The content reached too many people.</div>
+      <div style="font-size:12px;color:var(--bg);line-height:1.8;">
+        Diane stopped her medication.<br>
+        Tomás lost the election over fabricated data.<br>
+        Yuki hasn't eaten in days.<br>
+        Robert's business closed.
+      </div>
+      <div style="font-size:11px;color:var(--rose);letter-spacing:1px;margin-top:8px;">You did the work. This is the result.</div>
+      <button class="btn btn-ghost" onclick="location.reload()" style="margin-top:8px;font-size:11px;">Start over</button>
     </div>
   </div>
 </div>
@@ -2225,17 +2259,27 @@ const worldStates = [
 
 function updateRisk(amount) {
   riskLevel = Math.min(100, riskLevel + amount);
-  const fill = document.getElementById('riskFill');
-  const val  = document.getElementById('riskValue');
-  if (!fill || !val) return;
-  fill.style.width = riskLevel + '%';
-  fill.style.background =
+  const color =
     riskLevel < 25 ? '#98a686' :
     riskLevel < 50 ? '#caae87' :
     riskLevel < 75 ? '#bd8a86' : '#8e3943';
-  val.style.color = fill.style.background;
-  val.textContent = riskLevel + '%';
+
+  const fill = document.getElementById('riskFill');
+  const val  = document.getElementById('riskValue');
+  if (fill) { fill.style.width = riskLevel + '%'; fill.style.background = color; }
+  if (val)  { val.style.color = color; val.textContent = riskLevel + '%'; }
+
+  document.querySelectorAll('.damageBar').forEach(el => {
+    el.style.width = riskLevel + '%';
+    el.style.background = color;
+  });
+  document.querySelectorAll('.damageValue').forEach(el => {
+    el.style.color = color;
+    el.textContent = riskLevel + '%';
+  });
+
   updateWorldPanel();
+  if (riskLevel >= 100) goTo('s-lose');
 }
 
 function updateWorldPanel() {
@@ -2271,9 +2315,15 @@ function completeCard(cardId) {
   }
 }
 
+const takenTasks = new Set();
+
 function takeTask(screen, riskAmount) {
+  const key = String(screen);
+  if (takenTasks.has(key)) { goTo(screen); return; }
+  takenTasks.add(key);
   if (riskAmount > 0) updateRisk(riskAmount);
-  if (screen === 6 || screen === 's6b') updateBalance(120);
+  if (screen === 6)      updateBalance(80);
+  if (screen === 's6b')  updateBalance(120);
   if (screen === 's11b') updateBalance(200);
   goTo(screen);
 }
@@ -2319,7 +2369,7 @@ const screenMap = {
   11:'ASK MARCUS',12:'REFUSE',13:'REFUSE CONFIRM',
   '11b':'FEEDBACK — TASK DONE',14:'FEEDBACK — REFUSED',
   16:'DAY 3 — DESK',17:'DOCTOR VIDEO EDIT',18:'FRESHLIFE COPY',
-  '16b':'DAY 3 — END',15:'ACT 2 — DAY 4'
+  '16b':'DAY 3 — END',15:'ACT 2 — DAY 4','s-lose':'GAME OVER'
 };
 
 function goTo(n) {
