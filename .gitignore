@@ -104,3 +104,8 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Test scene for testing Bran 
+Assets/Scenes/Test.unity
+Assets/Scenes/Test.unity.meta
+
