@@ -1,0 +1,951 @@
+fileFormatVersion: 2
+guid: f4c34a09aca8133428ce4e10f79c1772
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1105101794471884806
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_0
+  - first:
+      213: -74227211821454800
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_1
+  - first:
+      213: 118897503775413895
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_2
+  - first:
+      213: 6500020015029007624
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_3
+  - first:
+      213: 8403635376797802325
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_4
+  - first:
+      213: 7519108484321725678
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_5
+  - first:
+      213: -7145977519987649371
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_6
+  - first:
+      213: -8699407568520066003
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_7
+  - first:
+      213: 7072824366339599732
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_8
+  - first:
+      213: 6565543644530228578
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_9
+  - first:
+      213: 4539479475700691495
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_10
+  - first:
+      213: -2154501202917685009
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_11
+  - first:
+      213: 6637874801258044238
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_12
+  - first:
+      213: -955405406696162313
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_13
+  - first:
+      213: -7988742826399135416
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_14
+  - first:
+      213: -7587018910388746283
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_15
+  - first:
+      213: 2160297229354861946
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_16
+  - first:
+      213: 8479106261641791571
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_17
+  - first:
+      213: 3990882158244578713
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_18
+  - first:
+      213: 529170625200630783
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_19
+  - first:
+      213: 476532715328348359
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_20
+  - first:
+      213: 6529436640775221881
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_21
+  - first:
+      213: 1399083077270812025
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_22
+  - first:
+      213: -762224629377933351
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_23
+  - first:
+      213: -467288137608873229
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_24
+  - first:
+      213: 1275409368398506185
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_25
+  - first:
+      213: -8567025726716020822
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_26
+  - first:
+      213: 6669388267057053959
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_27
+  - first:
+      213: 8865437946271903710
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_28
+  - first:
+      213: -2511875295424743537
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_29
+  - first:
+      213: 3415920373652546202
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_30
+  - first:
+      213: 43837817815249883
+    second: xWLB8LW6qaK2rlVA73UorYbG6awHSYXdtVRWlrJJ_31
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: office-props_0
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 352
+        width: 112
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bc5ce59c0190e44588c849d6b9a6a26
+      internalID: -225352317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_1
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 352
+        width: 64
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12deaf2438f67384d90cc0974f606b37
+      internalID: -2087113029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 352
+        width: 64
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 344cd8befe5a0d7499e9eb705b6eac12
+      internalID: -56486136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 352
+        width: 64
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fd7d5eb0ba57774f94eda0f6dc2b530
+      internalID: -222887712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_4
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 352
+        width: 32
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 376af19891f6edd4eba328ae04697790
+      internalID: 1921854184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_5
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 352
+        width: 48
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d18e67e07fe1194fa67a04c72a66fef
+      internalID: 852034455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_6
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 416
+        width: 128
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b7e30b21cf58984497b4945d2a01a06
+      internalID: -2134513811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_7
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 256
+        width: 112
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2fea45654b76994bb902bbde04d071c
+      internalID: -534316277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_8
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 160
+        width: 144
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27b064eb81723084689bd84680f0b52c
+      internalID: 643938100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_9
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 224
+        width: 52
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dfd50ccb9121e741a63d9fde969d012
+      internalID: -2052145853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_10
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 224
+        width: 52
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23efa0a274a22e34c880be1ad9816a9b
+      internalID: 1942423100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_11
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 64
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75ba9d7f82dd9e94fb6933fede0d01b2
+      internalID: -622690795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_12
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 256
+        width: 64
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8b2070728de01a4c880238328b12544
+      internalID: -1296832571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_13
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 256
+        width: 64
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abbfdeca18b7d0d4fb1a914afbc8952e
+      internalID: 1835771639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_14
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 256
+        width: 64
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e652abc3aa0a30a43a8f600abe3105a7
+      internalID: -783884152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_15
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 256
+        width: 64
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41a7119d4eade0441af8085e7daa06b2
+      internalID: -970365286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_16
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 168
+        width: 64
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0006b0b43fef13946b3efc289be1efc0
+      internalID: 2054525396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_17
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 168
+        width: 64
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b1313953d7c38941904d1fb43994e34
+      internalID: -680409311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_18
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 128
+        width: 64
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a75b7fda3045724d80da7880934c38d
+      internalID: 49888848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_19
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 128
+        width: 64
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8199a6767a95a0941b5282c54f734150
+      internalID: 1660357454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_20
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 160
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 444110a640947ca4c9998b0a456fba14
+      internalID: 336824936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_21
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 160
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a58a9806ac4869a4c943106d56137c77
+      internalID: -976581135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_22
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 160
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ef04027465cabf41af5aefce83fd702
+      internalID: -1619409163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_23
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 160
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 696771b70cf1604428f209887f2b10ef
+      internalID: -482730877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_24
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 160
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddb34f8ba568b1f4c9c1b6a4aa5c7dd8
+      internalID: 1074019061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_25
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 136
+        width: 48
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e94bdc0504d854a46897f78fafeea656
+      internalID: 396914578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_26
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 136
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f220e286547eaaf4a83727c5ee168b58
+      internalID: 1873362810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_27
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 60
+        width: 28
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cc9772fc0d217b44baf1671d211e5df
+      internalID: -167040751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_28
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 60
+        width: 32
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2efba8c4b60c2754897942a8a88ed20c
+      internalID: 1535981835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_29
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fe2c2b04f8fbb649ae4e0f26fa6f273
+      internalID: 55937959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_30
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d57e1602e65003441bbc543ff34915fd
+      internalID: -1934802259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: office-props_31
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 564e65372db9caf4c87d6f76be0c06f2
+      internalID: 214749556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 96ead92bfaf9a1f4ca312770beb76ed9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      office-props_0: -225352317
+      office-props_1: -2087113029
+      office-props_10: 1942423100
+      office-props_11: -622690795
+      office-props_12: -1296832571
+      office-props_13: 1835771639
+      office-props_14: -783884152
+      office-props_15: -970365286
+      office-props_16: 2054525396
+      office-props_17: -680409311
+      office-props_18: 49888848
+      office-props_19: 1660357454
+      office-props_2: -56486136
+      office-props_20: 336824936
+      office-props_21: -976581135
+      office-props_22: -1619409163
+      office-props_23: -482730877
+      office-props_24: 1074019061
+      office-props_25: 396914578
+      office-props_26: 1873362810
+      office-props_27: -167040751
+      office-props_28: 1535981835
+      office-props_29: 55937959
+      office-props_3: -222887712
+      office-props_30: -1934802259
+      office-props_31: 214749556
+      office-props_4: 1921854184
+      office-props_5: 852034455
+      office-props_6: -2134513811
+      office-props_7: -534316277
+      office-props_8: 643938100
+      office-props_9: -2052145853
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

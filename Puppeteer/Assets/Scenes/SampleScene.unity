@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 27835386}
   - component: {fileID: 27835385}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: 'ExitButton '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 41, y: -426}
+  m_AnchoredPosition: {x: 0, y: -362}
   m_SizeDelta: {x: 627.5641, y: 149.8738}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &27835385
@@ -201,7 +201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 27835386}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1064356645}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: OnQuitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &27835386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,8 +286,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -468, y: 151}
-  m_SizeDelta: {x: 744.5051, y: 487.8072}
+  m_AnchoredPosition: {x: -434.01, y: 163}
+  m_SizeDelta: {x: 868.0138, y: 583.0119}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &252062931
 MonoBehaviour:
@@ -324,7 +336,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 130.95
+  m_fontSize: 154
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -633,8 +645,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 39}
+  m_SizeDelta: {x: 137.392, y: 151.4138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1064356645
 MonoBehaviour:
@@ -649,6 +661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
   sceneLoader: {fileID: 1208097592}
+  startScene: {fileID: 102900000, guid: ed86bfbfb4cd8c446b486bf02e1504a2, type: 3}
 --- !u!1 &1076337916
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,7 +831,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -11, y: 64}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1208097592
@@ -1084,7 +1097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 41, y: -238}
+  m_AnchoredPosition: {x: 0, y: -174}
   m_SizeDelta: {x: 627.5641, y: 149.8738}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1744688181

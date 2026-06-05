@@ -1,13 +1,17 @@
 using UnityEngine;
+using UnityEditor;
 
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private SceneLoader sceneLoader;
 
+    [Header("Scene On Click")]
+    [SerializeField] private SceneAsset startScene;
+
     // Called by the Start button
     public void OnStartButton()
     {
-        sceneLoader.LoadScene("Act1");
+        sceneLoader.LoadScene(startScene.name);
     }
 
     // Called by the Options button
