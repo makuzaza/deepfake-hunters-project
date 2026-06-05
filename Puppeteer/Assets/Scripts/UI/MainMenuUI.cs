@@ -1,27 +1,38 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private SceneLoader sceneLoader;
 
     [Header("Scene On Click")]
+#if UNITY_EDITOR
     [SerializeField] private SceneAsset startScene;
+#endif
 
-    // Called by the Start button
+    [SerializeField] private string startSceneName;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (startScene != null)
+            startSceneName = startScene.name;
+    }
+#endif
+
     public void OnStartButton()
     {
-        sceneLoader.LoadScene(startScene.name);
+        sceneLoader.LoadScene(startSceneName);
     }
 
-    // Called by the Options button
     public void OnOptionsButton()
     {
-        // Show options panel, play sound, animate, etc.
         Debug.Log("Options menu opened.");
     }
 
-    // Called by the Quit button
     public void OnQuitButton()
     {
         sceneLoader.QuitGame();
