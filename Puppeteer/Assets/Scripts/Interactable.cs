@@ -1,10 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Interactable : MonoBehaviour
 {
     [Header("Interaction Settings")]
     public string interactionName = "Interact";
-    public KeyCode key = KeyCode.E;
 
     private bool playerInRange = false;
 
@@ -13,7 +13,7 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(key))
+        if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame)
         {
             Debug.Log("Interacted with: " + interactionName);
         }
