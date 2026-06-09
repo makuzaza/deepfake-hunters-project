@@ -106,17 +106,17 @@ public static class PortalUIBuilder
         // Company
         var comp = CreateLabel("Company", s.transform, "HUMAN AGENCY INC.", 16, TEAL, center:true);
         SetAnchors(comp, 0.15f,0.77f, 0.85f,0.83f, 0,0,0,0);
-        comp.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+        comp.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Midline;
 
         // Title
         var title = CreateLabel("Title", s.transform, "Welcome to Human Agency", 40, DARK, bold:true, center:true);
         SetAnchors(title, 0.1f,0.65f, 0.9f,0.76f, 0,0,0,0);
-        title.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+        title.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Midline;
 
         // Date
         var date = CreateLabel("Date", s.transform, "Monday, May 23  —  Employee Portal", 18, TEAL2, center:true);
         SetAnchors(date, 0.1f,0.58f, 0.9f,0.65f, 0,0,0,0);
-        date.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+        date.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Midline;
 
         // Name label
         var nameLbl = CreateLabel("NameLbl", s.transform, "YOUR NAME", 15, TEAL);
@@ -451,7 +451,7 @@ public static class PortalUIBuilder
         go.AddComponent<PortalButton>().action = action;
         var lbl = CreateLabel("Label", go.transform, label, 20, fg, bold:true, center:true);
         Stretch(lbl);
-        lbl.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+        lbl.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Midline;
         return go;
     }
 
@@ -510,7 +510,7 @@ public static class PortalUIBuilder
         tmp.fontSize          = size;
         tmp.color             = col;
         tmp.fontStyle         = bold ? FontStyles.Bold : FontStyles.Normal;
-        tmp.alignment         = center ? TextAlignmentOptions.Center : TextAlignmentOptions.TopLeft;
+        tmp.alignment         = center ? TextAlignmentOptions.Midline : TextAlignmentOptions.MidlineLeft;
         tmp.enableWordWrapping = true;
         return go;
     }
