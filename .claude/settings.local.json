@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep -l \"UI\\\\|Button\\\\|Canvas\")",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\makuz\\\\Desktop\\\\metropolia\\\\deep_fake_projects\\\\deepfake-hunters-project\\\\Puppeteer\" -Directory)",
+      "Bash(Select-Object Name)"
+    ]
+  }
+}
