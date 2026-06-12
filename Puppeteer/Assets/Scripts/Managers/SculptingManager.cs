@@ -15,7 +15,10 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public Slider        accuracySlider;
     public Slider        brushSlider;
 
-    Text resultText;
+    Text  resultText;
+    Text  topAccuracyText;
+    Text  topTimerText;
+    float elapsedTime = 0f;
 
     [Header("Brush")]
     public float brushRadius    = 35f;
@@ -58,6 +61,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         }
 
         BuildResultText();
+        BuildTopHUD();
         Invoke(nameof(BuildOverlay), 0.1f);
     }
 
@@ -91,9 +95,63 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         go.SetActive(false);
     }
 
+    // ── Top HUD (accuracy + timer) ────────────────────────────────
+    void BuildTopHUD()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        topAccuracyText = MakeHUDLabel(canvas, "HUD_Accuracy", new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(16, -12), new Vector2(260, 48));
+        topAccuracyText.alignment = TextAnchor.UpperLeft;
+        topAccuracyText.text = "Accuracy: 0%";
+
+        topTimerText = MakeHUDLabel(canvas, "HUD_Timer", new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-16, -12), new Vector2(160, 48));
+        topTimerText.alignment = TextAnchor.UpperRight;
+        topTimerText.text = "0:00";
+    }
+
+    Text MakeHUDLabel(Canvas canvas, string objName,
+        Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot,
+        Vector2 anchoredPos, Vector2 sizeDelta)
+    {
+        var go = new GameObject(objName, typeof(RectTransform));
+        go.transform.SetParent(canvas.transform, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin        = anchorMin;
+        rt.anchorMax        = anchorMax;
+        rt.pivot            = pivot;
+        rt.anchoredPosition = anchoredPos;
+        rt.sizeDelta        = sizeDelta;
+
+        var txt = go.AddComponent<Text>();
+        txt.font          = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        txt.fontSize      = 34;
+        txt.fontStyle     = FontStyle.Bold;
+        txt.color         = Color.white;
+        txt.raycastTarget = false;
+
+        var outline = go.AddComponent<Outline>();
+        outline.effectColor    = Color.black;
+        outline.effectDistance = new Vector2(2, -2);
+
+        return txt;
+    }
+
     // ── Right hand follows cursor every frame ─────────────────────
     void Update()
     {
+        if (!confirmed)
+        {
+            elapsedTime += Time.deltaTime;
+            if (topTimerText != null)
+            {
+                int m = (int)(elapsedTime / 60);
+                int s = (int)(elapsedTime % 60);
+                topTimerText.text = $"{m}:{s:D2}";
+            }
+        }
+
         if (rightHand == null || Mouse.current == null) return;
 
         RectTransform cRect = canvasRectRef != null
@@ -257,7 +315,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 else if ( erased && !outside) clearedInside++;
             }
             // inside-body erasure counts only 20% as costly as missing outside pixels
-            float denom = intersection + missedOutside + clearedInside * 0.2f;
+            float denom = intersection + missedOutside + clearedInside * 0.15f;
             accuracy = denom < 1f ? 0f : intersection / denom * 100f;
         }
         else
@@ -267,8 +325,9 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             accuracy = (float)cleared / px.Length * 100f;
         }
 
-        if (accuracyText)   accuracyText.text   = $"{accuracy:F0}%";
-        if (accuracySlider) accuracySlider.value = accuracy / 100f;
+        if (accuracyText)      accuracyText.text      = $"{accuracy:F0}%";
+        if (accuracySlider)    accuracySlider.value    = accuracy / 100f;
+        if (topAccuracyText)   topAccuracyText.text    = $"Accuracy: {accuracy:F0}%";
         Debug.Log($"Accuracy: {accuracy:F1}%");
     }
 
