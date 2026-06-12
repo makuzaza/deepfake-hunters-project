@@ -9,17 +9,19 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Header("Scene References")]
     public Image         overlayImage;
     public RectTransform rightHand;
-    public RectTransform canvasRectRef;   // drag MinigameCanvas here
+    public RectTransform canvasRectRef;
     public Text          accuracyText;
     public Slider        accuracySlider;
+    public Slider        brushSlider;
+
+    Text resultText;
 
     [Header("Brush")]
-    public float wideBrushRadius      = 35f;
-    public float precisionBrushRadius = 12f;
+    public float brushRadius    = 35f;
+    public float brushMinRadius = 5f;
+    public float brushMaxRadius = 80f;
 
     [Header("Hand settings")]
-    // Offset so the cursor sits at the tip of the pointing finger.
-    // Negative Y moves the hand DOWN so the finger tip (top of image) reaches the cursor.
     public Vector2 rightHandFingerOffset = new(0f, -230f);
     public float   handFollowSpeed       = 14f;
 
@@ -30,8 +32,8 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     Texture2D     overlayTex;
     RectTransform overlayRect;
 
-    bool  isWideTool = true;
-    float accuracy   = 0f;
+    float accuracy  = 0f;
+    bool  confirmed = false;
 
     readonly Stack<Color32[]> undoStack = new();
 
@@ -40,11 +42,49 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         overlayRect = overlayImage.rectTransform;
 
-        // Put right hand on top of every other UI element
         if (rightHand != null)
             rightHand.SetAsLastSibling();
 
+        if (brushSlider != null)
+        {
+            brushSlider.minValue = brushMinRadius;
+            brushSlider.maxValue = brushMaxRadius;
+            brushSlider.value    = brushRadius;
+            brushSlider.onValueChanged.AddListener(v => brushRadius = v);
+        }
+
+        BuildResultText();
         Invoke(nameof(BuildOverlay), 0.1f);
+    }
+
+    // ── Result text ────────────────────────────────────────────────
+    void BuildResultText()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        var go = new GameObject("ResultText", typeof(RectTransform));
+        go.transform.SetParent(canvas.transform, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        resultText = go.AddComponent<Text>();
+        resultText.font          = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        resultText.fontSize      = 72;
+        resultText.fontStyle     = FontStyle.Bold;
+        resultText.alignment     = TextAnchor.MiddleCenter;
+        resultText.color         = Color.white;
+        resultText.raycastTarget = false;
+
+        var outline = go.AddComponent<Outline>();
+        outline.effectColor    = Color.black;
+        outline.effectDistance = new Vector2(3, -3);
+
+        go.SetActive(false);
     }
 
     // ── Right hand follows cursor every frame ─────────────────────
@@ -62,7 +102,6 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             cRect, screenPos, null, out Vector2 mouseCanvas);
 
-        // Fingertip offset: hand moves down so its top (finger tip) is at cursor
         rightHand.anchoredPosition = Vector2.Lerp(
             rightHand.anchoredPosition,
             mouseCanvas + rightHandFingerOffset,
@@ -93,14 +132,14 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     // ── Sculpting input ────────────────────────────────────────────
     public void OnPointerDown(PointerEventData e)
     {
-        if (overlayTex == null) return;
+        if (overlayTex == null || confirmed) return;
         PushUndo();
         Sculpt(e.position);
     }
 
     public void OnDrag(PointerEventData e)
     {
-        if (overlayTex == null) return;
+        if (overlayTex == null || confirmed) return;
         Sculpt(e.position);
     }
 
@@ -119,8 +158,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         int px = Mathf.RoundToInt(cx01 * texW);
         int py = Mathf.RoundToInt(cy01 * texH);
-        int r  = Mathf.RoundToInt((isWideTool ? wideBrushRadius : precisionBrushRadius)
-                                  / overlayRect.rect.width * texW);
+        int r  = Mathf.RoundToInt(brushRadius / overlayRect.rect.width * texW);
 
         EraseCircle(px, py, r);
         overlayTex.Apply();
@@ -171,12 +209,27 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         RefreshAccuracy();
     }
 
-    // ── Tool select ────────────────────────────────────────────────
-    public void SelectWideTool()      => isWideTool = true;
-    public void SelectPrecisionTool() => isWideTool = false;
-
     // ── Button handlers ────────────────────────────────────────────
-    public void OnConfirm()     => Debug.Log($"Confirmed! Accuracy: {accuracy:F1}%");
+    public void OnConfirm()
+    {
+        confirmed = true;
+
+        if (brushSlider != null) brushSlider.interactable = false;
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+            foreach (var btn in canvas.GetComponentsInChildren<Button>())
+                btn.interactable = false;
+
+        string msg = $"Confirmed! Accuracy: {accuracy:F1}%";
+        Debug.Log(msg);
+        if (resultText != null)
+        {
+            resultText.text = msg;
+            resultText.gameObject.SetActive(true);
+        }
+    }
+
     public void OnSkip()        => Debug.Log("Level skipped");
     public void OnFastForward() => Debug.Log("Fast-forward");
 
