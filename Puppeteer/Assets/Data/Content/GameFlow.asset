@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9ef9b27ad54b2ea7d5d9ccbf497db3, type: 3}
+  m_Name: GameFlow
+  m_EditorClassIdentifier:
+  acts:
+  - {fileID: 11400000, guid: 1e3a6e21999b40a2b6d902a873d84e61, type: 2}
+  - {fileID: 11400000, guid: a98eccafb2c742ea85042c86e324e662, type: 2}
+  - {fileID: 11400000, guid: b735a9de0e0244a4827aa0a18853d135, type: 2}
+  endingComplicit: {fileID: 11400000, guid: dac009d828894f6a82320d4a3e048202, type: 2}
+  endingWhistleblower: {fileID: 11400000, guid: 45e522ed47af4c1886f2206bb6ebcb41, type: 2}
+  endingPassive: {fileID: 11400000, guid: 5b728a5af308453ca6afa85c636018b9, type: 2}
