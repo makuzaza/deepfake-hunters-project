@@ -8,6 +8,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
     [Header("Scene References")]
     public Image         overlayImage;
+    public Image         shapeImage;
     public RectTransform rightHand;
     public RectTransform canvasRectRef;
     public Text          accuracyText;
@@ -34,6 +35,9 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     float accuracy  = 0f;
     bool  confirmed = false;
+
+    bool[] shapeMask;
+    int    totalShapePixels;
 
     readonly Stack<Color32[]> undoStack = new();
 
@@ -127,6 +131,61 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         overlayImage.sprite = Sprite.Create(overlayTex,
             new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f);
+
+        BuildShapeMask(w, h);
+    }
+
+    void BuildShapeMask(int overlayW, int overlayH)
+    {
+        shapeMask        = null;
+        totalShapePixels = 0;
+
+        if (shapeImage == null || shapeImage.sprite == null) return;
+
+        Texture2D shapeTex = shapeImage.sprite.texture;
+        if (shapeTex == null) return;
+
+        RectTransform shapeRect   = shapeImage.rectTransform;
+        Rect          shapeRLocal = shapeRect.rect;
+        Rect          overlayRLocal = overlayRect.rect;
+        Rect          spriteRect  = shapeImage.sprite.textureRect;
+
+        int texOX = Mathf.RoundToInt(spriteRect.x);
+        int texOY = Mathf.RoundToInt(spriteRect.y);
+        int texW  = Mathf.RoundToInt(spriteRect.width);
+        int texH2 = Mathf.RoundToInt(spriteRect.height);
+
+        shapeMask = new bool[overlayW * overlayH];
+
+        for (int py = 0; py < overlayH; py++)
+        for (int px2 = 0; px2 < overlayW; px2++)
+        {
+            // Pixel center in overlay's own local space
+            float lx = overlayRLocal.x + (px2 + 0.5f) / overlayW * overlayRLocal.width;
+            float ly = overlayRLocal.y + (py  + 0.5f) / overlayH * overlayRLocal.height;
+
+            // Convert to world, then to shape image local space
+            Vector3 worldPt    = overlayRect.TransformPoint(lx, ly, 0f);
+            Vector2 shapePt    = shapeRect.InverseTransformPoint(worldPt);
+
+            // Skip if outside shape image rect
+            if (!shapeRLocal.Contains(shapePt)) continue;
+
+            // [0,1] UV within shape rect
+            float u = (shapePt.x - shapeRLocal.x) / shapeRLocal.width;
+            float v = (shapePt.y - shapeRLocal.y) / shapeRLocal.height;
+
+            int sx = texOX + Mathf.Clamp(Mathf.RoundToInt(u * texW),  0, texW  - 1);
+            int sy = texOY + Mathf.Clamp(Mathf.RoundToInt(v * texH2), 0, texH2 - 1);
+
+            if (shapeTex.GetPixel(sx, sy).a > 0.1f)
+            {
+                shapeMask[py * overlayW + px2] = true;
+                totalShapePixels++;
+            }
+        }
+
+        Debug.Log($"[ShapeMask] {totalShapePixels} / {overlayW * overlayH} pixels inside shape");
     }
 
     // ── Sculpting input ────────────────────────────────────────────
@@ -182,12 +241,35 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     void RefreshAccuracy()
     {
         Color32[] px = overlayTex.GetPixels32();
-        int cleared = 0;
-        foreach (Color32 c in px) if (c.a < 10) cleared++;
 
-        accuracy = (float)cleared / px.Length * 100f;
+        if (shapeMask != null && totalShapePixels > 0)
+        {
+            // intersection  = erased AND outside (correct strokes)
+            // missedOutside = not erased AND outside (area still to clear)
+            // clearedInside = erased AND inside body (over-erase, penalised lightly)
+            int intersection = 0, missedOutside = 0, clearedInside = 0;
+            for (int i = 0; i < px.Length; i++)
+            {
+                bool erased  = px[i].a < 10;
+                bool outside = !shapeMask[i];
+                if      ( erased &&  outside) intersection++;
+                else if (!erased &&  outside) missedOutside++;
+                else if ( erased && !outside) clearedInside++;
+            }
+            // inside-body erasure counts only 20% as costly as missing outside pixels
+            float denom = intersection + missedOutside + clearedInside * 0.2f;
+            accuracy = denom < 1f ? 0f : intersection / denom * 100f;
+        }
+        else
+        {
+            int cleared = 0;
+            foreach (Color32 c in px) if (c.a < 10) cleared++;
+            accuracy = (float)cleared / px.Length * 100f;
+        }
+
         if (accuracyText)   accuracyText.text   = $"{accuracy:F0}%";
         if (accuracySlider) accuracySlider.value = accuracy / 100f;
+        Debug.Log($"Accuracy: {accuracy:F1}%");
     }
 
     // ── Undo ───────────────────────────────────────────────────────
