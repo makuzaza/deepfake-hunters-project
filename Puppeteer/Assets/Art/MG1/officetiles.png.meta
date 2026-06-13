@@ -1,0 +1,949 @@
+fileFormatVersion: 2
+guid: 52387b80104e9234abe9a44dc8c80074
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8611735012892334683
+    second: officetiles_0
+  - first:
+      213: 5825447315532623564
+    second: officetiles_1
+  - first:
+      213: -5494265323933284632
+    second: officetiles_2
+  - first:
+      213: -4358524657594355931
+    second: officetiles_3
+  - first:
+      213: 1011071436956513868
+    second: officetiles_4
+  - first:
+      213: 1195048550231670972
+    second: officetiles_5
+  - first:
+      213: -631925058379542358
+    second: officetiles_6
+  - first:
+      213: -7252236825520538186
+    second: officetiles_7
+  - first:
+      213: 4546349553878458790
+    second: officetiles_8
+  - first:
+      213: -7096409442750036980
+    second: officetiles_9
+  - first:
+      213: -1696710411761885606
+    second: officetiles_10
+  - first:
+      213: -4864398363329174176
+    second: officetiles_11
+  - first:
+      213: -8771865113265591122
+    second: officetiles_12
+  - first:
+      213: -7971159236411631591
+    second: officetiles_13
+  - first:
+      213: 2710927670606441317
+    second: officetiles_14
+  - first:
+      213: -3288813446242624909
+    second: officetiles_15
+  - first:
+      213: 6212142136809547484
+    second: officetiles_16
+  - first:
+      213: -1238662926425125638
+    second: officetiles_17
+  - first:
+      213: 6589763238548588719
+    second: officetiles_18
+  - first:
+      213: 4996215426041287199
+    second: officetiles_19
+  - first:
+      213: -8196962939553446923
+    second: officetiles_20
+  - first:
+      213: 1039970154003768095
+    second: officetiles_21
+  - first:
+      213: -891164452239305432
+    second: officetiles_22
+  - first:
+      213: -6596157144758076828
+    second: officetiles_23
+  - first:
+      213: 6575063234448927009
+    second: officetiles_24
+  - first:
+      213: 260040756413726330
+    second: officetiles_25
+  - first:
+      213: 1206580822157183738
+    second: officetiles_26
+  - first:
+      213: -1578745312720470475
+    second: officetiles_27
+  - first:
+      213: 4749456925319171314
+    second: officetiles_28
+  - first:
+      213: -4369887508928367190
+    second: officetiles_29
+  - first:
+      213: -3513701484844924443
+    second: officetiles_30
+  - first:
+      213: 7346718531659683224
+    second: officetiles_31
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: officetiles_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 80
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5add370e57038770800000000000000
+      internalID: 8611735012892334683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cce231c087528d050800000000000000
+      internalID: 5825447315532623564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_2
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 80
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e6c5393cc270c3b0800000000000000
+      internalID: -5494265323933284632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_3
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 80
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52fae479ae86383c0800000000000000
+      internalID: -4358524657594355931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_4
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 80
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4636527d1c080e00800000000000000
+      internalID: 1011071436956513868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_5
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 80
+        width: 14
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb087e5235aa59010800000000000000
+      internalID: 1195048550231670972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_6
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 96
+        width: 33
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa09e9ae183fa37f0800000000000000
+      internalID: -631925058379542358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_7
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 56
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd77dbf701ea5b90800000000000000
+      internalID: -7252236825520538186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_8
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 32
+        width: 36
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a16ea7e4d0e71f30800000000000000
+      internalID: 4546349553878458790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_9
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 48
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c040820d53d748d90800000000000000
+      internalID: -7096409442750036980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_10
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 48
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5ed93cbed21478e0800000000000000
+      internalID: -1696710411761885606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_11
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 56
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 065e5c3167f2e7cb0800000000000000
+      internalID: -4864398363329174176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_12
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 56
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaca922a723144680800000000000000
+      internalID: -8771865113265591122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_13
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 56
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9185c9158e0c06190800000000000000
+      internalID: -7971159236411631591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_14
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 56
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b26427a562f9520800000000000000
+      internalID: 2710927670606441317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_15
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 56
+        width: 18
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37a1e247899cb52d0800000000000000
+      internalID: -3288813446242624909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 34
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd6e4ce2c56f53650800000000000000
+      internalID: 6212142136809547484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_17
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 34
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afc0cf191a26fcee0800000000000000
+      internalID: -1238662926425125638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_18
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 24
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa8cd9b50ca837b50800000000000000
+      internalID: 6589763238548588719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_19
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 24
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f12948a757f165540800000000000000
+      internalID: 4996215426041287199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_20
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 32
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f300e6c2a98e3e80800000000000000
+      internalID: -8196962939553446923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_21
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 32
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1327665857be6e00800000000000000
+      internalID: 1039970154003768095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_22
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 32
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82512dbf6a2f1a3f0800000000000000
+      internalID: -891164452239305432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_23
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 32
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46a3a08560eb574a0800000000000000
+      internalID: -6596157144758076828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_24
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 32
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1292f01fc215f3b50800000000000000
+      internalID: 6575063234448927009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_25
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 26
+        width: 12
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7ef921b0b9db9300800000000000000
+      internalID: 260040756413726330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_26
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 26
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afa4a717dd2aeb010800000000000000
+      internalID: 1206580822157183738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_27
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 8
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53ebb7ca08b271ae0800000000000000
+      internalID: -1578745312720470475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_28
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 8
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fc0bade8e579e140800000000000000
+      internalID: 4749456925319171314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_29
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 8
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa578e9967a0b53c0800000000000000
+      internalID: -4369887508928367190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_30
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 8
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e14e0dad13dc3fc0800000000000000
+      internalID: -3513701484844924443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: officetiles_31
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 7
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 895da587499c4f560800000000000000
+      internalID: 7346718531659683224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      officetiles_0: 8611735012892334683
+      officetiles_1: 5825447315532623564
+      officetiles_10: -1696710411761885606
+      officetiles_11: -4864398363329174176
+      officetiles_12: -8771865113265591122
+      officetiles_13: -7971159236411631591
+      officetiles_14: 2710927670606441317
+      officetiles_15: -3288813446242624909
+      officetiles_16: 6212142136809547484
+      officetiles_17: -1238662926425125638
+      officetiles_18: 6589763238548588719
+      officetiles_19: 4996215426041287199
+      officetiles_2: -5494265323933284632
+      officetiles_20: -8196962939553446923
+      officetiles_21: 1039970154003768095
+      officetiles_22: -891164452239305432
+      officetiles_23: -6596157144758076828
+      officetiles_24: 6575063234448927009
+      officetiles_25: 260040756413726330
+      officetiles_26: 1206580822157183738
+      officetiles_27: -1578745312720470475
+      officetiles_28: 4749456925319171314
+      officetiles_29: -4369887508928367190
+      officetiles_3: -4358524657594355931
+      officetiles_30: -3513701484844924443
+      officetiles_31: 7346718531659683224
+      officetiles_4: 1011071436956513868
+      officetiles_5: 1195048550231670972
+      officetiles_6: -631925058379542358
+      officetiles_7: -7252236825520538186
+      officetiles_8: 4546349553878458790
+      officetiles_9: -7096409442750036980
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
