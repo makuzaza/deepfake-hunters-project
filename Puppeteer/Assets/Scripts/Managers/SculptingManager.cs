@@ -14,6 +14,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public Text          accuracyText;
     public Slider        accuracySlider;
     public Slider        brushSlider;
+    public Font          pixelFont;
 
     Text  resultText;
     Text  topAccuracyText;
@@ -65,6 +66,10 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         Invoke(nameof(BuildOverlay), 0.1f);
     }
 
+    Font GetFont() => pixelFont != null
+        ? pixelFont
+        : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+
     // ── Result text ────────────────────────────────────────────────
     void BuildResultText()
     {
@@ -81,7 +86,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         rt.offsetMax = Vector2.zero;
 
         resultText = go.AddComponent<Text>();
-        resultText.font          = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        resultText.font          = GetFont();
         resultText.fontSize      = 72;
         resultText.fontStyle     = FontStyle.Bold;
         resultText.alignment     = TextAnchor.MiddleCenter;
@@ -101,11 +106,11 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         Canvas canvas = GetComponentInParent<Canvas>();
         if (canvas == null) return;
 
-        topAccuracyText = MakeHUDLabel(canvas, "HUD_Accuracy", new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(16, -12), new Vector2(260, 48));
+        topAccuracyText = MakeHUDLabel(canvas, "HUD_Accuracy", new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(32, -24), new Vector2(320, 60));
         topAccuracyText.alignment = TextAnchor.UpperLeft;
         topAccuracyText.text = "Accuracy: 0%";
 
-        topTimerText = MakeHUDLabel(canvas, "HUD_Timer", new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-16, -12), new Vector2(160, 48));
+        topTimerText = MakeHUDLabel(canvas, "HUD_Timer", new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-32, -24), new Vector2(200, 60));
         topTimerText.alignment = TextAnchor.UpperRight;
         topTimerText.text = "0:00";
     }
@@ -125,8 +130,8 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         rt.sizeDelta        = sizeDelta;
 
         var txt = go.AddComponent<Text>();
-        txt.font          = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        txt.fontSize      = 34;
+        txt.font          = GetFont();
+        txt.fontSize      = 42;
         txt.fontStyle     = FontStyle.Bold;
         txt.color         = Color.white;
         txt.raycastTarget = false;

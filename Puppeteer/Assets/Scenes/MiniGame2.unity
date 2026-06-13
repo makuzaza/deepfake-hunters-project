@@ -952,6 +952,7 @@ MonoBehaviour:
   accuracyText: {fileID: 0}
   accuracySlider: {fileID: 0}
   brushSlider: {fileID: 5010000002}
+  pixelFont: {fileID: 12800000, guid: 4448a69ef43a3ad4ab62531cde2428ec, type: 3}
   brushRadius: 35
   brushMinRadius: 5
   brushMaxRadius: 80
