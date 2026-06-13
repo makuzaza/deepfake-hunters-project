@@ -6,6 +6,8 @@
 # See: https://github.com/github/gitignore/tree/main/Global
 #
 .vscode/
+_Recovery/
+Assets/_Recovery.meta
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
