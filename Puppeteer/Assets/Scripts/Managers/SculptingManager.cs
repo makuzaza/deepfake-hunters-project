@@ -8,13 +8,20 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
     [Header("Scene References")]
     public Image         overlayImage;
-    public Image         shapeImage;
     public RectTransform rightHand;
     public RectTransform canvasRectRef;
     public Text          accuracyText;
     public Slider        accuracySlider;
     public Slider        brushSlider;
     public Font          pixelFont;
+
+    [Header("Difficulty")]
+    public Image[] levelShapes = new Image[3]; // 0=Easy 1=Medium 2=Hard
+    public int     difficulty  = 2;
+
+    Image  shapeImage;
+    int    currentDifficulty;
+    Button nextButton;
 
     Text  resultText;
     Text  topAccuracyText;
@@ -50,6 +57,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         overlayRect = overlayImage.rectTransform;
 
+        currentDifficulty = difficulty;
+        for (int i = 0; i < levelShapes.Length; i++)
+            if (levelShapes[i] != null)
+                levelShapes[i].enabled = (i == currentDifficulty);
+        shapeImage = currentDifficulty < levelShapes.Length ? levelShapes[currentDifficulty] : null;
+
         if (rightHand != null)
             rightHand.SetAsLastSibling();
 
@@ -62,6 +75,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         }
 
         BuildResultText();
+        BuildNextButton();
         BuildTopHUD();
         Invoke(nameof(BuildOverlay), 0.1f);
     }
@@ -98,6 +112,84 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         outline.effectDistance = new Vector2(3, -3);
 
         go.SetActive(false);
+    }
+
+    // ── Next Level button ──────────────────────────────────────────
+    void BuildNextButton()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        var go = new GameObject("NextButton", typeof(RectTransform));
+        go.transform.SetParent(canvas.transform, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin        = new Vector2(0.5f, 0.5f);
+        rt.anchorMax        = new Vector2(0.5f, 0.5f);
+        rt.pivot            = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = new Vector2(0f, -200f);
+        rt.sizeDelta        = new Vector2(320f, 72f);
+
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0.15f, 0.55f, 0.15f, 1f);
+
+        nextButton = go.AddComponent<Button>();
+        nextButton.targetGraphic = img;
+        nextButton.onClick.AddListener(OnNext);
+
+        var label = new GameObject("Label", typeof(RectTransform));
+        label.transform.SetParent(go.transform, false);
+        var lrt = label.GetComponent<RectTransform>();
+        lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one;
+        lrt.offsetMin = Vector2.zero; lrt.offsetMax = Vector2.zero;
+
+        var txt = label.AddComponent<Text>();
+        txt.font          = GetFont();
+        txt.fontSize      = 42;
+        txt.fontStyle     = FontStyle.Bold;
+        txt.alignment     = TextAnchor.MiddleCenter;
+        txt.color         = Color.white;
+        txt.raycastTarget = false;
+        txt.text          = "Next Level →";
+
+        var outline = label.AddComponent<Outline>();
+        outline.effectColor    = Color.black;
+        outline.effectDistance = new Vector2(2, -2);
+
+        go.SetActive(false);
+    }
+
+    public void OnNext()
+    {
+        currentDifficulty++;
+        if (currentDifficulty >= levelShapes.Length) return;
+
+        // Switch shape — toggle Image.enabled so the overlay child of ShapeHard stays active
+        if (levelShapes[currentDifficulty - 1] != null)
+            levelShapes[currentDifficulty - 1].enabled = false;
+        if (levelShapes[currentDifficulty] != null)
+            levelShapes[currentDifficulty].enabled = true;
+        shapeImage = levelShapes[currentDifficulty];
+
+        // Reset state
+        confirmed     = false;
+        accuracy      = 0f;
+        elapsedTime   = 0f;
+        undoStack.Clear();
+
+        if (nextButton  != null) nextButton.gameObject.SetActive(false);
+        if (resultText  != null) resultText.gameObject.SetActive(false);
+        if (topAccuracyText != null) topAccuracyText.text = "Accuracy: 0%";
+        if (topTimerText    != null) topTimerText.text    = "0:00";
+
+        // Re-enable buttons and slider
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+            foreach (var btn in canvas.GetComponentsInChildren<Button>())
+                btn.interactable = true;
+        if (brushSlider != null) brushSlider.interactable = true;
+
+        Invoke(nameof(BuildOverlay), 0.1f);
     }
 
     // ── Top HUD (accuracy + timer) ────────────────────────────────
@@ -178,8 +270,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     // ── Overlay texture ────────────────────────────────────────────
     void BuildOverlay()
     {
+        Canvas.ForceUpdateCanvases();
+
         int w = Mathf.RoundToInt(overlayRect.rect.width);
         int h = Mathf.RoundToInt(overlayRect.rect.height);
+
+        Debug.Log($"[BuildOverlay] w={w} h={h} shapeImage={shapeImage?.name ?? "NULL"} sprite={shapeImage?.sprite?.name ?? "NULL"}");
 
         if (w <= 0 || h <= 0) { Invoke(nameof(BuildOverlay), 0.05f); return; }
 
@@ -254,6 +350,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     // ── Sculpting input ────────────────────────────────────────────
     public void OnPointerDown(PointerEventData e)
     {
+        Debug.Log($"[Click] overlayTex={overlayTex != null} confirmed={confirmed}");
         if (overlayTex == null || confirmed) return;
         PushUndo();
         Sculpt(e.position);
@@ -319,9 +416,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 else if (!erased &&  outside) missedOutside++;
                 else if ( erased && !outside) clearedInside++;
             }
-            // inside-body erasure counts only 20% as costly as missing outside pixels
-            float denom = intersection + missedOutside + clearedInside * 0.15f;
-            accuracy = denom < 1f ? 0f : intersection / denom * 100f;
+            float[] penalties = { 0.1f, 0.13f, 0.15f };
+            float penalty     = penalties[Mathf.Clamp(currentDifficulty, 0, penalties.Length - 1)];
+            float outsideTotal = intersection + missedOutside;
+            float progress     = outsideTotal > 0f ? (float)intersection / outsideTotal : 0f;
+            float insideRatio  = (float)clearedInside / totalShapePixels;
+            accuracy = Mathf.Clamp01(progress - penalty * insideRatio) * 100f;
         }
         else
         {
@@ -332,7 +432,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (accuracyText)      accuracyText.text      = $"{accuracy:F0}%";
         if (accuracySlider)    accuracySlider.value    = accuracy / 100f;
-        if (topAccuracyText)   topAccuracyText.text    = $"Accuracy: {accuracy:F0}%";
+        if (topAccuracyText)   topAccuracyText.text    = $"Accuracy: {Mathf.FloorToInt(accuracy)}%";
         Debug.Log($"Accuracy: {accuracy:F1}%");
     }
 
@@ -367,16 +467,35 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             foreach (var btn in canvas.GetComponentsInChildren<Button>())
                 btn.interactable = false;
 
-        string msg = $"Confirmed! Accuracy: {accuracy:F1}%";
+        bool success     = accuracy >= 90f;
+        bool isLastLevel = currentDifficulty >= levelShapes.Length - 1;
+
+        string msg = isLastLevel
+            ? (success
+                ? $"All Done!\nAccuracy: {accuracy:F1}%\nPerfect work!"
+                : $"All Done!\nAccuracy: {accuracy:F1}%\nBetter luck next time!")
+            : (success
+                ? $"Success!\nAccuracy: {accuracy:F1}%\nGreat sculpting work!"
+                : $"Fail!\nAccuracy: {accuracy:F1}%\nTry to stay on the edges!");
+
         Debug.Log(msg);
         if (resultText != null)
         {
-            resultText.text = msg;
+            resultText.text  = msg;
+            resultText.color = success ? new Color(0.2f, 0.85f, 0.3f) : new Color(0.9f, 0.2f, 0.2f);
             resultText.gameObject.SetActive(true);
         }
+
+        if (!isLastLevel && nextButton != null)
+            nextButton.gameObject.SetActive(true);
     }
 
-    public void OnSkip()        => Debug.Log("Level skipped");
+    public void OnSkip()
+    {
+        if (currentDifficulty >= levelShapes.Length - 1) return;
+        confirmed = false;
+        OnNext();
+    }
     public void OnFastForward() => Debug.Log("Fast-forward");
 
     public void OnUndo()
