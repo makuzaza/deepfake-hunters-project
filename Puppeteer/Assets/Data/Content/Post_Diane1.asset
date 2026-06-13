@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b01fe345f7b4f729daa22e50b908234, type: 3}
+  m_Name: Post_Diane1
+  m_EditorClassIdentifier:
+  author: {fileID: 11400000, guid: a7556519fbd647cabdf9c084ec0c851c, type: 2}
+  body: 'Sharing this - such a helpful, honest doctor!'
+  timeLabel: '11:15'
+  metric: '412 shares'
+  isClientFeedback: 0
