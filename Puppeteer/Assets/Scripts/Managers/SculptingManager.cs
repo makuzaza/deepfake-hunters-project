@@ -77,7 +77,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         BuildResultText();
         BuildNextButton();
         BuildTopHUD();
-        Invoke(nameof(BuildOverlay), 0.1f);
+        BuildOverlay();
     }
 
     Font GetFont() => pixelFont != null
@@ -189,7 +189,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 btn.interactable = true;
         if (brushSlider != null) brushSlider.interactable = true;
 
-        Invoke(nameof(BuildOverlay), 0.1f);
+        BuildOverlay();
     }
 
     // ── Top HUD (accuracy + timer) ────────────────────────────────
@@ -416,7 +416,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 else if (!erased &&  outside) missedOutside++;
                 else if ( erased && !outside) clearedInside++;
             }
-            float[] penalties = { 0.1f, 0.13f, 0.15f };
+            float[] penalties = { 0.1f, 0.15f, 0.2f };
             float penalty     = penalties[Mathf.Clamp(currentDifficulty, 0, penalties.Length - 1)];
             float outsideTotal = intersection + missedOutside;
             float progress     = outsideTotal > 0f ? (float)intersection / outsideTotal : 0f;
