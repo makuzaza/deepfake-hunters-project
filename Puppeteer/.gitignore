@@ -5,6 +5,9 @@
 # Recommended: add any editor/OS/tool-specific ignore rules from the Global/ templates as needed.
 # See: https://github.com/github/gitignore/tree/main/Global
 #
+.vscode/
+_Recovery/
+Assets/_Recovery.meta
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -58,6 +61,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.vscode
 
 # Unity3D generated meta files
 *.pidb.meta
