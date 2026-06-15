@@ -11,6 +11,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public RectTransform rightHand;
     public RectTransform canvasRectRef;
     public Text          accuracyText;
+    public Text          instructionText;
     public Slider        accuracySlider;
     public Slider        brushSlider;
     public Font          pixelFont;
@@ -40,6 +41,9 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Header("Undo")]
     public int maxUndoSteps = 15;
 
+    [Header("Debug")]
+    public bool debugMask = false;   // paint overlay red=body / teal=outside on start
+
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
     RectTransform overlayRect;
@@ -49,6 +53,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     bool[] shapeMask;
     int    totalShapePixels;
+    int    prevClearedInside = 0;
 
     readonly Stack<Color32[]> undoStack = new();
 
@@ -172,9 +177,10 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         shapeImage = levelShapes[currentDifficulty];
 
         // Reset state
-        confirmed     = false;
-        accuracy      = 0f;
-        elapsedTime   = 0f;
+        confirmed          = false;
+        accuracy           = 0f;
+        elapsedTime        = 0f;
+        prevClearedInside  = 0;
         undoStack.Clear();
 
         if (nextButton  != null) nextButton.gameObject.SetActive(false);
@@ -272,19 +278,33 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         Canvas.ForceUpdateCanvases();
 
+        // Snap the overlay rect to exactly match the current shape image.
+        // This makes the overlay a 1-to-1 pixel match with the visible shape,
+        // so UV coordinates are identical for both erase strokes and the mask.
+        if (shapeImage != null)
+        {
+            RectTransform sr = shapeImage.rectTransform;
+            overlayRect.anchorMin        = new Vector2(0.5f, 0.5f);
+            overlayRect.anchorMax        = new Vector2(0.5f, 0.5f);
+            overlayRect.pivot            = new Vector2(0.5f, 0.5f);
+            overlayRect.position         = sr.position;          // world-space centre
+            overlayRect.sizeDelta        = new Vector2(sr.rect.width, sr.rect.height);
+            Canvas.ForceUpdateCanvases();
+        }
+
         int w = Mathf.RoundToInt(overlayRect.rect.width);
         int h = Mathf.RoundToInt(overlayRect.rect.height);
 
-        Debug.Log($"[BuildOverlay] w={w} h={h} shapeImage={shapeImage?.name ?? "NULL"} sprite={shapeImage?.sprite?.name ?? "NULL"}");
-
         if (w <= 0 || h <= 0) { Invoke(nameof(BuildOverlay), 0.05f); return; }
+
+        Debug.Log($"[BuildOverlay] overlay={w}x{h}  shape={shapeImage?.sprite?.name ?? "NULL"}");
 
         overlayTex = new Texture2D(w, h, TextureFormat.RGBA32, false)
             { filterMode = FilterMode.Bilinear };
 
-        Color32 raw  = new(30, 200, 160, 200);
-        Color32[] px = new Color32[w * h];
-        for (int i = 0; i < px.Length; i++) px[i] = raw;
+        Color32 fill  = new(30, 200, 160, 200);
+        Color32[] px  = new Color32[w * h];
+        for (int i = 0; i < px.Length; i++) px[i] = fill;
         overlayTex.SetPixels32(px);
         overlayTex.Apply();
 
@@ -292,8 +312,13 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f);
 
         BuildShapeMask(w, h);
+
+        if (debugMask) PaintMaskDebug();
     }
 
+    // ── Shape mask ─────────────────────────────────────────────────
+    // The overlay is snapped to the same rect as shapeImage, so overlay pixel
+    // (px2, py) maps 1-to-1 onto sprite UV (px2/w, py/h) — no offset math needed.
     void BuildShapeMask(int overlayW, int overlayH)
     {
         shapeMask        = null;
@@ -304,53 +329,94 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         Texture2D shapeTex = shapeImage.sprite.texture;
         if (shapeTex == null) return;
 
-        RectTransform shapeRect   = shapeImage.rectTransform;
-        Rect          shapeRLocal = shapeRect.rect;
-        Rect          overlayRLocal = overlayRect.rect;
-        Rect          spriteRect  = shapeImage.sprite.textureRect;
+        // textureRect: sub-region of the PNG where this sprite lives (bottom-left origin)
+        Rect  sr  = shapeImage.sprite.textureRect;
+        float tx0 = sr.x,    ty0 = sr.y;
+        float tsw = sr.width, tsh = sr.height;
 
-        int texOX = Mathf.RoundToInt(spriteRect.x);
-        int texOY = Mathf.RoundToInt(spriteRect.y);
-        int texW  = Mathf.RoundToInt(spriteRect.width);
-        int texH2 = Mathf.RoundToInt(spriteRect.height);
+        // ── PreserveAspect letterbox calculation ──────────────────────
+        // The shape Image has PreserveAspect=true, so the sprite is scaled
+        // uniformly to fit within the (overlayW × overlayH) rect, leaving
+        // empty margins on two sides.  We must only mark pixels inside the
+        // actually-displayed sprite area as potential body pixels.
+        float spriteAspect = tsw / tsh;
+        float rectAspect   = (float)overlayW / overlayH;
+
+        float spU0, spV0, spU1, spV1;   // overlay-UV range where sprite is shown
+        if (spriteAspect > rectAspect)
+        {
+            // sprite wider than rect → letterbox top & bottom
+            float displayedH = overlayW / spriteAspect;
+            float vPad = (overlayH - displayedH) * 0.5f / overlayH;
+            spU0 = 0f;    spU1 = 1f;
+            spV0 = vPad;  spV1 = 1f - vPad;
+        }
+        else
+        {
+            // sprite taller than rect → letterbox left & right
+            float displayedW = overlayH * spriteAspect;
+            float uPad = (overlayW - displayedW) * 0.5f / overlayW;
+            spU0 = uPad;  spU1 = 1f - uPad;
+            spV0 = 0f;    spV1 = 1f;
+        }
+
+        int cTx0 = Mathf.RoundToInt(tx0);
+        int cTy0 = Mathf.RoundToInt(ty0);
+        int cTx1 = Mathf.RoundToInt(tx0 + tsw) - 1;
+        int cTy1 = Mathf.RoundToInt(ty0 + tsh) - 1;
+
+        Debug.Log($"[ShapeMask] sprite='{shapeImage.sprite.name}'  " +
+                  $"aspect={spriteAspect:F3}  displayUV U=[{spU0:F3},{spU1:F3}] V=[{spV0:F3},{spV1:F3}]  " +
+                  $"tex={shapeTex.width}x{shapeTex.height} rect=({tx0},{ty0},{tsw},{tsh})");
 
         shapeMask = new bool[overlayW * overlayH];
 
         for (int py = 0; py < overlayH; py++)
         for (int px2 = 0; px2 < overlayW; px2++)
         {
-            // Pixel center in overlay's own local space
-            float lx = overlayRLocal.x + (px2 + 0.5f) / overlayW * overlayRLocal.width;
-            float ly = overlayRLocal.y + (py  + 0.5f) / overlayH * overlayRLocal.height;
+            float u = (float)px2 / overlayW;
+            float v = (float)py  / overlayH;
 
-            // Convert to world, then to shape image local space
-            Vector3 worldPt    = overlayRect.TransformPoint(lx, ly, 0f);
-            Vector2 shapePt    = shapeRect.InverseTransformPoint(worldPt);
+            // Skip letterbox margins — sprite is not displayed there
+            if (u < spU0 || u > spU1 || v < spV0 || v > spV1) continue;
 
-            // Skip if outside shape image rect
-            if (!shapeRLocal.Contains(shapePt)) continue;
+            // Remap overlay UV to sprite UV [0,1]
+            float su = (u - spU0) / (spU1 - spU0);
+            float sv = (v - spV0) / (spV1 - spV0);
 
-            // [0,1] UV within shape rect
-            float u = (shapePt.x - shapeRLocal.x) / shapeRLocal.width;
-            float v = (shapePt.y - shapeRLocal.y) / shapeRLocal.height;
+            // Map sprite UV to texture pixel (bottom-left origin, same as GetPixel)
+            int tx = Mathf.Clamp(Mathf.RoundToInt(tx0 + su * tsw), cTx0, cTx1);
+            int ty = Mathf.Clamp(Mathf.RoundToInt(ty0 + sv * tsh), cTy0, cTy1);
 
-            int sx = texOX + Mathf.Clamp(Mathf.RoundToInt(u * texW),  0, texW  - 1);
-            int sy = texOY + Mathf.Clamp(Mathf.RoundToInt(v * texH2), 0, texH2 - 1);
-
-            if (shapeTex.GetPixel(sx, sy).a > 0.1f)
+            if (shapeTex.GetPixel(tx, ty).a > 0.1f)
             {
                 shapeMask[py * overlayW + px2] = true;
                 totalShapePixels++;
             }
         }
 
-        Debug.Log($"[ShapeMask] {totalShapePixels} / {overlayW * overlayH} pixels inside shape");
+        Debug.Log($"[ShapeMask] body={totalShapePixels}/{overlayW * overlayH} " +
+                  $"({100f * totalShapePixels / (overlayW * overlayH):F1}%)");
+    }
+
+    // Paints overlay red=body / teal=outside. Enable debugMask in Inspector to see it.
+    void PaintMaskDebug()
+    {
+        if (overlayTex == null || shapeMask == null) return;
+        int len      = overlayTex.width * overlayTex.height;
+        Color32[] dbg = new Color32[len];
+        for (int i = 0; i < len; i++)
+            dbg[i] = shapeMask[i]
+                ? new Color32(220, 30,  30,  200)
+                : new Color32(30,  200, 160, 200);
+        overlayTex.SetPixels32(dbg);
+        overlayTex.Apply();
+        Debug.Log($"[MaskDebug] red=body({totalShapePixels}px) teal=outside");
     }
 
     // ── Sculpting input ────────────────────────────────────────────
     public void OnPointerDown(PointerEventData e)
     {
-        Debug.Log($"[Click] overlayTex={overlayTex != null} confirmed={confirmed}");
         if (overlayTex == null || confirmed) return;
         PushUndo();
         Sculpt(e.position);
@@ -422,18 +488,23 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             float progress     = outsideTotal > 0f ? (float)intersection / outsideTotal : 0f;
             float insideRatio  = (float)clearedInside / totalShapePixels;
             accuracy = Mathf.Clamp01(progress - penalty * insideRatio) * 100f;
+            if (clearedInside > prevClearedInside)
+                Debug.Log($"Accuracy: {accuracy:F1}% | Body touched: +{clearedInside - prevClearedInside} px");
+            else
+                Debug.Log($"Accuracy: {accuracy:F1}%");
+            prevClearedInside = clearedInside;
         }
         else
         {
             int cleared = 0;
             foreach (Color32 c in px) if (c.a < 10) cleared++;
             accuracy = (float)cleared / px.Length * 100f;
+            Debug.Log($"Accuracy: {accuracy:F1}%");
         }
 
         if (accuracyText)      accuracyText.text      = $"{accuracy:F0}%";
         if (accuracySlider)    accuracySlider.value    = accuracy / 100f;
         if (topAccuracyText)   topAccuracyText.text    = $"Accuracy: {Mathf.FloorToInt(accuracy)}%";
-        Debug.Log($"Accuracy: {accuracy:F1}%");
     }
 
     // ── Undo ───────────────────────────────────────────────────────

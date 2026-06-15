@@ -153,7 +153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 23, y: -223}
+  m_AnchoredPosition: {x: 23, y: -319}
   m_SizeDelta: {x: 380, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &254159339
@@ -637,7 +637,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -363.66437, y: 75.776245}
+  m_AnchoredPosition: {x: -363.66437, y: 41}
   m_SizeDelta: {x: 527.3287, y: 751.5525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1364914786
@@ -890,6 +890,7 @@ RectTransform:
   - {fileID: 254159338}
   - {fileID: 925000682}
   - {fileID: 438125681}
+  - {fileID: 9010000002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -951,6 +952,7 @@ MonoBehaviour:
   rightHand: {fileID: 254159338}
   canvasRectRef: {fileID: 1638825998}
   accuracyText: {fileID: 0}
+  instructionText: {fileID: 9010000003}
   accuracySlider: {fileID: 0}
   brushSlider: {fileID: 5010000002}
   pixelFont: {fileID: 12800000, guid: 4448a69ef43a3ad4ab62531cde2428ec, type: 3}
@@ -1112,7 +1114,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -752, y: -260}
+  m_AnchoredPosition: {x: -752, y: -329}
   m_SizeDelta: {x: 380, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796688369
@@ -3127,6 +3129,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7010000011}
+  m_CullTransparentMesh: 1
+--- !u!1 &9010000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9010000002}
+  - component: {fileID: 9010000004}
+  - component: {fileID: 9010000003}
+  m_Layer: 5
+  m_Name: InstructionText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9010000002
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010000001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638825998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -80}
+  m_SizeDelta: {x: 0, y: 44}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &9010000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 4448a69ef43a3ad4ab62531cde2428ec, type: 3}
+    m_FontSize: 35
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: Erase the overlay around the shape. Stay close to the edges!
+--- !u!222 &9010000004
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010000001}
   m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
