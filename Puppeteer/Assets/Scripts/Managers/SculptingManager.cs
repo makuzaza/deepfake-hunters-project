@@ -574,10 +574,4 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         Undo();
         Debug.Log("Undo");
     }
-
-    public void OnMusicToggle()
-    {
-        AudioListener.pause = !AudioListener.pause;
-        Debug.Log($"Music: {(AudioListener.pause ? "OFF" : "ON")}");
-    }
 }
