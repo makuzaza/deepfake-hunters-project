@@ -13,9 +13,10 @@ public class Task1Manager : MonoBehaviour
     public Button editButton;
     public Button launchButton;
 
-    float timer = 15f;
+    float timer = 8f;
     public int attemptsRemaining = 3;
     bool success = false;
+    bool isEnding = false;
 
     public RectTransform qteContainer;
     public GameObject blackOverlay;
@@ -31,8 +32,20 @@ public class Task1Manager : MonoBehaviour
 
     public Image greenFlash;
 
-
     bool playerClickedThisAttempt = false;
+
+    [Header("Marcus Takeover Settings")]
+    public RectTransform videoRect;
+    public RectTransform cursorRect;
+    public GameObject alternativeOutroUI;
+    public float cursorMoveSpeed = 1f;   // speed multiplier
+    public float dragSpeed = 1f;         // speed multiplier
+    public float preDragDelay = 1.5f;    // time before cursor moves
+
+    [Header("Fail Outro UI")]
+    public GameObject blackOverlayFail;
+    public TextMeshProUGUI failText1;
+    public TextMeshProUGUI failText2;
 
     void Start()
     {
@@ -49,18 +62,15 @@ public class Task1Manager : MonoBehaviour
 
     void Update()
     {
-        if (success) return;
+        if (success || isEnding) return;  // prevents timer from running
 
         timer -= Time.deltaTime;
+        if (timer < 0) timer = 0;         // clamp
+
         countdownText.text = Mathf.CeilToInt(timer).ToString();
 
         if (timer <= 0)
-        {
             HandleTimerExpired();
-        }
-
-        /*if (Input.GetKeyDown(KeyCode.Space))
-            OnPausePressed();*/
     }
 
     void OnPausePressed()
@@ -122,13 +132,16 @@ public class Task1Manager : MonoBehaviour
         if (attemptsRemaining > 0)
         {
             feedbackText.text = "Marcus: Missed it! Try again.";
-            timer = 15f;
+            timer = 8f;
             qte.StartQTE();
         }
         else
         {
-            StartOutroAnimation();
-            qte.isRunning = false;
+            isEnding = true;
+            timer = 0;
+            countdownText.text = "0";
+
+            StartCoroutine(MarcusTakeoverSequence());
         }
     }
 
@@ -137,8 +150,16 @@ public class Task1Manager : MonoBehaviour
         // Player never clicked at all
         if (!playerClickedThisAttempt)
         {
+            isEnding = true;
+            timer = 0;
+            countdownText.text = "0";
+
+
             feedbackText.text = "Marcus: Looks like you ran into some trouble, I'll handle it and send it to Tony.";
-            StartOutroAnimation();
+
+            StartCoroutine(MarcusTakeoverSequence());
+
+            //StartOutroAnimation();
             return;
         }
 
@@ -160,11 +181,96 @@ public class Task1Manager : MonoBehaviour
 
     void StartOutroAnimation()
     {
-        qte.isRunning = false;
+        isEnding = true;
         timer = 0;
+        countdownText.text = "0";
+
+        qte.isRunning = false;
         feedbackText.text = "You failed the task.";
-        // TODO: play your outro animation here
+        // TODO: play (and create) outro animation here
     }
+
+    IEnumerator MarcusTakeoverSequence()
+    {
+        qte.isRunning = false;
+
+        // Disable all buttons
+        pauseButton.interactable = false;
+        editButton.interactable = false;
+        launchButton.interactable = false;
+
+        // Marcus dialogue
+        feedbackText.text = "Marcus: Looks like you ran into some trouble, I'll handle it.";
+
+        // Let player read
+        yield return new WaitForSeconds(preDragDelay);
+
+        // Cursor appears
+        cursorRect.gameObject.SetActive(true);
+
+        // Move cursor to video
+        Vector3 startPos = cursorRect.anchoredPosition;
+        Vector3 targetPos = videoRect.anchoredPosition + new Vector2(-50, 50);
+
+        float t = 0f;
+        float moveTime = 1f / cursorMoveSpeed;
+
+        while (t < moveTime)
+        {
+            t += Time.deltaTime;
+            cursorRect.anchoredPosition = Vector3.Lerp(startPos, targetPos, t / moveTime);
+            yield return null;
+        }
+
+        // Drag video + cursor together
+        Vector3 videoStart = videoRect.anchoredPosition;
+        Vector3 videoEnd = videoStart + new Vector3(900, -400, 0); // tweak direction
+
+        Vector3 cursorStart = cursorRect.anchoredPosition;
+        Vector3 cursorEnd = cursorStart + new Vector3(900, -400, 0);
+
+        t = 0f;
+        float dragTime = 1.2f / dragSpeed;
+
+        while (t < dragTime)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / dragTime);
+
+            videoRect.anchoredPosition = Vector3.Lerp(videoStart, videoEnd, p);
+            cursorRect.anchoredPosition = Vector3.Lerp(cursorStart, cursorEnd, p);
+
+            yield return null;
+        }
+
+
+        videoRect.gameObject.SetActive(false);
+        cursorRect.gameObject.SetActive(false);
+
+        // Fade in fail overlay
+        blackOverlayFail.SetActive(true);
+
+        failText1.alpha = 0;
+        failText2.alpha = 0;
+
+        float fadeTime = 0.8f;
+        float f = 0f;
+
+        while (f < fadeTime)
+        {
+            f += Time.deltaTime;
+            float a = f / fadeTime;
+
+            failText1.alpha = Mathf.Lerp(0, 1, a);
+            failText2.alpha = Mathf.Lerp(0, 1, a);
+
+            yield return null;
+        }
+
+        alternativeOutroUI.SetActive(true);
+    }
+
+
 
     public void PlaySuccessAnimation()
     {
