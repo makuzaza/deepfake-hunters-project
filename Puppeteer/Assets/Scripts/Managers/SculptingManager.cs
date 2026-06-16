@@ -396,7 +396,6 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         // All shapes must occupy the same rect as the hard shape (index 2) so the
         // overlay covers the full monitor screen area for every difficulty level.
-        // Unity may set native sizes in the Editor, so we normalize at runtime.
         if (levelShapes != null && levelShapes.Length > 2 && levelShapes[2] != null)
         {
             RectTransform hardRT  = levelShapes[2].rectTransform;
@@ -468,7 +467,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         // ── PreserveAspect letterbox calculation ──────────────────────
         // The shape Image has PreserveAspect=true, so the sprite is scaled
         // uniformly to fit within the (overlayW × overlayH) rect, leaving
-        // empty margins on two sides.  We must only mark pixels inside the
+        // empty margins on two sides.  Only mark pixels inside the
         // actually-displayed sprite area as potential body pixels.
         float spriteAspect = tsw / tsh;
         float rectAspect   = (float)overlayW / overlayH;
