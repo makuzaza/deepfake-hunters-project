@@ -34,6 +34,18 @@ public class Task1Manager : MonoBehaviour
 
     bool playerClickedThisAttempt = false;
 
+    [Header("Dialogue")]
+    public string successDialogue;
+    public string editDialogue;
+    public string failDialogue;
+    public string marcusTakeoverDialogue;
+    public string successFinalText;
+    public string successFinalText2;
+    public string failFinalText1;
+    public string failFinalText2;
+
+
+
     [Header("Marcus Takeover Settings")]
     public RectTransform videoRect;
     public RectTransform cursorRect;
@@ -87,7 +99,7 @@ public class Task1Manager : MonoBehaviour
 
 
         launchButton.interactable = true;
-        feedbackText.text = "Marcus: Now that's perfect! click to launch, and your masterpiece will be delievred to Natural Remedies. Good job."; 
+        feedbackText.text = editDialogue;
     }
 
     IEnumerator FlashGreen()
@@ -118,7 +130,7 @@ public class Task1Manager : MonoBehaviour
         // Swap to pause sprite
         videoImage.sprite = pauseSprite;
 
-        feedbackText.text = "Marcus: Good! You caught the right frame Click edit, who has never needed a small change?" ;
+        feedbackText.text = successDialogue;
         editButton.interactable = true;
 
     }
@@ -131,7 +143,7 @@ public class Task1Manager : MonoBehaviour
 
         if (attemptsRemaining > 0)
         {
-            feedbackText.text = "Marcus: Missed it! Try again.";
+            feedbackText.text = failDialogue;
             timer = 8f;
             qte.StartQTE();
         }
@@ -155,7 +167,7 @@ public class Task1Manager : MonoBehaviour
             countdownText.text = "0";
 
 
-            feedbackText.text = "Marcus: Looks like you ran into some trouble, I'll handle it and send it to Tony.";
+            feedbackText.text = marcusTakeoverDialogue;
 
             StartCoroutine(MarcusTakeoverSequence());
 
@@ -168,7 +180,7 @@ public class Task1Manager : MonoBehaviour
 
         if (attemptsRemaining > 0)
         {
-            feedbackText.text = "Marcus: Time’s up! Try again.";
+            feedbackText.text = failDialogue;
             timer = 15f;
             playerClickedThisAttempt = false; // reset for next attempt
             qte.StartQTE();
@@ -186,7 +198,7 @@ public class Task1Manager : MonoBehaviour
         countdownText.text = "0";
 
         qte.isRunning = false;
-        feedbackText.text = "You failed the task.";
+        feedbackText.text = failDialogue;
         // TODO: play (and create) outro animation here
     }
 
@@ -200,7 +212,7 @@ public class Task1Manager : MonoBehaviour
         launchButton.interactable = false;
 
         // Marcus dialogue
-        feedbackText.text = "Marcus: Looks like you ran into some trouble, I'll handle it.";
+        feedbackText.text = marcusTakeoverDialogue;
 
         // Let player read
         yield return new WaitForSeconds(preDragDelay);
@@ -301,7 +313,8 @@ public class Task1Manager : MonoBehaviour
         blackOverlay.SetActive(true);
 
         // 4. Fade in success text
-        successText.text = "Your campaign for Natural Remedies was launched!";
+        successText.text = successFinalText;
+        successText2.text = successFinalText2;
         successText.alpha = 0;
         successText2.alpha = 0;
 
