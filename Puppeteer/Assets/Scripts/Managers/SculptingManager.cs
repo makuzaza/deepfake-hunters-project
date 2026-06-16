@@ -23,6 +23,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     Image  shapeImage;
     int    currentDifficulty;
     Button nextButton;
+    Button completeButton;
 
     Text  resultText;
     Text  topAccuracyText;
@@ -48,8 +49,16 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     Texture2D     overlayTex;
     RectTransform overlayRect;
 
-    float accuracy  = 0f;
-    bool  confirmed = false;
+    float accuracy       = 0f;
+    float materialDamage = 0f;   // 0-1: fraction of body pixels erased
+    bool  confirmed      = false;
+
+    int   levelsSucceeded = 0;   // counts only accuracy>=90% AND damage<=20%
+
+    bool  playerHasActed = false;
+    float idleTime        = 0f;
+    const float IdleThreshold = 15f;
+    Text  marcusText;
 
     bool[] shapeMask;
     int    totalShapePixels;
@@ -81,7 +90,9 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         BuildResultText();
         BuildNextButton();
+        BuildCompleteButton();
         BuildTopHUD();
+        BuildMarcusText();
         BuildOverlay();
     }
 
@@ -164,6 +175,66 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         go.SetActive(false);
     }
 
+    // ── Complete button ────────────────────────────────────────────
+    void BuildCompleteButton()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        var go = new GameObject("CompleteButton", typeof(RectTransform));
+        go.transform.SetParent(canvas.transform, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin        = new Vector2(0.5f, 0.5f);
+        rt.anchorMax        = new Vector2(0.5f, 0.5f);
+        rt.pivot            = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = new Vector2(0f, -200f);
+        rt.sizeDelta        = new Vector2(450f, 72f);
+
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0.15f, 0.15f, 0.55f, 1f);
+
+        completeButton = go.AddComponent<Button>();
+        completeButton.targetGraphic = img;
+        completeButton.onClick.AddListener(OnComplete);
+
+        var label = new GameObject("Label", typeof(RectTransform));
+        label.transform.SetParent(go.transform, false);
+        var lrt = label.GetComponent<RectTransform>();
+        lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one;
+        lrt.offsetMin = Vector2.zero; lrt.offsetMax = Vector2.zero;
+
+        var txt = label.AddComponent<Text>();
+        txt.font          = GetFont();
+        txt.fontSize      = 38;
+        txt.fontStyle     = FontStyle.Bold;
+        txt.alignment     = TextAnchor.MiddleCenter;
+        txt.color         = Color.white;
+        txt.raycastTarget = false;
+        txt.text          = "Complete the task ✓";
+
+        var outline = label.AddComponent<Outline>();
+        outline.effectColor    = Color.black;
+        outline.effectDistance = new Vector2(2, -2);
+
+        go.SetActive(false);
+    }
+
+    public void OnComplete()
+    {
+        // Disable all interactive controls
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+            foreach (var btn in canvas.GetComponentsInChildren<Button>())
+                btn.interactable = false;
+        if (brushSlider != null) brushSlider.interactable = false;
+
+        if (completeButton != null) completeButton.gameObject.SetActive(false);
+
+        levelsSucceeded = 0;
+        Time.timeScale = 0f;
+    }
+
     public void OnNext()
     {
         currentDifficulty++;
@@ -179,12 +250,18 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         // Reset state
         confirmed          = false;
         accuracy           = 0f;
+        materialDamage     = 0f;
         elapsedTime        = 0f;
+        idleTime           = 0f;
+        playerHasActed     = false;
         prevClearedInside  = 0;
         undoStack.Clear();
 
-        if (nextButton  != null) nextButton.gameObject.SetActive(false);
-        if (resultText  != null) resultText.gameObject.SetActive(false);
+        if (marcusText != null) marcusText.gameObject.SetActive(false);
+
+        if (nextButton      != null) nextButton.gameObject.SetActive(false);
+        if (completeButton  != null) completeButton.gameObject.SetActive(false);
+        if (resultText      != null) resultText.gameObject.SetActive(false);
         if (topAccuracyText != null) topAccuracyText.text = "Accuracy: 0%";
         if (topTimerText    != null) topTimerText.text    = "0:00";
 
@@ -241,6 +318,38 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         return txt;
     }
 
+    // ── Marcus idle dialogue ───────────────────────────────────────
+    void BuildMarcusText()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) return;
+
+        var go = new GameObject("MarcusText", typeof(RectTransform));
+        go.transform.SetParent(canvas.transform, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin        = new Vector2(0.5f, 0f);
+        rt.anchorMax        = new Vector2(0.5f, 0f);
+        rt.pivot            = new Vector2(0.5f, 0f);
+        rt.anchoredPosition = new Vector2(0f, 24f);
+        rt.sizeDelta        = new Vector2(1000f, 80f);
+
+        marcusText = go.AddComponent<Text>();
+        marcusText.font          = GetFont();
+        marcusText.fontSize      = 36;
+        marcusText.fontStyle     = FontStyle.Italic;
+        marcusText.alignment     = TextAnchor.MiddleCenter;
+        marcusText.color         = new Color(1f, 0.92f, 0.6f);
+        marcusText.raycastTarget = false;
+        marcusText.text          = "Marcus: Alright, let's shape this face! Click and erase…";
+
+        var outline = go.AddComponent<Outline>();
+        outline.effectColor    = Color.black;
+        outline.effectDistance = new Vector2(2, -2);
+
+        go.SetActive(false);
+    }
+
     // ── Right hand follows cursor every frame ─────────────────────
     void Update()
     {
@@ -252,6 +361,13 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 int m = (int)(elapsedTime / 60);
                 int s = (int)(elapsedTime % 60);
                 topTimerText.text = $"{m}:{s:D2}";
+            }
+
+            if (!playerHasActed)
+            {
+                idleTime += Time.deltaTime;
+                if (idleTime >= IdleThreshold && marcusText != null && !marcusText.gameObject.activeSelf)
+                    marcusText.gameObject.SetActive(true);
             }
         }
 
@@ -278,17 +394,32 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         Canvas.ForceUpdateCanvases();
 
+        // All shapes must occupy the same rect as the hard shape (index 2) so the
+        // overlay covers the full monitor screen area for every difficulty level.
+        // Unity may set native sizes in the Editor, so we normalize at runtime.
+        if (levelShapes != null && levelShapes.Length > 2 && levelShapes[2] != null)
+        {
+            RectTransform hardRT  = levelShapes[2].rectTransform;
+            Vector2 targetSize    = hardRT.sizeDelta;
+            Vector2 targetPos     = hardRT.anchoredPosition;
+            for (int i = 0; i < levelShapes.Length - 1; i++)
+                if (levelShapes[i] != null)
+                {
+                    levelShapes[i].rectTransform.anchoredPosition = targetPos;
+                    levelShapes[i].rectTransform.sizeDelta         = targetSize;
+                }
+            Canvas.ForceUpdateCanvases();
+        }
+
         // Snap the overlay rect to exactly match the current shape image.
-        // This makes the overlay a 1-to-1 pixel match with the visible shape,
-        // so UV coordinates are identical for both erase strokes and the mask.
         if (shapeImage != null)
         {
             RectTransform sr = shapeImage.rectTransform;
-            overlayRect.anchorMin        = new Vector2(0.5f, 0.5f);
-            overlayRect.anchorMax        = new Vector2(0.5f, 0.5f);
-            overlayRect.pivot            = new Vector2(0.5f, 0.5f);
-            overlayRect.position         = sr.position;          // world-space centre
-            overlayRect.sizeDelta        = new Vector2(sr.rect.width, sr.rect.height);
+            overlayRect.anchorMin = new Vector2(0.5f, 0.5f);
+            overlayRect.anchorMax = new Vector2(0.5f, 0.5f);
+            overlayRect.pivot     = new Vector2(0.5f, 0.5f);
+            overlayRect.position  = sr.position;
+            overlayRect.sizeDelta = new Vector2(sr.rect.width, sr.rect.height);
             Canvas.ForceUpdateCanvases();
         }
 
@@ -418,6 +549,13 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public void OnPointerDown(PointerEventData e)
     {
         if (overlayTex == null || confirmed) return;
+
+        if (!playerHasActed)
+        {
+            playerHasActed = true;
+            if (marcusText != null) marcusText.gameObject.SetActive(false);
+        }
+
         PushUndo();
         Sculpt(e.position);
     }
@@ -482,17 +620,21 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 else if (!erased &&  outside) missedOutside++;
                 else if ( erased && !outside) clearedInside++;
             }
-            float[] penalties = { 0.1f, 0.15f, 0.2f };
+            float[] penalties = { 0.15f, 0.2f, 0.25f };
             float penalty     = penalties[Mathf.Clamp(currentDifficulty, 0, penalties.Length - 1)];
             float outsideTotal = intersection + missedOutside;
             float progress     = outsideTotal > 0f ? (float)intersection / outsideTotal : 0f;
             float insideRatio  = (float)clearedInside / totalShapePixels;
+            materialDamage     = insideRatio;
             accuracy = Mathf.Clamp01(progress - penalty * insideRatio) * 100f;
             if (clearedInside > prevClearedInside)
-                Debug.Log($"Accuracy: {accuracy:F1}% | Body touched: +{clearedInside - prevClearedInside} px");
+                Debug.Log($"Accuracy: {accuracy:F1}% | Damage: {materialDamage:F2}");
             else
                 Debug.Log($"Accuracy: {accuracy:F1}%");
             prevClearedInside = clearedInside;
+
+            if (materialDamage > 0.20f && !confirmed)
+                OnConfirm();
         }
         else
         {
@@ -531,6 +673,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         confirmed = true;
 
+        if (marcusText != null) marcusText.gameObject.SetActive(false);
         if (brushSlider != null) brushSlider.interactable = false;
 
         Canvas canvas = GetComponentInParent<Canvas>();
@@ -538,16 +681,20 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             foreach (var btn in canvas.GetComponentsInChildren<Button>())
                 btn.interactable = false;
 
-        bool success     = accuracy >= 90f;
+        bool success     = accuracy >= 90f && materialDamage <= 0.20f;
         bool isLastLevel = currentDifficulty >= levelShapes.Length - 1;
+
+        if (success) levelsSucceeded++;
+
+        string failReason = materialDamage > 0.20f ? "Too much body damage!" : "Try to stay on the edges!";
 
         string msg = isLastLevel
             ? (success
-                ? $"All Done!\nAccuracy: {accuracy:F1}%\nPerfect work!"
-                : $"All Done!\nAccuracy: {accuracy:F1}%\nBetter luck next time!")
+                ? $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\nPerfect work!"
+                : $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\n{failReason}")
             : (success
                 ? $"Success!\nAccuracy: {accuracy:F1}%\nGreat sculpting work!"
-                : $"Fail!\nAccuracy: {accuracy:F1}%\nTry to stay on the edges!");
+                : $"Fail!\nAccuracy: {accuracy:F1}%\n{failReason}");
 
         Debug.Log(msg);
         if (resultText != null)
@@ -559,6 +706,9 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (!isLastLevel && nextButton != null)
             nextButton.gameObject.SetActive(true);
+
+        if (isLastLevel && completeButton != null)
+            completeButton.gameObject.SetActive(true);
     }
 
     public void OnSkip()
