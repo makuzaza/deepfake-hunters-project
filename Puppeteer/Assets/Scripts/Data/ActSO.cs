@@ -1,10 +1,12 @@
-// ActSO.cs  -  Assets/_Project/Scripts/Data
-using System.Collections.Generic;
+// ActSO.cs — fixed version
 using UnityEngine;
-[CreateAssetMenu(fileName = "Act_", menuName = "Puppeteer/Act")]
+
+[CreateAssetMenu(menuName = "Puppeteer/Act")]
 public class ActSO : ScriptableObject
 {
-    public string actTitle = "New Act";
-    public DialogueSO actIntro;
-    public List<TaskSO> tasks = new List<TaskSO>();
+    public int    actNumber;
+    public string title;
+    public string subtitle;
+    [TextArea(2,4)]
+    public string description;
 }

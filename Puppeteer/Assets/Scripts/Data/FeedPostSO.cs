@@ -1,12 +1,22 @@
-// FeedPostSO.cs  -  Assets/_Project/Scripts/Data
+// FeedPostSO.cs — FINAL. Matches exact field access in your PostItem.cs:
+// PostItem calls: p.author.displayName  (so author is a CharacterSO)
+//                 p.body
 using UnityEngine;
-[CreateAssetMenu(fileName = "Post_", menuName = "Puppeteer/Feed Post")]
+
+[CreateAssetMenu(menuName = "Puppeteer/Feed Post")]
 public class FeedPostSO : ScriptableObject
 {
-    public CharacterSO author;
-    [TextArea(2, 4)] public string body;
-    public string timeLabel = "09:00";
-    public string metric;
-    [Tooltip("Client praise: always positive, styled apart from real-world posts.")]
-    public bool isClientFeedback;
+    [Header("Content")]
+    public CharacterSO author;        // PostItem uses author.displayName
+    public string      body;
+    public string      subline;
+    public string      narratorNote;
+
+    [Header("Convenience fields (used by CreateContentAssets)")]
+    public string      poster;        // display name string fallback
+    public string      avatarLetter;
+
+    [Header("Flow")]
+    public int         taskIndex;     // shown after this task number completes
+    public bool        isHarmful;
 }

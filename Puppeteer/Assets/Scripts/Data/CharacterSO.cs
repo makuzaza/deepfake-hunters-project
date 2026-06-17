@@ -1,9 +1,13 @@
-// CharacterSO.cs  -  Assets/_Project/Scripts/Data
+// CharacterSO.cs — fixed version
 using UnityEngine;
-[CreateAssetMenu(fileName = "Char_", menuName = "Puppeteer/Character")]
+
+[CreateAssetMenu(menuName = "Puppeteer/Character")]
 public class CharacterSO : ScriptableObject
 {
-    public string displayName = "New Character";
-    [Tooltip("360x360 portrait. Defaults to placeholder silhouette.")]
+    public string displayName;
+    public string role;
+    public string contextLabel;   // e.g. "MANAGER", "HR", "COLLEAGUE"
+    public string tagline;
+    public string avatarLetter;
     public Sprite portrait;
 }

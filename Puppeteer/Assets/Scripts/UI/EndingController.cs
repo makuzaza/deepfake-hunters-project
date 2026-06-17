@@ -1,48 +1,37 @@
-// EndingController.cs  -  Assets/_Project/Scripts/UI
-// Reads GameManager.PendingEnding (carried across the scene load) and shows the
-// authored EndingSO loaded from Resources/Endings. No scene reference required.
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+// EndingController.cs — fixed version
+// Removes UIFind. Uses serialized refs for ending text labels.
 using TMPro;
+using UnityEngine;
 
 public class EndingController : MonoBehaviour
 {
-    public Transform uiRoot;
+    [Header("Ending display refs — drag from your Ending scene")]
+    [SerializeField] private TMP_Text endingTitleLabel;
+    [SerializeField] private TMP_Text epilogueLabel;
+
+    [Header("Ending data assets")]
+    [SerializeField] private EndingSO endingComplicit;
+    [SerializeField] private EndingSO endingWhistleblower;
+    [SerializeField] private EndingSO endingPassive;
 
     private void Start()
     {
-        var e = GameManager.PendingEnding;
-        var so = Resources.Load<EndingSO>("Endings/Ending_" + e);
-
-        var title = Text("EndingTitle");
-        var body  = Text("EndingDescription");
-        if (title) title.text = Headline(e);
-        if (body)  body.text  = so != null && !string.IsNullOrEmpty(so.epilogueText) ? so.epilogueText : Fallback(e);
-
-        var back = Btn("ReturnToMenuButton");
-        if (back) back.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
+        // Read which ending was chosen from PlayerPrefs (set by GameFlowController)
+        int endingType = PlayerPrefs.GetInt("EndingType", 0);
+        ShowEnding((EndingType)endingType);
     }
 
-    private TMP_Text Text(string n){ var t = UIFind.Deep(uiRoot ? uiRoot : transform, n); return t ? t.GetComponent<TMP_Text>() : null; }
-    private Button   Btn(string n) { var t = UIFind.Deep(uiRoot ? uiRoot : transform, n); return t ? t.GetComponent<Button>() : null; }
+    private void ShowEnding(EndingType type)
+    {
+        EndingSO data = type switch
+        {
+            EndingType.Whistleblower    => endingWhistleblower,
+            EndingType.PassiveResistance => endingPassive,
+            _                           => endingComplicit,
+        };
 
-    private string Headline(EndingType e)
-    {
-        switch (e)
-        {
-            case EndingType.Whistleblower:     return "ENDING B - EXPOSE THE TRUTH";
-            case EndingType.PassiveResistance: return "ENDING C - PASSIVE RESISTANCE";
-            default:                           return "ENDING A - COOPERATE";
-        }
-    }
-    private string Fallback(EndingType e)
-    {
-        switch (e)
-        {
-            case EndingType.Whistleblower:     return "You leaked the evidence. It cost you everything. It was worth it.";
-            case EndingType.PassiveResistance: return "You never pressed launch. They never knew why.";
-            default:                           return "You took the bonus and signed the NDA. You were very good at your job.";
-        }
+        if (data == null) return;
+        if (endingTitleLabel) endingTitleLabel.text = data.title;
+        if (epilogueLabel)    epilogueLabel.text    = data.epilogueText;
     }
 }

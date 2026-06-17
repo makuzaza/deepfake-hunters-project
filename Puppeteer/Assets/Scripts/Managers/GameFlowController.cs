@@ -1,174 +1,149 @@
-// GameFlowController.cs  -  Assets/_Project/Scripts/Managers
-// Drives the WHOLE placeholder playthrough at runtime, finding UI by name:
-//   Onboarding -> Act loop (Brief->Complete->Preview->Launch->Feed->Next) -> Final Choice -> Ending.
-// No minigames: each task is a click-confirm placeholder. All three endings reachable.
-using System.Collections;
+// GameFlowController.cs — attach to Managers GameObject
+// ALL screen transitions live here. Uses serialized refs + GameEvents (no name lookups).
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class GameFlowController : MonoBehaviour
 {
-    private Transform root;
+    [Header("Manager refs (drag from Managers object)")]
+    [SerializeField] private ScreenManager  screenManager;
+    [SerializeField] private PlayerStateSO  playerState;
+    [SerializeField] private TaskLauncher   taskLauncher;
 
-    // panels
-    private GameObject onboarding, taskPanel, finalChoice;
-    // onboarding controls
-    private TMP_InputField nameInput;
-    private TMP_Text onboardingPrompt;
-    // task controls
-    private TMP_Text taskTitle, taskBrief;
-    private Button completeBtn, previewBtn, launchBtn, reassignBtn;
-    private Button cooperateBtn, exposeBtn;
-    private Button beginBtn;
+    [Header("Screen refs (drag each screen panel)")]
+    [SerializeField] private OnbLoginScreen    loginScreen;
+    [SerializeField] private OnbPortraitScreen portraitScreen;
+    [SerializeField] private DashboardScreen   dashboardScreen;
+    [SerializeField] private HRFormScreen      hrFormScreen;
+    [SerializeField] private ChatScreen        chatScreen;
+    [SerializeField] private BriefQueueScreen  briefQueueScreen;
+    [SerializeField] private ResultScreen      resultScreen;
+    [SerializeField] private PhoneScreen       phoneScreen;
 
-    // latches set by button clicks, polled by the coroutine
-    private bool beginClicked, completeClicked, previewClicked, launchClicked, reassignClicked;
-    private bool cooperateClicked, exposeClicked, profileChosen;
+    // Tracks whether HR form and chat have been done (to grey out those inbox cards)
+    private bool _hrDone, _chatDone;
+    private TaskResult _lastResult;
 
-    private int eligibleTotal, reassignedTotal;
-    private string playerName = "You";
+    private void OnEnable()
+    {
+        GameEvents.OnNameEntered         += HandleNameEntered;
+        GameEvents.OnPortraitChosen      += HandlePortraitChosen;
+        GameEvents.OnMotivationSet       += HandleMotivation;
+        GameEvents.OnInboxItemSelected   += HandleInboxItem;
+        GameEvents.OnChatReplied         += HandleChatReplied;
+        GameEvents.OnRefusedBothTasks    += HandleRefused;
+        GameEvents.OnTaskChosen          += HandleTaskChosen;
+        GameEvents.OnTaskFinished        += HandleTaskFinished;
+        GameEvents.OnNextAfterResult     += HandleNextAfterResult;
+        GameEvents.OnPhoneClosed         += HandlePhoneClosed;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnNameEntered         -= HandleNameEntered;
+        GameEvents.OnPortraitChosen      -= HandlePortraitChosen;
+        GameEvents.OnMotivationSet       -= HandleMotivation;
+        GameEvents.OnInboxItemSelected   -= HandleInboxItem;
+        GameEvents.OnChatReplied         -= HandleChatReplied;
+        GameEvents.OnRefusedBothTasks    -= HandleRefused;
+        GameEvents.OnTaskChosen          -= HandleTaskChosen;
+        GameEvents.OnTaskFinished        -= HandleTaskFinished;
+        GameEvents.OnNextAfterResult     -= HandleNextAfterResult;
+        GameEvents.OnPhoneClosed         -= HandlePhoneClosed;
+    }
 
     private void Start()
     {
-        var canvas = FindFirstObjectByType<Canvas>();
-        if (canvas == null) { Debug.LogError("[Flow] No Canvas in scene."); return; }
-        root = canvas.transform;
-
-        onboarding = Go(UINames.OnboardingPanel);
-        taskPanel  = Go(UINames.TaskPanel);
-        finalChoice= Go(UINames.FinalChoicePanel);
-
-        nameInput        = Comp<TMP_InputField>(UINames.NameInput);
-        onboardingPrompt = Txt(UINames.OnboardingPrompt);
-        taskTitle        = Txt(UINames.TaskTitle);
-        taskBrief        = Txt(UINames.TaskBrief);
-
-        completeBtn  = Btn(UINames.CompleteButton);
-        previewBtn   = Btn(UINames.PreviewButton);
-        launchBtn    = Btn(UINames.LaunchButton);
-        reassignBtn  = Btn(UINames.ReassignButton);
-        cooperateBtn = Btn(UINames.CooperateButton);
-        exposeBtn    = Btn(UINames.ExposeButton);
-        beginBtn     = Btn(UINames.BeginButton);
-
-        Hook(beginBtn,     () => beginClicked = true);
-        Hook(completeBtn,  () => completeClicked = true);
-        Hook(previewBtn,   () => previewClicked = true);
-        Hook(launchBtn,    () => launchClicked = true);
-        Hook(reassignBtn,  () => reassignClicked = true);
-        Hook(cooperateBtn, () => cooperateClicked = true);
-        Hook(exposeBtn,    () => exposeClicked = true);
-        Hook(Btn(UINames.QuizMoney),       () => { ProfileManager.I?.Set(ProfileType.Money); profileChosen = true; });
-        Hook(Btn(UINames.QuizImpact),      () => { ProfileManager.I?.Set(ProfileType.Impact); profileChosen = true; });
-        Hook(Btn(UINames.QuizRecognition), () => { ProfileManager.I?.Set(ProfileType.Recognition); profileChosen = true; });
-
-        SetActive(onboarding, false); SetActive(taskPanel, false); SetActive(finalChoice, false);
-        StartCoroutine(Run());
+        playerState.NewGame();
+        screenManager.Show(ScreenId.OnbLogin);
     }
 
-    private IEnumerator Run()
+    // ── Step 1: name entered ──────────────────────────────────────────────
+    private void HandleNameEntered(string n)
     {
-        // ---------- ONBOARDING ----------
-        SetActive(onboarding, true);
-        if (onboardingPrompt) onboardingPrompt.text =
-            "It's your first day at Human Agency.\nEnter your name, pick a portrait, and answer: why are you here?";
-        beginClicked = false;
-        while (!beginClicked) yield return null;
-        if (nameInput != null && !string.IsNullOrWhiteSpace(nameInput.text)) playerName = nameInput.text;
-        if (!profileChosen) ProfileManager.I?.Set(ProfileType.Money); // safe default
-        UIManager.I?.SetPlayer(playerName, null);
-        SetActive(onboarding, false);
-
-        // ---------- ACTS ----------
-        var flow = GameManager.I != null ? GameManager.I.flow : null;
-        if (flow != null && flow.acts != null)
-        {
-            foreach (var act in flow.acts)
-                if (act != null && act.tasks != null)
-                    foreach (var t in act.tasks)
-                        if (t != null && t.noncooperationEligible) eligibleTotal++;
-
-            foreach (var act in flow.acts)
-            {
-                if (act == null) continue;
-                UIManager.I?.ShowTransition(act.actTitle, 1.4f);
-                yield return new WaitForSeconds(1.5f);
-                if (act.tasks != null)
-                    foreach (var task in act.tasks)
-                        if (task != null) yield return RunTask(task);
-            }
-        }
-        else Debug.LogWarning("[Flow] GameFlow has no acts; skipping to final choice.");
-
-        // ---------- PASSIVE RESISTANCE (Ending C) ----------
-        if (eligibleTotal > 0 && reassignedTotal >= eligibleTotal)
-        {
-            GameManager.I?.ForceEnding(EndingType.PassiveResistance);
-            yield break;
-        }
-
-        // ---------- FINAL CHOICE ----------
-        SetActive(finalChoice, true);
-        cooperateClicked = exposeClicked = false;
-        while (!cooperateClicked && !exposeClicked) yield return null;
-        GameManager.I?.ForceEnding(cooperateClicked ? EndingType.Complicit : EndingType.Whistleblower);
+        playerState.playerName = n;
+        GameEvents.PlayerChanged();
+        screenManager.Show(ScreenId.OnbPortrait);
     }
 
-    private IEnumerator RunTask(TaskSO task)
+    // ── Step 2: portrait chosen ───────────────────────────────────────────
+    private void HandlePortraitChosen(int idx)
     {
-        SetActive(taskPanel, true);
-        if (taskTitle) taskTitle.text = task.taskId;
-        if (taskBrief) taskBrief.text = FirstBrief(task);
-        UIManager.I?.SetCompany("Human Agency", "AI content, perfected.");
-
-        bool eligible = task.noncooperationEligible;
-        completeClicked = previewClicked = launchClicked = reassignClicked = false;
-        SetInteractable(completeBtn, true);
-        SetInteractable(previewBtn, false);
-        SetInteractable(launchBtn, false);
-        SetActive(reassignBtn ? reassignBtn.gameObject : null, eligible);
-
-        // step 1: complete (or reassign to Marcus, if eligible)
-        while (!completeClicked && !reassignClicked) yield return null;
-        if (reassignClicked && eligible)
-        {
-            reassignedTotal++;
-            GameManager.I?.RecordNoncoop(task);
-            UIManager.I?.ShowNotification("Reassigned to Marcus.");
-            SetActive(taskPanel, false);
-            yield break;
-        }
-
-        // step 2: preview
-        SetInteractable(completeBtn, false);
-        SetInteractable(previewBtn, true);
-        while (!previewClicked) yield return null;
-
-        // step 3: launch
-        SetInteractable(previewBtn, false);
-        SetInteractable(launchBtn, true);
-        while (!launchClicked) yield return null;
-
-        TaskManager.I?.SimulateLaunch(task);   // raises TaskLaunched -> feed + clock + money
-        yield return new WaitForSeconds(1.0f);
-        SetActive(taskPanel, false);
+        playerState.portraitIndex = idx;
+        GameEvents.PlayerChanged();
+        screenManager.Show(ScreenId.Dashboard);
     }
 
-    // ---------- helpers ----------
-    private string FirstBrief(TaskSO task)
+    // ── Step 3: inbox card clicked ────────────────────────────────────────
+    private void HandleInboxItem(InboxAction action)
     {
-        if (task.brief != null && task.brief.lines != null && task.brief.lines.Count > 0)
-            return ProfileManager.I != null ? ProfileManager.I.Resolve(task.brief.lines[0]) : task.brief.lines[0].defaultText;
-        return "Complete this task, then Preview and Launch.";
+        switch (action)
+        {
+            case InboxAction.OpenHRForm:     screenManager.Show(ScreenId.HRForm);     break;
+            case InboxAction.OpenChat:       screenManager.Show(ScreenId.Chat);       break;
+            case InboxAction.OpenBriefQueue: screenManager.Show(ScreenId.BriefQueue); break;
+        }
     }
 
-    private GameObject Go(string n)  { var t = UIFind.Deep(root, n); return t ? t.gameObject : null; }
-    private TMP_Text Txt(string n)   { var t = UIFind.Deep(root, n); return t ? t.GetComponent<TMP_Text>() : null; }
-    private Button Btn(string n)     { var t = UIFind.Deep(root, n); return t ? t.GetComponent<Button>() : null; }
-    private T Comp<T>(string n) where T : Component { var t = UIFind.Deep(root, n); return t ? t.GetComponent<T>() : null; }
+    // ── HR form submitted ─────────────────────────────────────────────────
+    private void HandleMotivation(Motivation m)
+    {
+        playerState.motivation = m;
+        GameEvents.PlayerChanged();
+        _hrDone = true;
+        MarkCardDone(InboxAction.OpenHRForm);
+        screenManager.Show(ScreenId.Dashboard);
+    }
 
-    private void Hook(Button b, UnityEngine.Events.UnityAction a) { if (b != null) b.onClick.AddListener(a); }
-    private void SetActive(GameObject g, bool v) { if (g != null) g.SetActive(v); }
-    private void SetInteractable(Button b, bool v) { if (b != null) b.interactable = v; }
+    // ── Chat replied ──────────────────────────────────────────────────────
+    private void HandleChatReplied()
+    {
+        _chatDone = true;
+        MarkCardDone(InboxAction.OpenChat);
+        screenManager.Show(ScreenId.Dashboard);
+    }
+
+    // ── Refused both tasks ────────────────────────────────────────────────
+    private void HandleRefused()
+    {
+        playerState.noncoopCount++;
+        AdvanceDay();
+        screenManager.Show(ScreenId.Dashboard);
+    }
+
+    // ── Task chosen → launch ─────────────────────────────────────────────
+    private void HandleTaskChosen(TaskSO task) { taskLauncher.Launch(task); }
+
+    // ── Task finished (from teammate's scene) ────────────────────────────
+    private void HandleTaskFinished(TaskResult r)
+    {
+        _lastResult = r;
+        playerState.AddMoney(r.payEarned);
+        playerState.SetRisk(playerState.accountRisk + r.riskDelta);
+        playerState.tasksCompleted++;
+        resultScreen.Setup(r);
+        phoneScreen.Setup(r);
+        screenManager.Show(ScreenId.Result);
+    }
+
+    // ── Result → Next → Phone ─────────────────────────────────────────────
+    private void HandleNextAfterResult() { screenManager.Show(ScreenId.Phone); }
+
+    // ── Phone closed → back to dashboard, advance day ────────────────────
+    private void HandlePhoneClosed()
+    {
+        AdvanceDay();
+        screenManager.Show(ScreenId.Dashboard);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+    private void AdvanceDay()
+    {
+        playerState.SetTime(playerState.day + 1, "09:00");
+    }
+
+    private void MarkCardDone(InboxAction action)
+    {
+        foreach (var item in dashboardScreen.items)
+            if (item.action == action) item.completed = true;
+        dashboardScreen.RebuildList();
+    }
 }

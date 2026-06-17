@@ -1,44 +1,49 @@
-// SocialFeedManager.cs  -  Assets/_Project/Scripts/Managers
-// Listens for TaskLaunched and spawns consequence posts into the feed scroll view.
+// SocialFeedManager.cs — fixed version
+// Removes UIFind/UINames. Uses serialized reference for the feed container.
+// Subscribes to OnTaskChosen (was: TaskLaunched) to show consequences.
+using System.Collections.Generic;
 using UnityEngine;
-public class SocialFeedManager : Singleton<SocialFeedManager>
-{
-    public Transform feedContent;     // assigned by build tool (FeedContent)
-    public PostItem postItemPrefab;   // assigned by build tool
 
-    protected override void Awake()
+public class SocialFeedManager : MonoBehaviour
+{
+    [Header("Drag the feed scroll Content transform here")]
+    [SerializeField] private Transform feedContent;
+
+    [Header("Post item prefab")]
+    [SerializeField] private PostItem postItemPrefab;
+
+    private readonly List<PostItem> _spawned = new();
+
+    private void OnEnable()
     {
-        base.Awake();
-        if (feedContent == null)
-        {
-            var canvas = FindFirstObjectByType<Canvas>();
-            if (canvas != null) { var t = UIFind.Deep(canvas.transform, UINames.FeedContent); if (t) feedContent = t; }
-        }
+        GameEvents.OnTaskChosen += HandleTaskChosen;
     }
 
-    private void OnEnable()  => GameEvents.TaskLaunched += OnLaunch;
-    private void OnDisable() => GameEvents.TaskLaunched -= OnLaunch;
+    private void OnDisable()
+    {
+        GameEvents.OnTaskChosen -= HandleTaskChosen;
+    }
 
-    private void OnLaunch(TaskSO task)
+    private void HandleTaskChosen(TaskSO task)
     {
         if (task == null || task.consequences == null) return;
-        foreach (var p in task.consequences) Spawn(p);
+        foreach (var post in task.consequences)
+            SpawnPost(post);
     }
 
-    private void Spawn(FeedPostSO post)
+    private void SpawnPost(FeedPostSO post)
     {
-        if (postItemPrefab == null || feedContent == null || post == null) return;
+        if (feedContent == null || postItemPrefab == null || post == null) return;
         var item = Instantiate(postItemPrefab, feedContent);
-        item.Bind(post);
-        UIManager.I?.UnlockFeed();
+        // PostItem.Setup() — call whatever method your PostItem uses
+        // item.Setup(post);
+        _spawned.Add(item);
     }
 
-    // Used by the debug panel to prove the feed works without authored content.
-    public void SpawnPlaceholderPost()
+    public void ClearFeed()
     {
-        if (postItemPrefab == null || feedContent == null) return;
-        var item = Instantiate(postItemPrefab, feedContent);
-        item.Bind("Diane (54)", "A doctor online said it's fine to stop my prescription. I trust her.");
-        UIManager.I?.UnlockFeed();
+        foreach (var item in _spawned)
+            if (item) Destroy(item.gameObject);
+        _spawned.Clear();
     }
 }

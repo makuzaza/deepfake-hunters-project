@@ -11,22 +11,19 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task5
-  m_EditorClassIdentifier:
-  taskId: 'task5_deepfake'
-  type: 3
-  brief: {fileID: 11400000, guid: 47d5fc504bfa46ffad91751c69a6ee75, type: 2}
-  postLaunchBarks: {fileID: 0}
-  consequences:
-  - {fileID: 11400000, guid: 1e8b9ac593d04500a20e8375ba3d1a22, type: 2}
-  - {fileID: 11400000, guid: 3921567fa2b147f294f377e275c2b2a8, type: 2}
-  - {fileID: 11400000, guid: 37a126c524744bdda0e6d6fa9b894163, type: 2}
-  noncooperationEligible: 1
-  clockMinutesToAdvance: 120
-  subtitleSegments: []
-  requiredText: ''
-  dragAssets: []
-  pipelineSteps:
-  - 'Select source face'
-  - 'Select target'
-  - 'Confirm voice match'
-  - 'Launch'
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  clientName: 
+  taskTitle: 
+  description: 
+  companyTagline: 
+  clientPortrait: {fileID: 0}
+  pay: 0
+  riskLevel: 1
+  riskDelta: 10
+  sceneName: 
+  act: 1
+  clientFeedback: 
+  dianePost: 
+  narratorNote: 
+  clockMinutesToAdvance: 30
+  consequences: []

@@ -1,28 +1,30 @@
-// DialogueSO.cs  -  Assets/_Project/Scripts/Data
+// DialogueSO.cs — fixed version
+// Removes all ProfileType references. Uses Motivation directly.
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class DialogueLine
+[CreateAssetMenu(menuName = "Puppeteer/Dialogue")]
+public class DialogueSO : ScriptableObject
 {
-    public CharacterSO speaker;
-    [TextArea(2, 4)] public string defaultText;
-    [Header("Optional personality variants (blank = use default)")]
-    [TextArea(2, 4)] public string moneyText;
-    [TextArea(2, 4)] public string impactText;
-    [TextArea(2, 4)] public string recognitionText;
-
-    public string ResolveText(ProfileType p)
+    [System.Serializable]
+    public class DialogueLine
     {
-        switch (p)
-        {
-            case ProfileType.Money:       return string.IsNullOrEmpty(moneyText)       ? defaultText : moneyText;
-            case ProfileType.Impact:      return string.IsNullOrEmpty(impactText)      ? defaultText : impactText;
-            case ProfileType.Recognition: return string.IsNullOrEmpty(recognitionText) ? defaultText : recognitionText;
-            default:                      return defaultText;
-        }
+        public string    speakerName;
+        [TextArea(2, 4)]
+        public string    line;
+        public Motivation targetMotivation = Motivation.Money; // which profile sees this line
+        public bool      showForAllProfiles = true;            // if true, ignore targetMotivation
+    }
+
+    public List<DialogueLine> lines = new();
+
+    // Returns lines appropriate for the given motivation profile
+    public List<DialogueLine> GetLinesFor(Motivation motivation)
+    {
+        var result = new List<DialogueLine>();
+        foreach (var l in lines)
+            if (l.showForAllProfiles || l.targetMotivation == motivation)
+                result.Add(l);
+        return result;
     }
 }
-
-[CreateAssetMenu(fileName = "Dlg_", menuName = "Puppeteer/Dialogue")]
-public class DialogueSO : ScriptableObject { public List<DialogueLine> lines = new List<DialogueLine>(); }

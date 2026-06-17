@@ -11,6 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8b7b830f4844292b27f5fcad66f70e9, type: 3}
   m_Name: Char_Diane
-  m_EditorClassIdentifier:
-  displayName: 'Diane (54)'
-  portrait: {fileID: 21300000, guid: 71c00800a30f4dbdb1e3ad2faf7a4772, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterSO
+  displayName: 
+  role: 
+  contextLabel: 
+  tagline: 
+  avatarLetter: 
+  portrait: {fileID: 0}

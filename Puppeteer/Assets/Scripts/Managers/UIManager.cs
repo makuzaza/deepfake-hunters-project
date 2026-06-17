@@ -1,77 +1,137 @@
-// UIManager.cs  -  Assets/_Project/Scripts/Managers
-// Binds the panels by name (single uiRoot reference), updates readouts from the
-// event bus, and exposes show/hide helpers the rest of the game calls.
-using System.Collections;
+// UIManager.cs — FINAL. Matches exact calls from your actual scripts.
+// DialogueManager calls: UIManager.I.SetSpeaker(string, Sprite)
+//                        UIManager.I.SetDialogue(string)
+// GameManager calls:     UIManager.I.ShowTransition(string, float)
+// UIManager subscribes:  OnClockAdvanced(int), OnStatsChanged(int, int)
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class UIManager : Singleton<UIManager>
+public class UIManager : MonoBehaviour
 {
-    public Transform uiRoot;   // assigned by build tool to the Canvas
+    public static UIManager I { get; private set; }
 
-    private GameObject companyPanel, taskPanel, dialoguePanel, profilePanel, feedPanel, notificationPanel, transitionPanel, debugPanel;
-    private TMP_Text companyTitle, companyTagline, speakerName, dialogueText, playerName, moneyLabel, timeLabel, notificationText, transitionText;
-    private Image speakerPortrait, playerPortrait;
-    private Coroutine notifyRoutine;
+    [Header("Player Panel — drag refs from PlayerPanel")]
+    [SerializeField] private TMP_Text  moneyLabel;
+    [SerializeField] private TMP_Text  timeLabel;
+    [SerializeField] private TMP_Text  riskLabel;
+    [SerializeField] private TMP_Text  playerNameLabel;
+    [SerializeField] private Image     riskFill;
 
-    protected override void Awake() { base.Awake(); Bind(); }
+    [Header("Speaker Strip — drag refs from SpeakerStrip")]
+    [SerializeField] private TMP_Text  speakerNameLabel;
+    [SerializeField] private TMP_Text  speakerDialogueLabel;
+    [SerializeField] private Image     speakerPortraitImage;
 
-    private void OnEnable()  { GameEvents.ClockAdvanced += OnClock; GameEvents.StatsChanged += OnStats; GameEvents.ActChanged += OnAct; }
-    private void OnDisable() { GameEvents.ClockAdvanced -= OnClock; GameEvents.StatsChanged -= OnStats; GameEvents.ActChanged -= OnAct; }
+    [Header("Top Bar")]
+    [SerializeField] private TMP_Text  statusLabel;
+    [SerializeField] private Image     progressFill;
 
-    private void Bind()
+    [Header("Transition overlay (optional)")]
+    [SerializeField] private GameObject transitionPanel;
+    [SerializeField] private TMP_Text   transitionLabel;
+
+    [Header("Data")]
+    [SerializeField] private PlayerStateSO playerState;
+
+    private void Awake()
     {
-        if (uiRoot == null) { var c = FindFirstObjectByType<Canvas>(); if (c) uiRoot = c.transform; }
-        if (uiRoot == null) return;
+        if (I != null && I != this) { Destroy(this); return; }
+        I = this;
+    }
 
-        companyPanel = Go(UINames.CompanyPanel);  taskPanel = Go(UINames.TaskPanel);  dialoguePanel = Go(UINames.DialoguePanel);
-        profilePanel = Go(UINames.ProfilePanel);  feedPanel = Go(UINames.FeedPanel);  notificationPanel = Go(UINames.NotificationPanel);
-        transitionPanel = Go(UINames.TransitionPanel);  debugPanel = Go(UINames.DebugPanel);
+    private void OnEnable()
+    {
+        GameEvents.OnClockAdvanced += RefreshClock;
+        GameEvents.OnStatsChanged  += RefreshStats;
+        GameEvents.OnActChanged    += RefreshAct;
+        GameEvents.OnPlayerStateChanged += RefreshAll;
+    }
 
-        companyTitle = Txt(UINames.CompanyTitle);  companyTagline = Txt(UINames.CompanyTagline);  speakerName = Txt(UINames.SpeakerName);
-        dialogueText = Txt(UINames.DialogueText);  playerName = Txt(UINames.PlayerName);  moneyLabel = Txt(UINames.MoneyLabel);
-        timeLabel = Txt(UINames.TimeLabel);  notificationText = Txt(UINames.NotificationText);  transitionText = Txt(UINames.TransitionText);
+    private void OnDisable()
+    {
+        GameEvents.OnClockAdvanced -= RefreshClock;
+        GameEvents.OnStatsChanged  -= RefreshStats;
+        GameEvents.OnActChanged    -= RefreshAct;
+        GameEvents.OnPlayerStateChanged -= RefreshAll;
+    }
 
-        speakerPortrait = Img(UINames.SpeakerPortrait);  playerPortrait = Img(UINames.PlayerPortrait);
+    private void Start() => RefreshAll();
 
-        if (feedPanel) feedPanel.SetActive(false);
-        if (notificationPanel) notificationPanel.SetActive(false);
+    // ── Called by GameEvents (exact signatures) ───────────────────────────
+
+    // OnClockAdvanced passes int clockMinutes
+    private void RefreshClock(int clockMinutes)
+    {
+        int h = clockMinutes / 60;
+        int m = clockMinutes % 60;
+        string t = $"{h:00}:{m:00}";
+        int day = playerState != null ? playerState.day : 1;
+        if (timeLabel)   timeLabel.text   = day + " — " + t;
+        if (statusLabel) statusLabel.text = "DAY " + day + " — " + t;
+        // also update playerState so PlayerPanelView stays in sync
+        if (playerState != null) { playerState.timeLabel = t; }
+    }
+
+    // OnStatsChanged passes (int money, int risk)
+    private void RefreshStats(int money, int risk)
+    {
+        if (moneyLabel) moneyLabel.text = "€" + money;
+        if (riskLabel)  riskLabel.text  = risk + "%";
+        if (riskFill)   riskFill.fillAmount = risk / 100f;
+        if (playerState != null)
+        {
+            playerState.money = money;
+            playerState.accountRisk = risk;
+        }
+    }
+
+    private void RefreshAct(ActSO act) { /* hook up act transition visuals here if needed */ }
+
+    public void RefreshAll()
+    {
+        if (playerState == null) return;
+        if (moneyLabel)      moneyLabel.text      = "€" + playerState.money;
+        if (timeLabel)       timeLabel.text        = playerState.day + " — " + playerState.timeLabel;
+        if (riskLabel)       riskLabel.text        = playerState.accountRisk + "%";
+        if (playerNameLabel) playerNameLabel.text  = playerState.playerName;
+        if (riskFill)        riskFill.fillAmount   = playerState.accountRisk / 100f;
+    }
+
+    // ── Called by DialogueManager ─────────────────────────────────────────
+
+    // DialogueManager calls: UIManager.I.SetSpeaker(speaker.displayName, speaker.portrait)
+    public void SetSpeaker(string speakerName, Sprite portrait)
+    {
+        if (speakerNameLabel)   speakerNameLabel.text   = speakerName;
+        if (speakerPortraitImage && portrait != null) speakerPortraitImage.sprite = portrait;
+    }
+
+    // DialogueManager calls: UIManager.I.SetDialogue(text)
+    public void SetDialogue(string text)
+    {
+        if (speakerDialogueLabel) speakerDialogueLabel.text = text;
+    }
+
+    // ── Called by GameManager ─────────────────────────────────────────────
+
+    // GameManager calls: UIManager.I.ShowTransition("Act 1", 1.5f)
+    public void ShowTransition(string label, float duration)
+    {
+        if (transitionPanel) transitionPanel.SetActive(true);
+        if (transitionLabel) transitionLabel.text = label;
+        StartCoroutine(HideTransitionAfter(duration));
+    }
+
+    private System.Collections.IEnumerator HideTransitionAfter(float seconds)
+    {
+        yield return new UnityEngine.WaitForSeconds(seconds);
         if (transitionPanel) transitionPanel.SetActive(false);
     }
 
-    private GameObject Go(string n) { var t = UIFind.Deep(uiRoot, n); return t ? t.gameObject : null; }
-    private TMP_Text   Txt(string n){ var t = UIFind.Deep(uiRoot, n); return t ? t.GetComponent<TMP_Text>() : null; }
-    private Image      Img(string n){ var t = UIFind.Deep(uiRoot, n); return t ? t.GetComponent<Image>() : null; }
-
-    private void OnClock(int minutes) { if (timeLabel) timeLabel.text = Format(minutes); }
-    private void OnStats(int money, int rep) { if (moneyLabel) moneyLabel.text = "$" + money; }
-    private void OnAct(ActSO act) { if (act != null) ShowTransition(act.actTitle, 1.5f); }
-
-    private string Format(int m) { int hh = (m / 60) % 24, mm = m % 60; return hh.ToString("00") + ":" + mm.ToString("00"); }
-
-    public void SetCompany(string title, string tagline) { if (companyTitle) companyTitle.text = title; if (companyTagline) companyTagline.text = tagline; }
-    public void SetSpeaker(string name, Sprite portrait)  { if (speakerName) speakerName.text = name; if (speakerPortrait && portrait) speakerPortrait.sprite = portrait; }
-    public void SetDialogue(string text)                  { if (dialogueText) dialogueText.text = text; }
-    public void SetPlayer(string name, Sprite portrait)   { if (playerName) playerName.text = name; if (playerPortrait && portrait) playerPortrait.sprite = portrait; }
-    public void UnlockFeed()                              { if (feedPanel) feedPanel.SetActive(true); }
-
-    public void ShowNotification(string text)
+    // ── General helpers ───────────────────────────────────────────────────
+    public void SetDay(int day)
     {
-        if (!notificationPanel) return;
-        if (notificationText) notificationText.text = text;
-        notificationPanel.SetActive(true);
-        if (notifyRoutine != null) StopCoroutine(notifyRoutine);
-        notifyRoutine = StartCoroutine(HideAfter(notificationPanel, 2.5f));
+        if (playerState != null) playerState.day = day;
     }
-
-    public void ShowTransition(string text, float seconds)
-    {
-        if (!transitionPanel) return;
-        if (transitionText) transitionText.text = text;
-        transitionPanel.SetActive(true);
-        StartCoroutine(HideAfter(transitionPanel, seconds));
-    }
-
-    private IEnumerator HideAfter(GameObject go, float s) { yield return new WaitForSeconds(s); if (go) go.SetActive(false); }
 }
