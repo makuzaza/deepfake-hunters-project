@@ -21,7 +21,7 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public int     difficulty  = 0;
 
     [Header("Paint colour")]
-    public Color32 paintColor = new(210, 70, 50, 220);
+    public Color32 paintColor = new(60, 220, 60, 250);
 
     Image  shapeImage;
     int    currentDifficulty;
@@ -100,8 +100,6 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
         BuildOverlay();
     }
 
-    // Rewires only the three scene buttons whose onClick was pointing to the
-    // old SculptingManager component (now missing after scene duplication).
     void WireSceneButtons()
     {
         Canvas canvas = GetComponentInParent<Canvas>();
@@ -361,7 +359,7 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
         rt.anchorMax        = new Vector2(0.5f, 0f);
         rt.pivot            = new Vector2(0.5f, 0f);
         rt.anchoredPosition = new Vector2(0f, 24f);
-        rt.sizeDelta        = new Vector2(1000f, 80f);
+        rt.sizeDelta        = new Vector2(1100f, 80f);
 
         marcusText = go.AddComponent<Text>();
         marcusText.font          = GetFont();
@@ -627,7 +625,7 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
                 else if (painted && !shapeMask[i]) paintedOutside++;
             }
 
-            float[] penalties  = { 0.15f, 0.2f, 0.25f };
+            float[] penalties  = { 0.15f, 0.25f, 0.35f };
             float penalty      = penalties[Mathf.Clamp(currentDifficulty, 0, penalties.Length - 1)];
             float coverage     = (float)paintedBody    / totalShapePixels;
             float outsideRatio = (float)paintedOutside / totalShapePixels;
