@@ -34,6 +34,8 @@ public class GameManager : Singleton<GameManager>
     public void ForceEnding(EndingType ending)
     {
         PendingEnding = ending;
+        PlayerPrefs.SetInt("EndingType", (int)ending);
+        PlayerPrefs.Save();
         GameEvents.RaiseEndingReached(ending);
         SceneManager.LoadScene("Ending");
     }

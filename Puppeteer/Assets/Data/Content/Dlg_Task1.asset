@@ -11,10 +11,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53c8491e9ce0448db89479a2c4683ce4, type: 3}
   m_Name: Dlg_Task1
-  m_EditorClassIdentifier:
-  lines:
-  - speaker: {fileID: 11400000, guid: 65afc489e9f5429bae63c13a6eac3c72, type: 2}
-    defaultText: 'Tony has a flubbed line. Just clean up the subtitle - saves him a reshoot.'
-    moneyText: 'Quick one, and it pays. Clean the subtitle and move on.'
-    impactText: 'Help Tony out - small businesses can''t afford reshoots.'
-    recognitionText: 'You''ve got the cleanest edits here. Show me.'
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
+  lines: []

@@ -1,27 +1,31 @@
-// MainMenuController.cs  -  Assets/_Project/Scripts/UI
+// MainMenuController.cs — fixed version
+// Removes UIFind. Uses serialized refs for menu buttons.
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 public class MainMenuController : MonoBehaviour
 {
-    public Transform uiRoot;
-    private void Start()
+    [Header("Refs — drag from your MainMenu scene")]
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button quitButton;
+
+    private void Awake()
     {
-        Hook("PlayButton", () => SceneManager.LoadScene("MainGame"));
-        Hook("QuitButton", Quit);
+        if (playButton) playButton.onClick.AddListener(OnPlay);
+        if (quitButton) quitButton.onClick.AddListener(OnQuit);
     }
-    private void Hook(string name, UnityEngine.Events.UnityAction a)
+
+    private void OnPlay()
     {
-        var t = UIFind.Deep(uiRoot != null ? uiRoot : transform, name);
-        var b = t ? t.GetComponent<Button>() : null;
-        if (b) b.onClick.AddListener(a);
+        SceneManager.LoadScene("MainGame");
     }
-    private void Quit()
+
+    private void OnQuit()
     {
+        Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
 #endif
     }
 }

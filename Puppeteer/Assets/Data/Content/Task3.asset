@@ -11,19 +11,23 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task3
-  m_EditorClassIdentifier:
-  taskId: 'task3_clip'
-  type: 0
-  brief: {fileID: 11400000, guid: b9d22c72376140169feded134018f160, type: 2}
-  postLaunchBarks: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  clientName: ' Tony / Natural Remedies'
+  taskTitle: Neutralise the competitor clip
+  description: A doctor criticised organic remedies. Cut the damaging statements
+    to twist the meaning.
+  companyTagline: ' Natural Remedies, Natural Health'
+  clientPortrait: {fileID: 0}
+  pay: 150
+  riskLevel: 2
+  riskDelta: 15
+  sceneName: MG3
+  act: 2
+  clientFeedback: "Boss: good job! Don't worry, we didn't change his words, we just
+    cut out the unnecessary\u2026 damage, you know?"
+  dianePost: "Diane (54) re-shared the edited clip. \"See \u2014 even doctors admit
+    natural is better!\""
+  narratorNote: Context clipping. A real person's words now mean the opposite.
+  clockMinutesToAdvance: 60
   consequences:
-  - {fileID: 11400000, guid: 57ed45aa66e04230aafbb2611dbd489a, type: 2}
-  noncooperationEligible: 1
-  clockMinutesToAdvance: 90
-  subtitleSegments:
-  - 'This product is not safe'
-  - 'I would not recommend it'
-  - 'please consult your doctor'
-  requiredText: ''
-  dragAssets: []
-  pipelineSteps: []
+  - {fileID: 0}

@@ -11,19 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task1
-  m_EditorClassIdentifier:
-  taskId: 'task1_stutter'
-  type: 0
-  brief: {fileID: 11400000, guid: dcf5c9eb44dd4fa48771a0cab55eb628, type: 2}
-  postLaunchBarks: {fileID: 0}
-  consequences:
-  - {fileID: 11400000, guid: 50c0936296204ee388c75982ebcecef9, type: 2}
-  noncooperationEligible: 0
-  clockMinutesToAdvance: 60
-  subtitleSegments:
-  - 'Hi everyone, w-w-welcome'
-  - 'welcome to Tony''s Garage'
-  - 'best prices in town'
-  requiredText: ''
-  dragAssets: []
-  pipelineSteps: []
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  clientName: ' Tony'
+  taskTitle: Clean up Tony's promo video
+  description: '
+
+    Remove stutters from Tony''s video. Find the task brief in
+    chat history.'
+  companyTagline: ' Natural Remedies, Natural Health'
+  clientPortrait: {fileID: 0}
+  pay: 80
+  riskLevel: 1
+  riskDelta: 0
+  sceneName: MG1
+  act: 1
+  clientFeedback: 'Marcus: Good! You caught it perfectly. Tony is thrilled.'
+  dianePost: ' Diane (54) liked Tony''s new promo video. "Love this brand!"'
+  narratorNote: ' Just a stutter removal. Totally harmless.'
+  clockMinutesToAdvance: 30
+  consequences: []

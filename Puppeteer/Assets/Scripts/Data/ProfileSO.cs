@@ -1,9 +1,13 @@
-// ProfileSO.cs  -  Assets/_Project/Scripts/Data
+// ProfileSO.cs — fixed version
+// Uses Motivation (not ProfileType). Fields match what CreateContentAssets sets.
 using UnityEngine;
-[CreateAssetMenu(fileName = "Profile_", menuName = "Puppeteer/Profile")]
+
+[CreateAssetMenu(menuName = "Puppeteer/Profile")]
 public class ProfileSO : ScriptableObject
 {
-    public ProfileType type;
-    public string displayName;
-    [TextArea(2, 3)] public string description;
+    public Motivation motivation;
+    [TextArea(1,3)]
+    public string exampleBossLine;
+    [TextArea(1,3)]
+    public string bossDialogueVariant;
 }

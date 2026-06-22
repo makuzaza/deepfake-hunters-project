@@ -1,44 +1,50 @@
-// SocialFeedManager.cs  -  Assets/_Project/Scripts/Managers
-// Listens for TaskLaunched and spawns consequence posts into the feed scroll view.
+// SocialFeedManager.cs — FIXED.
+// Was: spawned posts at task SELECTION (OnTaskChosen) and never bound their content.
+// Now: spawns AFTER the task is finished (OnTaskFinished) and binds the text.
+using System.Collections.Generic;
 using UnityEngine;
-public class SocialFeedManager : Singleton<SocialFeedManager>
+
+public class SocialFeedManager : MonoBehaviour
 {
-    public Transform feedContent;     // assigned by build tool (FeedContent)
-    public PostItem postItemPrefab;   // assigned by build tool
+    [Header("Drag the feed scroll Content transform here")]
+    [SerializeField] private Transform feedContent;
 
-    protected override void Awake()
+    [Header("Post item prefab")]
+    [SerializeField] private PostItem postItemPrefab;
+
+    private readonly List<PostItem> _spawned = new();
+
+    private void OnEnable()
     {
-        base.Awake();
-        if (feedContent == null)
-        {
-            var canvas = FindFirstObjectByType<Canvas>();
-            if (canvas != null) { var t = UIFind.Deep(canvas.transform, UINames.FeedContent); if (t) feedContent = t; }
-        }
+        // Show consequences only after the player actually launches the task.
+        GameEvents.OnTaskFinished += HandleTaskFinished;
     }
 
-    private void OnEnable()  => GameEvents.TaskLaunched += OnLaunch;
-    private void OnDisable() => GameEvents.TaskLaunched -= OnLaunch;
-
-    private void OnLaunch(TaskSO task)
+    private void OnDisable()
     {
-        if (task == null || task.consequences == null) return;
-        foreach (var p in task.consequences) Spawn(p);
+        GameEvents.OnTaskFinished -= HandleTaskFinished;
     }
 
-    private void Spawn(FeedPostSO post)
+    private void HandleTaskFinished(TaskResult r)
     {
-        if (postItemPrefab == null || feedContent == null || post == null) return;
+        // TaskResult already carries the dianePost string from the TaskSO.
+        // Spawn a single feed post from it (simplest reliable path for the demo).
+        if (!string.IsNullOrEmpty(r.dianePost))
+            SpawnPost("Diane", r.dianePost);
+    }
+
+    private void SpawnPost(string author, string body)
+    {
+        if (feedContent == null || postItemPrefab == null) return;
         var item = Instantiate(postItemPrefab, feedContent);
-        item.Bind(post);
-        UIManager.I?.UnlockFeed();
+        item.Bind(author, body);          // PostItem has Bind(string, string)
+        _spawned.Add(item);
     }
 
-    // Used by the debug panel to prove the feed works without authored content.
-    public void SpawnPlaceholderPost()
+    public void ClearFeed()
     {
-        if (postItemPrefab == null || feedContent == null) return;
-        var item = Instantiate(postItemPrefab, feedContent);
-        item.Bind("Diane (54)", "A doctor online said it's fine to stop my prescription. I trust her.");
-        UIManager.I?.UnlockFeed();
+        foreach (var item in _spawned)
+            if (item) Destroy(item.gameObject);
+        _spawned.Clear();
     }
 }

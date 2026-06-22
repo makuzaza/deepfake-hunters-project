@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Start.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: ed86bfbfb4cd8c446b486bf02e1504a2
   - enabled: 1
@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MG1.unity
     guid: a3bf10193abfc8a439261f41cf57f791
+  - enabled: 1
+    path: Assets/Scenes/MiniGame2.unity
+    guid: ee2c0033d8c6b4b4a820536c04589f2b
+  - enabled: 1
+    path: Assets/Scenes/MG3.unity
+    guid: c882948b6e944e546bbb5a3961cf4515
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

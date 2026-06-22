@@ -151,7 +151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed27c4293b94c41b49339639a2f70c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndingController
-  uiRoot: {fileID: 0}
+  endingTitleLabel: {fileID: 1837447121}
+  epilogueLabel: {fileID: 1643540921}
+  endingComplicit: {fileID: 11400000, guid: 1c686ae7ea3b4414483b31ec4bcc8c7e, type: 2}
+  endingWhistleblower: {fileID: 11400000, guid: 4c8188fc2f534c341b42cc37bb97888b, type: 2}
+  endingPassive: {fileID: 11400000, guid: e8804cfcff0064b42ae026ab34331909, type: 2}
 --- !u!114 &227552757
 MonoBehaviour:
   m_ObjectHideFlags: 0

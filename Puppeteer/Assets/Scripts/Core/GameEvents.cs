@@ -1,28 +1,63 @@
-// GameEvents.cs  -  Assets/_Project/Scripts/Core
-// Static event bus. Raisers call Raise*; listeners subscribe in OnEnable / unsubscribe in OnDisable.
+// GameEvents.cs — FINAL. Matches exact call signatures from your actual scripts.
+// GameManager calls:  RaiseClockAdvanced(int)
+//                     RaiseStatsChanged(int, int)
+//                     RaiseEndingReached(EndingType)
+//                     RaiseActChanged(ActSO)
+// AudioManager/SocialFeedManager use: TaskLaunched event (Action<TaskSO>)
 using System;
-using UnityEngine;
 
 public static class GameEvents
 {
-    public static event Action<TaskSO>     TaskLaunched;
-    public static event Action<int>        ClockAdvanced;   // total diegetic minutes
-    public static event Action<ActSO>      ActChanged;
-    public static event Action<EndingType> EndingReached;
-    public static event Action<int, int>   StatsChanged;    // money, reputation
+    // ── New architecture events ───────────────────────────────────────────
+    public static event Action<ScreenId>    OnShowScreen;
+    public static event Action<string>      OnNameEntered;
+    public static event Action<int>         OnPortraitChosen;
+    public static event Action<Motivation>  OnMotivationSet;
+    public static event Action<InboxAction> OnInboxItemSelected;
+    public static event Action              OnChatReplied;
+    public static event Action              OnRefusedBothTasks;
+    public static event Action              OnNextAfterResult;
+    public static event Action              OnPhoneClosed;
+    public static event Action<TaskSO>      OnTaskChosen;
+    public static event Action<TaskResult>  OnTaskFinished;
+    public static event Action              OnPlayerStateChanged;
 
-    public static void RaiseTaskLaunched(TaskSO t)        => TaskLaunched?.Invoke(t);
-    public static void RaiseClockAdvanced(int m)          => ClockAdvanced?.Invoke(m);
-    public static void RaiseActChanged(ActSO a)           => ActChanged?.Invoke(a);
-    public static void RaiseEndingReached(EndingType e)   => EndingReached?.Invoke(e);
-    public static void RaiseStatsChanged(int money, int reputation) => StatsChanged?.Invoke(money, reputation);
+    // ── Legacy events your existing scripts subscribe to ──────────────────
+    public static event Action<int, int>    OnStatsChanged;    // (money, risk)
+    public static event Action<int>         OnClockAdvanced;   // (clockMinutes)
+    public static event Action<ActSO>       OnActChanged;      // (actSO)
+    public static event Action<EndingType>  OnEndingReached;   // (endingType)
 
-#if UNITY_EDITOR
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics()
+    // UIManager subscribes with these names
+    public static event Action<int, int>   StatsChanged   { add => OnStatsChanged  += value; remove => OnStatsChanged  -= value; }
+    public static event Action<int>        ClockAdvanced  { add => OnClockAdvanced += value; remove => OnClockAdvanced -= value; }
+    public static event Action<ActSO>      ActChanged     { add => OnActChanged    += value; remove => OnActChanged    -= value; }
+
+    // AudioManager / SocialFeedManager subscribe to TaskLaunched
+    public static event Action<TaskSO> TaskLaunched
     {
-        TaskLaunched = null; ClockAdvanced = null; ActChanged = null;
-        EndingReached = null; StatsChanged = null;
+        add    => OnTaskChosen += value;
+        remove => OnTaskChosen -= value;
     }
-#endif
+
+    // ── New architecture raise helpers ────────────────────────────────────
+    public static void ShowScreen(ScreenId id)       => OnShowScreen?.Invoke(id);
+    public static void NameEntered(string n)         => OnNameEntered?.Invoke(n);
+    public static void PortraitChosen(int i)         => OnPortraitChosen?.Invoke(i);
+    public static void MotivationSet(Motivation m)   => OnMotivationSet?.Invoke(m);
+    public static void InboxSelected(InboxAction a)  => OnInboxItemSelected?.Invoke(a);
+    public static void ChatReplied()                 => OnChatReplied?.Invoke();
+    public static void RefusedBoth()                 => OnRefusedBothTasks?.Invoke();
+    public static void NextAfterResult()             => OnNextAfterResult?.Invoke();
+    public static void PhoneClosed()                 => OnPhoneClosed?.Invoke();
+    public static void TaskChosen(TaskSO t)          => OnTaskChosen?.Invoke(t);
+    public static void TaskFinished(TaskResult r)    => OnTaskFinished?.Invoke(r);
+    public static void PlayerChanged()               => OnPlayerStateChanged?.Invoke();
+
+    // ── Legacy raise helpers — exact signatures GameManager calls ─────────
+    public static void RaiseStatsChanged(int money, int risk) => OnStatsChanged?.Invoke(money, risk);
+    public static void RaiseClockAdvanced(int clockMinutes)   => OnClockAdvanced?.Invoke(clockMinutes);
+    public static void RaiseEndingReached(EndingType ending)  => OnEndingReached?.Invoke(ending);
+    public static void RaiseActChanged(ActSO act)             => OnActChanged?.Invoke(act);
+    public static void RaiseTaskLaunched(TaskSO t)            => OnTaskChosen?.Invoke(t);
 }

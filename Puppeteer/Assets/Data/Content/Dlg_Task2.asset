@@ -11,10 +11,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53c8491e9ce0448db89479a2c4683ce4, type: 3}
   m_Name: Dlg_Task2
-  m_EditorClassIdentifier:
-  lines:
-  - speaker: {fileID: 11400000, guid: 65afc489e9f5429bae63c13a6eac3c72, type: 2}
-    defaultText: 'He forgot the slogan. Generate the missing line so it sounds like him.'
-    moneyText: 'Bonus territory if this lands today.'
-    impactText: 'We''re just helping him say what he meant to say.'
-    recognitionText: 'Nobody else can match a voice like you can.'
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
+  lines: []

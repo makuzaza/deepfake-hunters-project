@@ -1,9 +1,14 @@
-// EndingSO.cs  -  Assets/_Project/Scripts/Data
+// EndingSO.cs — fixed version with all fields
 using UnityEngine;
-[CreateAssetMenu(fileName = "Ending_", menuName = "Puppeteer/Ending")]
+
+[CreateAssetMenu(menuName = "Puppeteer/Ending")]
 public class EndingSO : ScriptableObject
 {
-    public EndingType type;
-    [TextArea(3, 6)] public string epilogueText;
-    public Sprite background;
+    public EndingType endingType;
+    public string     title;
+    [TextArea(2,4)]
+    public string     epilogueText;
+    public string     condition;
+    public string     dianeOutcome;
+    public string     unlockCondition;
 }
