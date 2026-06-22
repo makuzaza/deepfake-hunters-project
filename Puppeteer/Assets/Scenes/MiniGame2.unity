@@ -211,7 +211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &279098721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -801,6 +801,7 @@ GameObject:
   - component: {fileID: 1638825997}
   - component: {fileID: 1638825996}
   - component: {fileID: 1638825995}
+  - component: {fileID: 1638825999}
   m_Layer: 5
   m_Name: MinigameCanvas
   m_TagString: Untagged
@@ -897,6 +898,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1638825999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638825994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d178f8085edb36244aeb065df697a89a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSceneController
+  channel: {fileID: 11400000, guid: 2bac17cb8dc2d174f9eee06517a04bef, type: 2}
 --- !u!1 &1664131251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,9 +1742,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1664131253}
-        m_TargetAssemblyTypeName: SculptingManager, Assembly-CSharp
-        m_MethodName: OnConfirm
+      - m_Target: {fileID: 1638825999}
+        m_TargetAssemblyTypeName: TaskSceneController, Assembly-CSharp
+        m_MethodName: OnLaunchPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2894,7 +2908,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2956,7 +2970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.15881, y: -79.997986}
+  m_AnchoredPosition: {x: -0.15881348, y: -79.997986}
   m_SizeDelta: {x: -36.318, y: 90.3949}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &9010000003

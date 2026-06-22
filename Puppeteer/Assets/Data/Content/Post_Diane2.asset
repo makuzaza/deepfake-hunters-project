@@ -11,9 +11,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b01fe345f7b4f729daa22e50b908234, type: 3}
   m_Name: Post_Diane2
-  m_EditorClassIdentifier:
-  author: {fileID: 11400000, guid: a7556519fbd647cabdf9c084ec0c851c, type: 2}
-  body: 'I''ve decided to stop my prescription. The doctor seemed so sure.'
-  timeLabel: '14:02'
-  metric: '1.1k shares'
-  isClientFeedback: 0
+  m_EditorClassIdentifier: Assembly-CSharp::FeedPostSO
+  author: {fileID: 0}
+  body: 
+  subline: 
+  narratorNote: 
+  poster: 
+  avatarLetter: 
+  taskIndex: 0
+  isHarmful: 0

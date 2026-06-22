@@ -344,6 +344,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1449313711}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnLaunchPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TaskSceneController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024076128198814044, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2811763380940407595, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -446,6 +474,10 @@ PrefabInstance:
       value: 'Marcus: bruh, I know the AI tool right for this. It just dropped an
         update. I''ll take over. '
       objectReference: {fileID: 0}
+    - target: {fileID: 5130210001141651051, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6511899122170424673, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
       propertyPath: m_Name
       value: MiniGame3
@@ -477,8 +509,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6511899122170424673, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1449313711}
   m_SourcePrefab: {fileID: 100100000, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+--- !u!1 &1449313710 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6511899122170424673, guid: dadab4fef6a22bd4b941df3d426bdb8d, type: 3}
+  m_PrefabInstance: {fileID: 1449313709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1449313711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449313710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d178f8085edb36244aeb065df697a89a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSceneController
+  channel: {fileID: 11400000, guid: 2bac17cb8dc2d174f9eee06517a04bef, type: 2}
 --- !u!1 &1848617801 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 228200057413136336, guid: c2a3c03528e2dbb4bb0784cbafc0dd41, type: 3}

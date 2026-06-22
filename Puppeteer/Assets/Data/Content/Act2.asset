@@ -11,9 +11,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fbc1c2c582c4f698d4cbdc5d0642b2e, type: 3}
   m_Name: Act2
-  m_EditorClassIdentifier:
-  actTitle: 'Act 2 - My Grandma Is Watching This'
-  actIntro: {fileID: 0}
-  tasks:
-  - {fileID: 11400000, guid: 1f444d727f664c3d84f584bef3ce04cc, type: 2}
-  - {fileID: 11400000, guid: 5e807b164bdd4ac094fee8fe0143ceaa, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::ActSO
+  actNumber: 0
+  title: 
+  subtitle: 
+  description: 

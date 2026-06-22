@@ -1,6 +1,9 @@
-// Enums.cs  -  Assets/_Project/Scripts/Core
-public enum ProfileType { Money, Impact, Recognition }
-public enum TaskType    { SubtitleEdit, TextInject, DragDropAsset, Pipeline }
+// Enums.cs — ALL game-wide enumerations (replaces your existing Enums.cs)
+public enum ScreenId    { None, OnbLogin, OnbPortrait, Dashboard, HRForm, Chat, BriefQueue, Result, Phone }
+public enum Motivation  { Money, Impact, Recognition }
+public enum InboxAction { OpenHRForm, OpenChat, OpenBriefQueue, OpenNews, Dismiss }
+public enum RiskLevel   { None, Low, Medium, High }
 public enum EndingType  { Complicit, Whistleblower, PassiveResistance }
-public enum Speaker     { Boss, Marcus, Daisy, System, Player }
-public enum TaskPhase   { Brief, Execute, Preview, Launch, Consequence, Advance }
+
+[System.Obsolete("Use Motivation instead")]
+public enum ProfileType { Money, Impact, Recognition }

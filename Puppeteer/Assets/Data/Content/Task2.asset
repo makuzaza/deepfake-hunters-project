@@ -11,16 +11,20 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task2
-  m_EditorClassIdentifier:
-  taskId: 'task2_slogan'
-  type: 1
-  brief: {fileID: 11400000, guid: da7f29b1765a409081a140bc14f2f1f5, type: 2}
-  postLaunchBarks: {fileID: 0}
-  consequences:
-  - {fileID: 11400000, guid: 50c0936296204ee388c75982ebcecef9, type: 2}
-  noncooperationEligible: 0
-  clockMinutesToAdvance: 60
-  subtitleSegments: []
-  requiredText: 'Tony''s Garage - we keep you moving!'
-  dragAssets: []
-  pipelineSteps: []
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  clientName: Natural Remedies, Natural Health
+  taskTitle: ' Insert the missing slogan'
+  description: Tony forgot to say his slogan. Generate and insert the missing audio
+    line without a re-shoot.
+  companyTagline: Natural Remedies, Natural Health
+  clientPortrait: {fileID: 0}
+  pay: 120
+  riskLevel: 1
+  riskDelta: 5
+  sceneName: MiniGame2
+  act: 1
+  clientFeedback: "That's exactly what I needed \u2014 seamless! Tony is thrilled."
+  dianePost: Diane (54) liked a FreshLife video. "Natural remedies really work!"
+  narratorNote: "Harmless promotional content \u2014 or so it seems."
+  clockMinutesToAdvance: 30
+  consequences: []

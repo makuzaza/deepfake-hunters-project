@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36ae82c6509b004fa23ecf6c49e8229, type: 3}
+  m_Name: PlayerState
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateSO
+  playerName: Alex
+  portraitIndex: 0
+  motivation: 0
+  money: 0
+  taskPay: 0
+  day: 1
+  timeLabel: 09:00
+  accountRisk: 0
+  noncoopCount: 0
+  tasksCompleted: 0

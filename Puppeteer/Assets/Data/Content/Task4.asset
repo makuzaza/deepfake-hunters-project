@@ -11,16 +11,19 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task4
-  m_EditorClassIdentifier:
-  taskId: 'task4_tone'
-  type: 2
-  brief: {fileID: 11400000, guid: a30923a4bc1c48679c0744b0504d5504, type: 2}
-  postLaunchBarks: {fileID: 0}
-  consequences:
-  - {fileID: 11400000, guid: bd2f981803d74879a0b419423a5ccaf6, type: 2}
-  noncooperationEligible: 1
-  clockMinutesToAdvance: 90
-  subtitleSegments: []
-  requiredText: ''
-  dragAssets: []
-  pipelineSteps: []
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSO
+  clientName: 
+  taskTitle: 
+  description: 
+  companyTagline: 
+  clientPortrait: {fileID: 0}
+  pay: 0
+  riskLevel: 1
+  riskDelta: 10
+  sceneName: 
+  act: 1
+  clientFeedback: 
+  dianePost: 
+  narratorNote: 
+  clockMinutesToAdvance: 30
+  consequences: []

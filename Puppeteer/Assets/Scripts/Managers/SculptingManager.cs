@@ -232,7 +232,8 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
         levelsSucceeded = 0;
-        Time.timeScale = 0f;
+        var tsc = GetComponentInParent<TaskSceneController>();
+        if (tsc!=null)tsc.OnLaunchPressed();
     }
 
     public void OnNext()
