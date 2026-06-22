@@ -2331,10 +2331,10 @@ RectTransform:
   - {fileID: 1300591977}
   m_Father: {fileID: 871567484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 536, y: -33}
+  m_SizeDelta: {x: 1056, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &307171301
 MonoBehaviour:
@@ -3836,10 +3836,10 @@ RectTransform:
   - {fileID: 2103150802}
   m_Father: {fileID: 871567484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 536, y: -91}
+  m_SizeDelta: {x: 1056, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430981016
 MonoBehaviour:
@@ -9119,6 +9119,7 @@ MonoBehaviour:
   availableTasks:
   - {fileID: 11400000, guid: 352f4a2015bfbdc4a82e619720b6b290, type: 2}
   - {fileID: 11400000, guid: 7d7309b75473adb45915e4a2759025c0, type: 2}
+  - {fileID: 11400000, guid: ab95d6bdf0a615749902da7fb4f2e65f, type: 2}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
 --- !u!225 &1206062816
@@ -9369,7 +9370,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227374318}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d32fc5105734004a561befe4badf33a, type: 3}
   m_Name: 
@@ -9386,7 +9387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc36e9e050d84c13a549108c9ef482aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SocialFeedManager
-  feedContent: {fileID: 0}
+  feedContent: {fileID: 1326764223}
   postItemPrefab: {fileID: 0}
 --- !u!114 &1227374331
 MonoBehaviour:
@@ -9510,19 +9511,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070c19ee4057480494eb4b55fbeb6e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  moneyLabel: {fileID: 1017850538}
-  timeLabel: {fileID: 393009711}
-  riskLabel: {fileID: 369255497}
-  playerNameLabel: {fileID: 1220696458}
-  riskFill: {fileID: 1988199432}
   speakerNameLabel: {fileID: 260580705}
   speakerDialogueLabel: {fileID: 1860708186}
   speakerPortraitImage: {fileID: 1071804679}
-  statusLabel: {fileID: 0}
-  progressFill: {fileID: 0}
   transitionPanel: {fileID: 0}
   transitionLabel: {fileID: 0}
-  playerState: {fileID: 0}
 --- !u!1 &1233573840
 GameObject:
   m_ObjectHideFlags: 0
@@ -12474,7 +12467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1604445939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15502,6 +15495,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -15561,9 +15555,9 @@ RectTransform:
   m_Father: {fileID: 1790406476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: 0}
-  m_SizeDelta: {x: 100, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1988199432
 MonoBehaviour:
@@ -15578,18 +15572,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.64779866, b: 0.024392469, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 9ac0dc33d2e246ec81a6120add2c5e5c, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0

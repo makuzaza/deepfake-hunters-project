@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task2
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: 
-  taskTitle: 
-  description: 
-  companyTagline: 
+  clientName: Natural Remedies, Natural Health
+  taskTitle: ' Insert the missing slogan'
+  description: Tony forgot to say his slogan. Generate and insert the missing audio
+    line without a re-shoot.
+  companyTagline: Natural Remedies, Natural Health
   clientPortrait: {fileID: 0}
-  pay: 0
+  pay: 120
   riskLevel: 1
-  riskDelta: 10
-  sceneName: 
+  riskDelta: 5
+  sceneName: MiniGame2
   act: 1
-  clientFeedback: 
-  dianePost: 
-  narratorNote: 
+  clientFeedback: "That's exactly what I needed \u2014 seamless! Tony is thrilled."
+  dianePost: Diane (54) liked a FreshLife video. "Natural remedies really work!"
+  narratorNote: "Harmless promotional content \u2014 or so it seems."
   clockMinutesToAdvance: 30
   consequences: []

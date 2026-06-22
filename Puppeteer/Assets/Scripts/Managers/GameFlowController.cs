@@ -130,6 +130,18 @@ public class GameFlowController : MonoBehaviour
     // ── Phone closed → back to dashboard, advance day ────────────────────
     private void HandlePhoneClosed()
     {
+        // End the run after the last task (you have 3 live tasks: MG1, MiniGame2, MG3).
+        const int TASKS_IN_DEMO = 3;
+        if (playerState.tasksCompleted >= TASKS_IN_DEMO)
+        {
+            EndingType ending;
+            if (playerState.noncoopCount >= TASKS_IN_DEMO)        ending = EndingType.PassiveResistance; // never launched anything
+            else if (playerState.accountRisk >= 50)              ending = EndingType.Whistleblower;      // high-risk path -> they bailed
+            else                                                  ending = EndingType.Complicit;          // default compliance
+            GameManager.I?.ForceEnding(ending);
+            return;
+        }
+ 
         AdvanceDay();
         screenManager.Show(ScreenId.Dashboard);
     }

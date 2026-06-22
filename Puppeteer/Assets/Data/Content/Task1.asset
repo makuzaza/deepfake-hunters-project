@@ -12,18 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task1
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: 
-  taskTitle: 
-  description: 
-  companyTagline: 
+  clientName: ' Tony'
+  taskTitle: Clean up Tony's promo video
+  description: '
+
+    Remove stutters from Tony''s video. Find the task brief in
+    chat history.'
+  companyTagline: ' Natural Remedies, Natural Health'
   clientPortrait: {fileID: 0}
-  pay: 0
+  pay: 80
   riskLevel: 1
-  riskDelta: 10
-  sceneName: 
+  riskDelta: 0
+  sceneName: MG1
   act: 1
-  clientFeedback: 
-  dianePost: 
-  narratorNote: 
+  clientFeedback: 'Marcus: Good! You caught it perfectly. Tony is thrilled.'
+  dianePost: ' Diane (54) liked Tony''s new promo video. "Love this brand!"'
+  narratorNote: ' Just a stutter removal. Totally harmless.'
   clockMinutesToAdvance: 30
   consequences: []

@@ -1,6 +1,6 @@
-// SocialFeedManager.cs — fixed version
-// Removes UIFind/UINames. Uses serialized reference for the feed container.
-// Subscribes to OnTaskChosen (was: TaskLaunched) to show consequences.
+// SocialFeedManager.cs — FIXED.
+// Was: spawned posts at task SELECTION (OnTaskChosen) and never bound their content.
+// Now: spawns AFTER the task is finished (OnTaskFinished) and binds the text.
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,27 +16,28 @@ public class SocialFeedManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnTaskChosen += HandleTaskChosen;
+        // Show consequences only after the player actually launches the task.
+        GameEvents.OnTaskFinished += HandleTaskFinished;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnTaskChosen -= HandleTaskChosen;
+        GameEvents.OnTaskFinished -= HandleTaskFinished;
     }
 
-    private void HandleTaskChosen(TaskSO task)
+    private void HandleTaskFinished(TaskResult r)
     {
-        if (task == null || task.consequences == null) return;
-        foreach (var post in task.consequences)
-            SpawnPost(post);
+        // TaskResult already carries the dianePost string from the TaskSO.
+        // Spawn a single feed post from it (simplest reliable path for the demo).
+        if (!string.IsNullOrEmpty(r.dianePost))
+            SpawnPost("Diane", r.dianePost);
     }
 
-    private void SpawnPost(FeedPostSO post)
+    private void SpawnPost(string author, string body)
     {
-        if (feedContent == null || postItemPrefab == null || post == null) return;
+        if (feedContent == null || postItemPrefab == null) return;
         var item = Instantiate(postItemPrefab, feedContent);
-        // PostItem.Setup() — call whatever method your PostItem uses
-        // item.Setup(post);
+        item.Bind(author, body);          // PostItem has Bind(string, string)
         _spawned.Add(item);
     }
 

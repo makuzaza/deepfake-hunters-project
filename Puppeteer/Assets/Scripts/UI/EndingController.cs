@@ -1,5 +1,8 @@
-// EndingController.cs — fixed version
-// Removes UIFind. Uses serialized refs for ending text labels.
+// EndingController.cs — FIXED.
+// Problem: read PlayerPrefs.GetInt("EndingType") which NOTHING ever wrote,
+// so every playthrough showed ending 0 (Complicit).
+// Fix: read the static GameManager.PendingEnding that ForceEnding already sets,
+// with a PlayerPrefs fallback for safety.
 using TMPro;
 using UnityEngine;
 
@@ -16,18 +19,23 @@ public class EndingController : MonoBehaviour
 
     private void Start()
     {
-        // Read which ending was chosen from PlayerPrefs (set by GameFlowController)
-        int endingType = PlayerPrefs.GetInt("EndingType", 0);
-        ShowEnding((EndingType)endingType);
+        // Primary: the static field set by GameManager.ForceEnding before scene load.
+        EndingType type = GameManager.PendingEnding;
+
+        // Fallback (in case GameManager was destroyed): PlayerPrefs.
+        if (PlayerPrefs.HasKey("EndingType"))
+            type = (EndingType)PlayerPrefs.GetInt("EndingType", (int)type);
+
+        ShowEnding(type);
     }
 
     private void ShowEnding(EndingType type)
     {
         EndingSO data = type switch
         {
-            EndingType.Whistleblower    => endingWhistleblower,
+            EndingType.Whistleblower     => endingWhistleblower,
             EndingType.PassiveResistance => endingPassive,
-            _                           => endingComplicit,
+            _                            => endingComplicit,
         };
 
         if (data == null) return;
