@@ -1,5 +1,12 @@
 // GameFlowController.cs — attach to Managers GameObject
 // ALL screen transitions live here. Uses serialized refs + GameEvents (no name lookups).
+//
+// UPDATED for day-by-day flow:
+//   - Dashboard inbox is now built per day (BuildInboxForDay) and pushed to the
+//     dashboard before showing (ShowDashboardForToday).
+//   - Brief queue shows only the current day's task (handled in BriefQueueScreen).
+//   - After the final task, routes to the Reflection screen instead of Dashboard.
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameFlowController : MonoBehaviour
@@ -18,6 +25,9 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private BriefQueueScreen  briefQueueScreen;
     [SerializeField] private ResultScreen      resultScreen;
     [SerializeField] private PhoneScreen       phoneScreen;
+
+    [Header("Flow config")]
+    [SerializeField] private int totalTasks = 4;   // game ends after this many completed tasks
 
     // Tracks whether HR form and chat have been done (to grey out those inbox cards)
     private bool _hrDone, _chatDone;
@@ -53,6 +63,8 @@ public class GameFlowController : MonoBehaviour
     private void Start()
     {
         playerState.NewGame();
+        _hrDone = false;
+        _chatDone = false;
         screenManager.Show(ScreenId.OnbLogin);
     }
 
@@ -69,7 +81,7 @@ public class GameFlowController : MonoBehaviour
     {
         playerState.portraitIndex = idx;
         GameEvents.PlayerChanged();
-        screenManager.Show(ScreenId.Dashboard);
+        ShowDashboardForToday();
     }
 
     // ── Step 3: inbox card clicked ────────────────────────────────────────
@@ -80,6 +92,8 @@ public class GameFlowController : MonoBehaviour
             case InboxAction.OpenHRForm:     screenManager.Show(ScreenId.HRForm);     break;
             case InboxAction.OpenChat:       screenManager.Show(ScreenId.Chat);       break;
             case InboxAction.OpenBriefQueue: screenManager.Show(ScreenId.BriefQueue); break;
+            case InboxAction.OpenNews:       /* Phase 6: screenManager.Show(ScreenId.Article); */ break;
+            case InboxAction.Dismiss:        ShowDashboardForToday(); break;
         }
     }
 
@@ -89,24 +103,23 @@ public class GameFlowController : MonoBehaviour
         playerState.motivation = m;
         GameEvents.PlayerChanged();
         _hrDone = true;
-        MarkCardDone(InboxAction.OpenHRForm);
-        screenManager.Show(ScreenId.Dashboard);
+        ShowDashboardForToday();
     }
 
     // ── Chat replied ──────────────────────────────────────────────────────
     private void HandleChatReplied()
     {
         _chatDone = true;
-        MarkCardDone(InboxAction.OpenChat);
-        screenManager.Show(ScreenId.Dashboard);
+        ShowDashboardForToday();
     }
 
-    // ── Refused both tasks ────────────────────────────────────────────────
+    // ── Refused the task ──────────────────────────────────────────────────
     private void HandleRefused()
     {
-        playerState.noncoopCount++;
+        // With one task per day, refusing skips the day. (You may later route this
+        // through the noncoop counter in Phase 3.)
         AdvanceDay();
-        screenManager.Show(ScreenId.Dashboard);
+        ShowDashboardForToday();
     }
 
     // ── Task chosen → launch ─────────────────────────────────────────────
@@ -127,23 +140,22 @@ public class GameFlowController : MonoBehaviour
     // ── Result → Next → Phone ─────────────────────────────────────────────
     private void HandleNextAfterResult() { screenManager.Show(ScreenId.Phone); }
 
-    // ── Phone closed → back to dashboard, advance day ────────────────────
+    // ── Phone closed → next day, OR end the game after the final task ─────
     private void HandlePhoneClosed()
     {
-        // End the run after the last task (you have 3 live tasks: MG1, MiniGame2, MG3).
-        const int TASKS_IN_DEMO = 3;
-        if (playerState.tasksCompleted >= TASKS_IN_DEMO)
+        if (playerState.tasksCompleted >= totalTasks)
         {
-            EndingType ending;
-            if (playerState.noncoopCount >= TASKS_IN_DEMO)        ending = EndingType.PassiveResistance; // never launched anything
-            else if (playerState.accountRisk >= 50)              ending = EndingType.Whistleblower;      // high-risk path -> they bailed
-            else                                                  ending = EndingType.Complicit;          // default compliance
-            GameManager.I?.ForceEnding(ending);
+            // Final task done → end of game.
+            // PHASE 4: once you add ScreenId.Reflection to Enums.cs and build the
+            // Screen_Reflection panel, replace the line below with:
+            //     screenManager.Show(ScreenId.Reflection);
+            // For now (day-by-day phase only) we keep it on the dashboard so the
+            // file compiles without the new enum value.
+            ShowDashboardForToday();
             return;
         }
- 
         AdvanceDay();
-        screenManager.Show(ScreenId.Dashboard);
+        ShowDashboardForToday();
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────
@@ -152,10 +164,59 @@ public class GameFlowController : MonoBehaviour
         playerState.SetTime(playerState.day + 1, "09:00");
     }
 
-    private void MarkCardDone(InboxAction action)
+    // Builds the dashboard for the current day and shows it.
+    private void ShowDashboardForToday()
     {
-        foreach (var item in dashboardScreen.items)
-            if (item.action == action) item.completed = true;
-        dashboardScreen.RebuildList();
+        dashboardScreen.SetItems(BuildInboxForDay(playerState.day));
+        screenManager.Show(ScreenId.Dashboard);
+    }
+
+    // The per-day inbox. Edit text/tags to taste. Day 1 = onboarding,
+    // Day 2+ = the day's task + Marcus, Day 3 also adds the news article.
+    private List<InboxItemData> BuildInboxForDay(int day)
+    {
+        var list = new List<InboxItemData>();
+
+        if (day == 1)
+        {
+            list.Add(new InboxItemData {
+                title = "HR — Onboarding Form",
+                subline = "Please complete before starting work",
+                tag = "NEW", action = InboxAction.OpenHRForm, completed = _hrDone
+            });
+            list.Add(new InboxItemData {
+                title = "Marcus",
+                subline = "\"hey, let me know when you're settled in!\"",
+                tag = "MSG", action = InboxAction.OpenChat, completed = _chatDone
+            });
+            list.Add(new InboxItemData {
+                title = "Brief Queue",
+                subline = "1 task available today",
+                tag = "1", action = InboxAction.OpenBriefQueue, completed = false
+            });
+        }
+        else
+        {
+            list.Add(new InboxItemData {
+                title = "New task from Tony — Natural Remedies",
+                subline = "He has another request for you specifically",
+                tag = "BRIEF", action = InboxAction.OpenBriefQueue, completed = false
+            });
+            list.Add(new InboxItemData {
+                title = "Marcus",
+                subline = "\"It's just filling in the gaps. Tony approved it.\"",
+                tag = "MSG", action = InboxAction.OpenChat, completed = _chatDone
+            });
+
+            if (day == 3)
+            {
+                list.Add(new InboxItemData {
+                    title = "Health misinformation in advertising on the rise, experts warn",
+                    subline = "tap to read · tap X to dismiss",
+                    tag = "", action = InboxAction.OpenNews, completed = false
+                });
+            }
+        }
+        return list;
     }
 }
