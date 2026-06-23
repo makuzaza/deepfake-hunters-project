@@ -156,6 +156,7 @@ MonoBehaviour:
   blackOverlayFail: {fileID: 7858715623453119866}
   failText1: {fileID: 742420565402266027}
   failText2: {fileID: 3681882314521581815}
+  qteBarClip: {fileID: 8300000, guid: a7e3c9d2b1f04a5e8c6d0e9f0a2b3c4d, type: 3}
 --- !u!1 &333307957693063043
 GameObject:
   m_ObjectHideFlags: 0
