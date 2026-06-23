@@ -8,6 +8,7 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private ScreenManager  screenManager;
     [SerializeField] private PlayerStateSO  playerState;
     [SerializeField] private TaskLauncher   taskLauncher;
+    [SerializeField] private GameManager    gameManager;
 
     [Header("Screen refs (drag each screen panel)")]
     [SerializeField] private OnbLoginScreen    loginScreen;
@@ -53,6 +54,7 @@ public class GameFlowController : MonoBehaviour
     private void Start()
     {
         playerState.NewGame();
+        GameEvents.PlayerChanged();
         screenManager.Show(ScreenId.OnbLogin);
     }
 
@@ -119,6 +121,7 @@ public class GameFlowController : MonoBehaviour
         playerState.AddMoney(r.payEarned);
         playerState.SetRisk(playerState.accountRisk + r.riskDelta);
         playerState.tasksCompleted++;
+        GameEvents.PlayerChanged();
         resultScreen.Setup(r);
         phoneScreen.Setup(r);
         screenManager.Show(ScreenId.Result);
@@ -138,7 +141,14 @@ public class GameFlowController : MonoBehaviour
             if (playerState.noncoopCount >= TASKS_IN_DEMO)        ending = EndingType.PassiveResistance; // never launched anything
             else if (playerState.accountRisk >= 50)              ending = EndingType.Whistleblower;      // high-risk path -> they bailed
             else                                                  ending = EndingType.Complicit;          // default compliance
-            GameManager.I?.ForceEnding(ending);
+
+            if (gameManager == null)
+            {
+                Debug.LogWarning("GameFlowController missing GameManager reference.");
+                return;
+            }
+
+            gameManager.ForceEnding(ending);
             return;
         }
  
@@ -150,6 +160,7 @@ public class GameFlowController : MonoBehaviour
     private void AdvanceDay()
     {
         playerState.SetTime(playerState.day + 1, "09:00");
+        GameEvents.PlayerChanged();
     }
 
     private void MarkCardDone(InboxAction action)

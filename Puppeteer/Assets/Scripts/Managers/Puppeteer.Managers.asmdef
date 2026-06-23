@@ -1,0 +1,18 @@
+{
+  "name": "Puppeteer.Managers",
+  "references": [
+    "Puppeteer.Core",
+    "Puppeteer.Data",
+    "Puppeteer.Events",
+    "Puppeteer.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

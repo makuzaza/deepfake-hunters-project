@@ -10,8 +10,6 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager I { get; private set; }
-
     [Header("Speaker Strip — drag refs from SpeakerStrip")]
     [SerializeField] private TMP_Text  speakerNameLabel;
     [SerializeField] private TMP_Text  speakerDialogueLabel;
@@ -21,10 +19,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject transitionPanel;
     [SerializeField] private TMP_Text   transitionLabel;
 
-    private void Awake()
+    private void OnEnable()
     {
-        if (I != null && I != this) { Destroy(this); return; }
-        I = this;
+        GameEvents.OnTransitionRequested += ShowTransition;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnTransitionRequested -= ShowTransition;
     }
 
     // ── Called by DialogueManager ─────────────────────────────────────────

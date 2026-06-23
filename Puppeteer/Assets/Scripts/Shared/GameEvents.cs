@@ -21,6 +21,7 @@ public static class GameEvents
     public static event Action<TaskSO>      OnTaskChosen;
     public static event Action<TaskResult>  OnTaskFinished;
     public static event Action              OnPlayerStateChanged;
+    public static event Action<string, float> OnTransitionRequested;
 
     // ── Legacy events your existing scripts subscribe to ──────────────────
     public static event Action<int, int>    OnStatsChanged;    // (money, risk)
@@ -53,6 +54,8 @@ public static class GameEvents
     public static void TaskChosen(TaskSO t)          => OnTaskChosen?.Invoke(t);
     public static void TaskFinished(TaskResult r)    => OnTaskFinished?.Invoke(r);
     public static void PlayerChanged()               => OnPlayerStateChanged?.Invoke();
+    public static void RequestTransition(string label, float duration)
+        => OnTransitionRequested?.Invoke(label, duration);
 
     // ── Legacy raise helpers — exact signatures GameManager calls ─────────
     public static void RaiseStatsChanged(int money, int risk) => OnStatsChanged?.Invoke(money, risk);

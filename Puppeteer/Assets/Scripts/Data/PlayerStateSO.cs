@@ -31,9 +31,8 @@ public class PlayerStateSO : ScriptableObject
         playerName="Alex"; portraitIndex=0; motivation=Motivation.Money;
         money=0; taskPay=0; day=1; timeLabel="09:00"; accountRisk=0;
         noncoopCount=0; tasksCompleted=0;
-        GameEvents.PlayerChanged();
     }
-    public void AddMoney(int v)          { money += v;                       GameEvents.PlayerChanged(); }
-    public void SetRisk(int v)           { accountRisk = Mathf.Clamp(v,0,100); GameEvents.PlayerChanged(); }
-    public void SetTime(int d, string t) { day = d; timeLabel = t;           GameEvents.PlayerChanged(); }
+    public void AddMoney(int v)          { money += v; }
+    public void SetRisk(int v)           { accountRisk = Mathf.Clamp(v,0,100); }
+    public void SetTime(int d, string t) { day = d; timeLabel = t; }
 }
