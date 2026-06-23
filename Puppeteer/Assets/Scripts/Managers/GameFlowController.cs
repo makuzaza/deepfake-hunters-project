@@ -130,8 +130,8 @@ public class GameFlowController : MonoBehaviour
     // ── Phone closed → back to dashboard, advance day ────────────────────
     private void HandlePhoneClosed()
     {
-        // End the run after the last task (you have 3 live tasks: MG1, MiniGame2, MG3).
-        const int TASKS_IN_DEMO = 3;
+        // End the run after the last task (you have 4 live tasks: MG1, MiniGame2, MG3, MiniGame4).
+        const int TASKS_IN_DEMO = 4;
         if (playerState.tasksCompleted >= TASKS_IN_DEMO)
         {
             EndingType ending;

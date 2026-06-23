@@ -43,7 +43,11 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public int maxUndoSteps = 15;
 
     [Header("Debug")]
-    public bool debugMask = false;   // paint overlay red=body / teal=outside on start
+    public bool debugMask = false;
+
+    [Header("Audio")]
+    public AudioClip bgMusicClip;
+    private AudioSource _bgAudio;
 
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
@@ -88,12 +92,28 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             brushSlider.onValueChanged.AddListener(v => brushRadius = v);
         }
 
+        if (bgMusicClip != null)
+        {
+            _bgAudio = gameObject.AddComponent<AudioSource>();
+            _bgAudio.clip = bgMusicClip;
+            _bgAudio.loop = true;
+            _bgAudio.spatialBlend = 0f;
+            _bgAudio.playOnAwake = false;
+            _bgAudio.Play();
+        }
+
         BuildResultText();
         BuildNextButton();
         BuildCompleteButton();
         BuildTopHUD();
         BuildMarcusText();
         BuildOverlay();
+    }
+
+    private void StopBGMusic()
+    {
+        if (_bgAudio != null && _bgAudio.isPlaying)
+            _bgAudio.Stop();
     }
 
     Font GetFont() => pixelFont != null
@@ -232,6 +252,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
         levelsSucceeded = 0;
+        StopBGMusic();
         var tsc = GetComponentInParent<TaskSceneController>();
         if (tsc!=null)tsc.OnLaunchPressed();
     }
