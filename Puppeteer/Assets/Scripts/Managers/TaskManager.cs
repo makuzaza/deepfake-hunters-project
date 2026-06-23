@@ -4,10 +4,18 @@
 using UnityEngine;
 public class TaskManager : Singleton<TaskManager>
 {
+    [SerializeField] private GameManager gameManager;
+
     public void SimulateLaunch(TaskSO task)
     {
         GameEvents.RaiseTaskLaunched(task);
-        GameManager.I?.AdvanceClock(task != null ? task.clockMinutesToAdvance : 60);
-        GameManager.I?.AddMoney(500);
+        if (gameManager == null)
+        {
+            Debug.LogWarning("TaskManager missing GameManager reference.");
+            return;
+        }
+
+        gameManager.AdvanceClock(task != null ? task.clockMinutesToAdvance : 60);
+        gameManager.AddMoney(500);
     }
 }

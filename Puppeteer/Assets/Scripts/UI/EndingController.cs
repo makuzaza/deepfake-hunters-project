@@ -19,12 +19,7 @@ public class EndingController : MonoBehaviour
 
     private void Start()
     {
-        // Primary: the static field set by GameManager.ForceEnding before scene load.
-        EndingType type = GameManager.PendingEnding;
-
-        // Fallback (in case GameManager was destroyed): PlayerPrefs.
-        if (PlayerPrefs.HasKey("EndingType"))
-            type = (EndingType)PlayerPrefs.GetInt("EndingType", (int)type);
+        EndingType type = (EndingType)PlayerPrefs.GetInt("EndingType", (int)EndingType.Complicit);
 
         ShowEnding(type);
     }
