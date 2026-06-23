@@ -46,6 +46,6 @@ public class GameManager : Singleton<GameManager>
         if (flow != null && index >= 0 && index < flow.acts.Count && flow.acts[index] != null)
             GameEvents.RaiseActChanged(flow.acts[index]);
         else
-            UIManager.I?.ShowTransition("Act " + (index + 1), 1.5f);
+            GameEvents.RequestTransition("Act " + (index + 1), 1.5f);
     }
 }

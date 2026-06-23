@@ -1,0 +1,16 @@
+{
+  "name": "Puppeteer.Events",
+  "references": [
+    "Puppeteer.Core",
+    "Puppeteer.Data"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

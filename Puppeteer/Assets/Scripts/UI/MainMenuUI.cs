@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,8 +7,6 @@ using UnityEditor;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] private SceneLoader sceneLoader;
-
     [Header("Scene On Click")]
 #if UNITY_EDITOR
     [SerializeField] private SceneAsset startScene;
@@ -25,7 +24,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void OnStartButton()
     {
-        sceneLoader.LoadScene(startSceneName);
+        SceneManager.LoadScene(startSceneName);
     }
 
     public void OnOptionsButton()
@@ -35,6 +34,6 @@ public class MainMenuUI : MonoBehaviour
 
     public void OnQuitButton()
     {
-        sceneLoader.QuitGame();
+        Application.Quit();
     }
 }
