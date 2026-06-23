@@ -1,4 +1,3 @@
-// BriefQueueScreen.cs — attach to Screen_BriefQueue under ContentArea
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 public class BriefQueueScreen : UIScreen
 {
     [Header("References")]
-    [SerializeField] private Transform      cardsParent;   // horizontal or vertical layout parent
+    [SerializeField] private Transform      cardsParent;
     [SerializeField] private TaskCardView   cardPrefab;
     [SerializeField] private Button         refuseButton;
 
@@ -17,7 +16,8 @@ public class BriefQueueScreen : UIScreen
     [SerializeField] private ContextPanelView contextPanel;
     [SerializeField] private SpeakerStripView speakerStrip;
 
-    private readonly List<TaskCardView> _spawned = new();
+    private readonly List<TaskCardView>  _spawned    = new();
+    private readonly HashSet<TaskSO>     _takenTasks = new();
 
     protected override void Awake()
     {
@@ -36,11 +36,20 @@ public class BriefQueueScreen : UIScreen
     {
         foreach (var c in _spawned) if (c) Destroy(c.gameObject);
         _spawned.Clear();
+
         foreach (var task in availableTasks)
         {
             var card = Instantiate(cardPrefab, cardsParent);
             var t = task;
-            card.Setup(t, () => GameEvents.TaskChosen(t));
+            card.Setup(t, () =>
+            {
+                _takenTasks.Add(t);
+                GameEvents.TaskChosen(t);
+            });
+
+            if (_takenTasks.Contains(task))
+                card.MarkDone();
+
             _spawned.Add(card);
         }
     }

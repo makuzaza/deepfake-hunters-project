@@ -1,10 +1,54 @@
-// AudioManager.cs  -  Assets/_Project/Scripts/Managers
-// STUB. Day 2 (Dev A): UI SFX, ambient office loop, notification stings.
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class AudioManager : Singleton<AudioManager>
 {
-    private void OnEnable()  => GameEvents.TaskLaunched += OnLaunch;
-    private void OnDisable() => GameEvents.TaskLaunched -= OnLaunch;
-    private void OnLaunch(TaskSO task) { /* TODO Day 2: play notification sting. */ }
-    public void PlayNotification() { /* TODO Day 2: SFX. */ }
+    [SerializeField] private AudioSource sfxSource;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.playOnAwake  = false;
+            sfxSource.spatialBlend = 0f;
+        }
+        EnforceOneListener();
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.TaskLaunched      += OnLaunch;
+        SceneManager.sceneLoaded     += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.TaskLaunched      -= OnLaunch;
+        SceneManager.sceneLoaded     -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => EnforceOneListener();
+
+    private static void EnforceOneListener()
+    {
+        var listeners = FindObjectsOfType<AudioListener>(false);
+        bool kept = false;
+        foreach (var l in listeners)
+        {
+            if (!kept) { kept = true; continue; }
+            l.enabled = false;
+        }
+    }
+
+    private void OnLaunch(TaskSO task) => PlayNotification();
+
+    public void PlayNotification() { }
+
+    public void PlaySFX(AudioClip clip, float volume = 1f)
+    {
+        if (clip != null && sfxSource != null)
+            sfxSource.PlayOneShot(clip, volume);
+    }
 }
