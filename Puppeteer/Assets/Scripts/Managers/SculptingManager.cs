@@ -48,6 +48,7 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Header("Audio")]
     public AudioClip bgMusicClip;
     private AudioSource _bgAudio;
+    private TaskSceneController _taskController;
 
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
@@ -101,6 +102,8 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             _bgAudio.playOnAwake = false;
             _bgAudio.Play();
         }
+
+        _taskController = GetComponentInParent<TaskSceneController>() ?? FindObjectOfType<TaskSceneController>();
 
         BuildResultText();
         BuildNextButton();
@@ -251,10 +254,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
-        levelsSucceeded = 0;
         StopBGMusic();
-        var tsc = GetComponentInParent<TaskSceneController>();
-        if (tsc!=null)tsc.OnLaunchPressed();
+        if (_taskController != null)
+        {
+            _taskController.payOverride = Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
+            _taskController.OnLaunchPressed();
+        }
     }
 
     public void OnNext()
@@ -709,10 +714,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         string failReason = materialDamage > 0.20f ? "Too much body damage!" : "Try to stay on the edges!";
 
+        int earnedPay = isLastLevel && _taskController != null
+            ? Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay())
+            : 0;
+
         string msg = isLastLevel
-            ? (success
-                ? $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\nPerfect work!"
-                : $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\n{failReason}")
+            ? $"All Done!\nLevels: {levelsSucceeded}/{levelShapes.Length}\n€{earnedPay} earned"
             : (success
                 ? $"Success!\nAccuracy: {accuracy:F1}%\nGreat sculpting work!"
                 : $"Fail!\nAccuracy: {accuracy:F1}%\n{failReason}");

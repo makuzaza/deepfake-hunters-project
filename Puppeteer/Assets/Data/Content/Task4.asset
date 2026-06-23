@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Paint the digital face mask carefully. Stay inside the outline.
   companyTagline: FaceForward Studio
   clientPortrait: {fileID: 0}
-  pay: 110
+  pay: 180
   riskLevel: 1
   riskDelta: 15
   sceneName: MiniGame4

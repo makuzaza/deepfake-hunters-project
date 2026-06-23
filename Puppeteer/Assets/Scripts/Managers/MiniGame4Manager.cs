@@ -51,6 +51,7 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Header("Audio")]
     public AudioClip bgMusicClip;
     private AudioSource _bgAudio;
+    private TaskSceneController _taskController;
 
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
@@ -104,6 +105,8 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
             _bgAudio.playOnAwake = false;
             _bgAudio.Play();
         }
+
+        _taskController = FindObjectOfType<TaskSceneController>();
 
         BuildResultText();
         BuildNextButton();
@@ -278,9 +281,12 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
-        levelsSucceeded = 0;
         StopBGMusic();
-        FindObjectOfType<TaskSceneController>()?.OnLaunchPressed();
+        if (_taskController != null)
+        {
+            _taskController.payOverride = Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
+            _taskController.OnLaunchPressed();
+        }
     }
 
     public void OnNext()
@@ -714,10 +720,12 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         string failReason = materialDamage > 0.20f ? "Too much outside painted!" : "Cover more of the face!";
 
+        int earnedPay = isLastLevel && _taskController != null
+            ? Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay())
+            : 0;
+
         string msg = isLastLevel
-            ? (success
-                ? $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\nPerfect painting!"
-                : $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\n{failReason}")
+            ? $"All Done!\nLevels: {levelsSucceeded}/{levelShapes.Length}\n€{earnedPay} earned"
             : (success
                 ? $"Success!\nPainted: {accuracy:F1}%\nGreat brush work!"
                 : $"Fail!\nPainted: {accuracy:F1}%\n{failReason}");
