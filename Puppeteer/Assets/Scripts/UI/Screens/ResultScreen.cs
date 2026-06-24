@@ -1,5 +1,7 @@
-// ResultScreen.cs — fixed version
-// Removes deprecated FindObjectOfType. Uses serialized PlayerStateSO ref instead.
+// ResultScreen.cs
+// CHANGE: the BOSS line is no longer hardcoded "you're a natural". It now reads
+// _data.bossLine, so success and fail show different boss text. Falls back to a
+// default only if the result didn't supply one.
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +37,13 @@ public class ResultScreen : UIScreen
         if (dianePost)   dianePost.text   = _data.dianePost;
 
         string name = playerState != null ? playerState.playerName : "Alex";
-        if (bossLine) bossLine.text = $"Great work today, {name}. You're a natural.";
+
+        // Boss line now comes from the result. Fall back to success text only if empty.
+        if (bossLine)
+        {
+            bossLine.text = !string.IsNullOrEmpty(_data.bossLine)
+                ? _data.bossLine.Replace("{name}", name)
+                : $"Great work today, {name}. You're a natural.";
+        }
     }
 }
