@@ -11912,7 +11912,6 @@ GameObject:
   - component: {fileID: 1979988618}
   - component: {fileID: 1979988617}
   - component: {fileID: 1979988616}
-  - component: {fileID: 1979988620}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -11920,19 +11919,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1979988620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979988615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2a12e9df22cfa45b7fd83a0927d0ea, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::AmbientTyping
-  typingClip: {fileID: 8300000, guid: b33ee92ca30fc2a40825f88ccdb9c77d, type: 3}
 --- !u!114 &1979988616
 MonoBehaviour:
   m_ObjectHideFlags: 0
