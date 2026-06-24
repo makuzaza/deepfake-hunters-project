@@ -18,7 +18,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnPlay()
     {
-        SceneManager.LoadScene("MainGame");
+        SceneManager.LoadScene("Office");
     }
 
     private void OnQuit()
