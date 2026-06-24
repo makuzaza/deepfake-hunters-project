@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EndingController : MonoBehaviour
 {
-    [Header("Ending display refs — drag from your Ending scene")]
+    [Header("Ending display refs")]
     [SerializeField] private TMP_Text   endingTitleLabel;
     [SerializeField] private TMP_Text   epilogueLabel;
     [SerializeField] private GameObject returnButton;
@@ -19,25 +19,13 @@ public class EndingController : MonoBehaviour
     private int      _lineIndex;
     private bool     _finished;
 
-    private static readonly string[] LinesComplicit = {
-        "You close the laptop.",
-        "Outside, the city looks the same.",
-        "Somewhere, Diane is watching a video of a face that isn't quite real.",
-        "She believes every word."
-    };
-
-    private static readonly string[] LinesWhistleblower = {
-        "You send the files.",
-        "Your access is revoked by morning.",
-        "Marcus calls. You don't pick up.",
-        "Diane's posts disappear. Something, at least, is real."
-    };
-
-    private static readonly string[] LinesPassive = {
-        "You refused. You walked away.",
-        "The work still got done. Someone else did it.",
-        "Outside, the city looks the same.",
-        "Diane is still watching."
+    private static readonly string[] EndingLines = {
+        "<color=#aaaaaa>A quick reality check:</color>",
+        "Deepfake files surged from <b>500K (2023) → 8M (2025)</b>.",
+        "Fraud attempts spiked <b>3,000%</b> in 2023,\nwith 1,740% growth in North America.",
+        "Voice cloning is the top attack vector:\n<b>cheap, fast, and convincing.</b>",
+        "Human detection rates are just <b>24.5%</b> for high-quality video.",
+        "You are more than just someone pressing buttons.\n\n<b>The question is: what role will you choose to play now?</b>"
     };
 
     private void Start()
@@ -57,14 +45,11 @@ public class EndingController : MonoBehaviour
 
         string title = data != null && !string.IsNullOrEmpty(data.title) ? data.title : type.ToString();
         if (endingTitleLabel != null) endingTitleLabel.text = title;
-        if (epilogueLabel    != null) epilogueLabel.text    = "";
 
-        _lines = type switch
-        {
-            EndingType.Whistleblower     => LinesWhistleblower,
-            EndingType.PassiveResistance => LinesPassive,
-            _                            => LinesComplicit,
-        };
+        if (epilogueLabel != null)
+            epilogueLabel.text = "<color=#555555><i>click to continue</i></color>";
+
+        _lines = EndingLines;
     }
 
     private void Update()
