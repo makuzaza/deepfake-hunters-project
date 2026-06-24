@@ -2814,7 +2814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0849e9524b6d86346863f042ae2df24c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4806,20 +4806,22 @@ MonoBehaviour:
   cardPrefab: {fileID: 6622711843586331360, guid: b984022a093846147aa46238fdf840bf, type: 3}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
+  playerState: {fileID: 11400000, guid: b6272559b213ec347b8e183d6c665b81, type: 2}
   contextLabel: COMPANY
   contextName: Human Agency
   contextTagline: "Digital Marketing \xB7 Est. 2019"
+  companyLogo: {fileID: 21300000, guid: 0849e9524b6d86346863f042ae2df24c, type: 3}
   items:
   - title: "HR \u2014 Onboarding Form"
     subline: Please complete before starting work
     tag: NEW
-    icon: {fileID: 0}
+    icon: {fileID: 3744026269663304717, guid: 2ad0b04eb41fd644e9ba0a55934abb4f, type: 3}
     action: 0
     completed: 0
   - title: Marcus
     subline: hey, let me know when you're settled in!
     tag: MSG
-    icon: {fileID: 0}
+    icon: {fileID: -2818059551253069982, guid: c289fbb07d4ada246ab6ba9da6aa62df, type: 3}
     action: 1
     completed: 0
   - title: Brief Queue
@@ -6394,7 +6396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2424553518018739129, guid: 73367421989df4b43a0dd273438f96b9, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6613,6 +6615,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e9331c6b95b7dde49ae7de89a2838cc6, type: 2}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
+  bossPortrait: {fileID: -2424553518018739129, guid: 73367421989df4b43a0dd273438f96b9, type: 3}
 --- !u!225 &1206062816
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6971,7 +6974,6 @@ MonoBehaviour:
   phoneScreen: {fileID: 1326764224}
   centerHeaderLabel: {fileID: 1648249690}
   btnHome: {fileID: 302586287}
-  mainMenuScene: MainMenu
 --- !u!114 &1227374337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7617,9 +7619,11 @@ MonoBehaviour:
   cardPrefab: {fileID: 6622711843586331360, guid: b984022a093846147aa46238fdf840bf, type: 3}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
+  playerState: {fileID: 0}
   contextLabel: COMPANY
   contextName: Human Agency
   contextTagline: "Digital Marketing \xB7 Est. 2019"
+  companyLogo: {fileID: 0}
   items:
   - title: "HR \u2014 Onboarding Form"
     subline: Please complete before starting work
@@ -8468,6 +8472,7 @@ MonoBehaviour:
   submitButton: {fileID: 1233573842}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
+  daisyPortrait: {fileID: 3744026269663304717, guid: 2ad0b04eb41fd644e9ba0a55934abb4f, type: 3}
   selectedColor: {r: 0.79, g: 0.69, b: 0.53, a: 1}
   unselectedColor: {r: 0.31, g: 0.2, b: 0.29, a: 1}
 --- !u!225 &1533623125
@@ -8920,6 +8925,7 @@ MonoBehaviour:
   replyFigureOut: {fileID: 430981016}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
+  marcusPortrait: {fileID: -2818059551253069982, guid: 4c462725259d3e64391165206955b807, type: 3}
 --- !u!225 &1604445941
 CanvasGroup:
   m_ObjectHideFlags: 0

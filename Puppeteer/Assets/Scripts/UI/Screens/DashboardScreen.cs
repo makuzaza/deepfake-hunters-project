@@ -1,24 +1,29 @@
 // DashboardScreen.cs — attach to Screen_Dashboard under ContentArea
-// CHANGE: speaker strip now shows a per-day welcome line (HR on day 1, Boss after)
-// instead of being cleared/blank.
+// CHANGE: per-day speaker line now keys off playerState.tasksCompleted, which only
+// increments when a task is genuinely finished. This is more reliable than `day`,
+// which can stay at 1 if you return to the dashboard via the Home button (Home does
+// not advance the day). Also logs the values so you can verify in the Console.
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DashboardScreen : UIScreen
 {
     [Header("References")]
-    [SerializeField] private Transform        listContent;   // the VLG Content inside Viewport
+    [SerializeField] private Transform        listContent;
     [SerializeField] private InfoCardView     cardPrefab;
     [SerializeField] private ContextPanelView contextPanel;
     [SerializeField] private SpeakerStripView speakerStrip;
 
-    [Header("Player state (drag PlayerState.asset) — for per-day speaker line")]
+    [Header("Player state (drag PlayerState.asset)")]
     [SerializeField] private PlayerStateSO playerState;
 
     [Header("Context for this screen")]
     [SerializeField] private string contextLabel   = "COMPANY";
     [SerializeField] private string contextName    = "Human Agency";
     [SerializeField] private string contextTagline = "Digital Marketing · Est. 2019";
+
+    [Header("Company logo — drag Human Agency sprite here")]
+    [SerializeField] private Sprite companyLogo;
 
     [Header("Inbox items (populated from GameFlowController)")]
     [SerializeField] public List<InboxItemData> items = new();
@@ -27,29 +32,34 @@ public class DashboardScreen : UIScreen
 
     protected override void OnBeforeShow()
     {
-        if (contextPanel) contextPanel.Apply(contextLabel, null, contextName, contextTagline);
+        if (contextPanel) contextPanel.Apply(contextLabel, companyLogo, contextName, contextTagline);
 
-        // Per-day speaker strip — HR welcomes on day 1, Boss greets afterward.
         if (speakerStrip)
         {
-            int day = playerState != null ? playerState.day : 1;
+            int done = playerState != null ? playerState.tasksCompleted : 0;
+            int day  = playerState != null ? playerState.day : 1;
             string name = playerState != null ? playerState.playerName : "there";
 
-            switch (day)
+            // DEBUG — remove once confirmed. Shows the real values in the Console
+            // every time the dashboard opens, so you can see whether they advance.
+            Debug.Log($"[Dashboard] day={day}  tasksCompleted={done}");
+
+            // Greeting keyed off how many tasks are DONE (reliable signal).
+            switch (done)
             {
-                case 1:
+                case 0:
                     speakerStrip.Say("HR DAISY",
                         "Hey! Welcome to your first day.");
                     break;
+                case 1:
+                    speakerStrip.Say("BOSS",
+                        "Welcome to day two, " + name + ". Tony asked for you specifically — take your next task.");
+                    break;
                 case 2:
                     speakerStrip.Say("BOSS",
-                        "Welcome to day two, " + name + ". Tony asked for you specifically — take a look at your task.");
+                        "Day three, " + name + ". There's something in the news, but your task comes first.");
                     break;
                 case 3:
-                    speakerStrip.Say("BOSS",
-                        "Day three already, " + name + ". There's something in the news, but your task comes first.");
-                    break;
-                case 4:
                     speakerStrip.Say("BOSS",
                         "Last day, " + name + ". One final task — make it count.");
                     break;
