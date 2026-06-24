@@ -24,6 +24,8 @@ public class DashboardScreen : UIScreen
 
     [Header("Company logo — drag Human Agency sprite here")]
     [SerializeField] private Sprite companyLogo;
+    [SerializeField] private Sprite daisyPortrait;
+    [SerializeField] private Sprite bossPortrait;
 
     [Header("Inbox items (populated from GameFlowController)")]
     [SerializeField] public List<InboxItemData> items = new();

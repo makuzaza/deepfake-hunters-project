@@ -29,7 +29,7 @@ public class BriefQueueScreen : UIScreen
     protected override void OnBeforeShow()
     {
         if (contextPanel) contextPanel.Apply("MANAGER", bossPortrait, "Boss", "Senior Account Director\n\"You came to the right place.\"");
-        if (speakerStrip) speakerStrip.Say("BOSS", "Here's your queue for today. Pick what you want to work on.");
+        if (speakerStrip) speakerStrip.Say("BOSS", "Here's your queue for today. Pick what you want to work on.",bossPortrait);
         RebuildCards();
     }
 

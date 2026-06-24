@@ -67,7 +67,7 @@ public class HRFormScreen : UIScreen
         ResetGroup(q2Data,q2Qualitative);
         ResetGroup(q3AI,q3Fired,q3Invisible);
         if (contextPanel) contextPanel.Apply("HR", daisyPortrait, "HR Daisy", "Human Resources");
-        if (speakerStrip) speakerStrip.Say("HR DAISY", "Hey! Thank you for being on time! Please fill in this form.");
+        if (speakerStrip) speakerStrip.Say("HR DAISY", "Hey! Thank you for being on time! Please fill in this form.",daisyPortrait);
     }
 
     private void ResetGroup(params Button[] btns)
