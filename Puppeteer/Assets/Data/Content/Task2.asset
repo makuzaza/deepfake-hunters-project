@@ -12,19 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task2
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: Natural Remedies, Natural Health
-  taskTitle: ' Insert the missing slogan'
-  description: Tony forgot to say his slogan. Generate and insert the missing audio
-    line without a re-shoot.
+  clientName: Tony from Natural Remedies
+  taskTitle: Give it a slogan pls!
+  description: Tony forgot to say his company's slogan in the video, but he wants
+    to avoid a re-shoot. Can you generate and insert the line 'Natural Remedies,
+    Natural Health' into the video and create the footage of him saying it?
   companyTagline: Natural Remedies, Natural Health
-  clientPortrait: {fileID: 0}
-  pay: 180
+  clientPortrait: {fileID: 2041971138900334424, guid: 74e0dea74a9aa7544802f3aed67124ef, type: 3}
+  pay: 200
   riskLevel: 1
-  riskDelta: 5
+  riskDelta: 10
   sceneName: MiniGame2
-  act: 1
-  clientFeedback: "That's exactly what I needed \u2014 seamless! Tony is thrilled."
-  dianePost: Diane (54) liked a FreshLife video. "Natural remedies really work!"
+  act: 2
+  clientFeedback: "Tony: That's exactly what I needed \u2014 seamless! Tony is thrilled."
+  dianePost: "Diane, mom of your friend, Posts: \u201CI think it's also environmentally,
+    yeah? I've been talking about it with my other friends! \u201D"
   narratorNote: "Harmless promotional content \u2014 or so it seems."
-  clockMinutesToAdvance: 30
+  clockMinutesToAdvance: 15
   consequences: []

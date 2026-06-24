@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task1
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: ' Tony'
+  clientName: Tony from Natural Remedies
   taskTitle: Clean up Tony's promo video
-  description: '
-
-    Remove stutters from Tony''s video. Find the task brief in
-    chat history.'
+  description: He messed up his lines a bit in their new promo video. Could you touch
+    it up, remove the stutters, and give them back once it's done? Thanks! If you
+    forget what to do later, just find it in our chat history.
   companyTagline: ' Natural Remedies, Natural Health'
-  clientPortrait: {fileID: 0}
-  pay: 100
+  clientPortrait: {fileID: 2041971138900334424, guid: 74e0dea74a9aa7544802f3aed67124ef, type: 3}
+  pay: 180
   riskLevel: 1
-  riskDelta: 0
+  riskDelta: 5
   sceneName: MG1
   act: 1
-  clientFeedback: 'Marcus: Good! You caught it perfectly. Tony is thrilled.'
-  dianePost: ' Diane (54) liked Tony''s new promo video. "Love this brand!"'
+  clientFeedback: 'Marcus: It''s perfect! Your masterpiece will be delivered to Natural
+    Remedies. Good job.'
+  dianePost: ' Diane (54) liked Tony''s new promo video. "It looks natural and healthy."'
   narratorNote: ' Just a stutter removal. Totally harmless.'
   clockMinutesToAdvance: 30
   consequences: []

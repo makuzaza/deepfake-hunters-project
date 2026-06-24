@@ -7,7 +7,7 @@ public class BriefQueueScreen : UIScreen
     [Header("References")]
     [SerializeField] private Transform      cardsParent;
     [SerializeField] private TaskCardView   cardPrefab;
-    [SerializeField] private Button         refuseButton;
+    
 
     [Header("Tasks (drag TaskSO assets here)")]
     [SerializeField] public List<TaskSO> availableTasks = new();
@@ -22,7 +22,7 @@ public class BriefQueueScreen : UIScreen
     protected override void Awake()
     {
         base.Awake();
-        refuseButton.onClick.AddListener(() => GameEvents.RefusedBoth());
+        
     }
 
     protected override void OnBeforeShow()

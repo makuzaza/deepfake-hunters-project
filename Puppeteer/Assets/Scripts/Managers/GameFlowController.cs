@@ -1,6 +1,12 @@
 // GameFlowController.cs — attach to Managers GameObject
 // ALL screen transitions live here. Uses serialized refs + GameEvents (no name lookups).
+//
+// ADDED:
+//   - Center header now updates on every screen (SetHeader + centerHeaderLabel ref).
+//   - Home button returns to the dashboard (btnHome + GoHome).
+//   - Existing 4-task ending logic kept unchanged.
 using UnityEngine;
+using TMPro;
 
 public class GameFlowController : MonoBehaviour
 {
@@ -18,6 +24,14 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private BriefQueueScreen  briefQueueScreen;
     [SerializeField] private ResultScreen      resultScreen;
     [SerializeField] private PhoneScreen       phoneScreen;
+
+    // ADDED — drag the DashboardTitle TMP here (the center header showing "Day - 2")
+    [Header("Center header — drag DashboardTitle TMP")]
+    [SerializeField] private TMP_Text centerHeaderLabel;
+
+    // ADDED — drag BtnHome here
+    [Header("Home button")]
+    [SerializeField] private UnityEngine.UI.Button btnHome;
 
     // Tracks whether HR form and chat have been done (to grey out those inbox cards)
     private bool _hrDone, _chatDone;
@@ -53,6 +67,10 @@ public class GameFlowController : MonoBehaviour
     private void Start()
     {
         playerState.NewGame();
+
+        // ADDED — wire the home button
+        if (btnHome) btnHome.onClick.AddListener(GoHome);
+
         screenManager.Show(ScreenId.OnbLogin);
     }
 
@@ -69,6 +87,7 @@ public class GameFlowController : MonoBehaviour
     {
         playerState.portraitIndex = idx;
         GameEvents.PlayerChanged();
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
         screenManager.Show(ScreenId.Dashboard);
     }
 
@@ -77,9 +96,18 @@ public class GameFlowController : MonoBehaviour
     {
         switch (action)
         {
-            case InboxAction.OpenHRForm:     screenManager.Show(ScreenId.HRForm);     break;
-            case InboxAction.OpenChat:       screenManager.Show(ScreenId.Chat);       break;
-            case InboxAction.OpenBriefQueue: screenManager.Show(ScreenId.BriefQueue); break;
+            case InboxAction.OpenHRForm:
+                SetHeader("HR ONBOARDING FORM");
+                screenManager.Show(ScreenId.HRForm);
+                break;
+            case InboxAction.OpenChat:
+                SetHeader("MESSAGES \u2014 MARCUS");
+                screenManager.Show(ScreenId.Chat);
+                break;
+            case InboxAction.OpenBriefQueue:
+                SetHeader("BRIEF QUEUE \u2014 DAY " + playerState.day);
+                screenManager.Show(ScreenId.BriefQueue);
+                break;
         }
     }
 
@@ -90,6 +118,7 @@ public class GameFlowController : MonoBehaviour
         GameEvents.PlayerChanged();
         _hrDone = true;
         MarkCardDone(InboxAction.OpenHRForm);
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
         screenManager.Show(ScreenId.Dashboard);
     }
 
@@ -98,6 +127,7 @@ public class GameFlowController : MonoBehaviour
     {
         _chatDone = true;
         MarkCardDone(InboxAction.OpenChat);
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
         screenManager.Show(ScreenId.Dashboard);
     }
 
@@ -106,6 +136,7 @@ public class GameFlowController : MonoBehaviour
     {
         playerState.noncoopCount++;
         AdvanceDay();
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
         screenManager.Show(ScreenId.Dashboard);
     }
 
@@ -121,16 +152,21 @@ public class GameFlowController : MonoBehaviour
         playerState.tasksCompleted++;
         resultScreen.Setup(r);
         phoneScreen.Setup(r);
+        SetHeader("RESULT");
         screenManager.Show(ScreenId.Result);
     }
 
     // ── Result → Next → Phone ─────────────────────────────────────────────
-    private void HandleNextAfterResult() { screenManager.Show(ScreenId.Phone); }
+    private void HandleNextAfterResult()
+    {
+        SetHeader("YOUR PHONE BUZZES");
+        screenManager.Show(ScreenId.Phone);
+    }
 
     // ── Phone closed → back to dashboard, advance day ────────────────────
     private void HandlePhoneClosed()
     {
-        // End the run after the last task (you have 4 live tasks: MG1, MiniGame2, MG3, MiniGame4).
+        // End the run after the last task (4 live tasks: MG1, MiniGame2, MG3, MiniGame4).
         const int TASKS_IN_DEMO = 4;
         if (playerState.tasksCompleted >= TASKS_IN_DEMO)
         {
@@ -141,8 +177,17 @@ public class GameFlowController : MonoBehaviour
             GameManager.I?.ForceEnding(ending);
             return;
         }
- 
+
         AdvanceDay();
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
+        screenManager.Show(ScreenId.Dashboard);
+    }
+
+    // ── Home button → return to the dashboard for the current day ─────────
+    public void GoHome()
+    {
+        Time.timeScale = 1f;
+        SetHeader("DASHBOARD \u2014 DAY " + playerState.day);
         screenManager.Show(ScreenId.Dashboard);
     }
 
@@ -150,6 +195,11 @@ public class GameFlowController : MonoBehaviour
     private void AdvanceDay()
     {
         playerState.SetTime(playerState.day + 1, "09:00");
+    }
+
+    private void SetHeader(string text)
+    {
+        if (centerHeaderLabel) centerHeaderLabel.text = text;
     }
 
     private void MarkCardDone(InboxAction action)
