@@ -59,6 +59,10 @@ public class Task1Manager : MonoBehaviour
     public TextMeshProUGUI failText1;
     public TextMeshProUGUI failText2;
 
+    [Header("Audio")]
+    public AudioClip qteBarClip;
+    private AudioSource _qteAudio;
+
     void Start()
     {
         editButton.interactable = false;
@@ -69,7 +73,23 @@ public class Task1Manager : MonoBehaviour
 
         pauseButton.onClick.AddListener(OnPausePressed);
 
+        if (qteBarClip != null)
+        {
+            _qteAudio = gameObject.AddComponent<AudioSource>();
+            _qteAudio.clip = qteBarClip;
+            _qteAudio.loop = true;
+            _qteAudio.spatialBlend = 0f;
+            _qteAudio.playOnAwake = false;
+            _qteAudio.Play();
+        }
+
         qte.StartQTE();
+    }
+
+    private void StopQTESound()
+    {
+        if (_qteAudio != null && _qteAudio.isPlaying)
+            _qteAudio.Stop();
     }
 
     void Update()
@@ -122,6 +142,7 @@ public class Task1Manager : MonoBehaviour
     {
         success = true;
         qte.isRunning = false;
+        StopQTESound();
 
         // Stop animation
         if (videoAnimator != null)
@@ -198,6 +219,7 @@ public class Task1Manager : MonoBehaviour
         countdownText.text = "0";
 
         qte.isRunning = false;
+        StopQTESound();
         feedbackText.text = failDialogue;
         // TODO: play (and create) outro animation here
     }
@@ -205,6 +227,7 @@ public class Task1Manager : MonoBehaviour
     IEnumerator MarcusTakeoverSequence()
     {
         qte.isRunning = false;
+        StopQTESound();
 
         // Disable all buttons
         pauseButton.interactable = false;

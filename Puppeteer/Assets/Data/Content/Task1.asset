@@ -20,7 +20,7 @@ MonoBehaviour:
     chat history.'
   companyTagline: ' Natural Remedies, Natural Health'
   clientPortrait: {fileID: 0}
-  pay: 80
+  pay: 100
   riskLevel: 1
   riskDelta: 0
   sceneName: MG1

@@ -9,6 +9,8 @@ public class TaskSceneController : MonoBehaviour
     [Header("Drag the shared TaskChannelSO asset here")]
     [SerializeField] private TaskChannelSO channel;
 
+    [HideInInspector] public int payOverride = -1;  // set by minigames for proportional pay
+
     private TaskSO _task;
     private bool _completed;   // guard: OnLaunchPressed can be wired to several buttons
 
@@ -23,6 +25,8 @@ public class TaskSceneController : MonoBehaviour
         // to populate their task UI here.
     }
 
+    public int GetTaskPay() => _task != null ? _task.pay : 0;
+
     // Wire to the Launch / Confirm / Complete / Skip button(s) in the task scene.
     // Safe to wire to more than one button — only the first press counts.
     public void OnLaunchPressed()
@@ -36,7 +40,7 @@ public class TaskSceneController : MonoBehaviour
         channel.Complete(new TaskResult
         {
             launched       = true,
-            payEarned      = _task != null ? _task.pay : 0,
+            payEarned      = payOverride >= 0 ? payOverride : (_task != null ? _task.pay : 0),
             riskDelta      = _task != null ? _task.riskDelta : 10,
             // USE THE PER-TASK STRINGS so every task reads differently.
             clientFeedback = !string.IsNullOrEmpty(_task?.clientFeedback)

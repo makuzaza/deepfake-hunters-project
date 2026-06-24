@@ -43,7 +43,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
     public int maxUndoSteps = 15;
 
     [Header("Debug")]
-    public bool debugMask = false;   // paint overlay red=body / teal=outside on start
+    public bool debugMask = false;
+
+    [Header("Audio")]
+    public AudioClip bgMusicClip;
+    private AudioSource _bgAudio;
+    private TaskSceneController _taskController;
 
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
@@ -88,12 +93,30 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
             brushSlider.onValueChanged.AddListener(v => brushRadius = v);
         }
 
+        if (bgMusicClip != null)
+        {
+            _bgAudio = gameObject.AddComponent<AudioSource>();
+            _bgAudio.clip = bgMusicClip;
+            _bgAudio.loop = true;
+            _bgAudio.spatialBlend = 0f;
+            _bgAudio.playOnAwake = false;
+            _bgAudio.Play();
+        }
+
+        _taskController = GetComponentInParent<TaskSceneController>() ?? FindObjectOfType<TaskSceneController>();
+
         BuildResultText();
         BuildNextButton();
         BuildCompleteButton();
         BuildTopHUD();
         BuildMarcusText();
         BuildOverlay();
+    }
+
+    private void StopBGMusic()
+    {
+        if (_bgAudio != null && _bgAudio.isPlaying)
+            _bgAudio.Stop();
     }
 
     Font GetFont() => pixelFont != null
@@ -231,9 +254,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
-        levelsSucceeded = 0;
-        var tsc = GetComponentInParent<TaskSceneController>();
-        if (tsc!=null)tsc.OnLaunchPressed();
+        StopBGMusic();
+        if (_taskController != null)
+        {
+            _taskController.payOverride = Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
+            _taskController.OnLaunchPressed();
+        }
     }
 
     public void OnNext()
@@ -688,10 +714,12 @@ public class SculptingManager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         string failReason = materialDamage > 0.20f ? "Too much body damage!" : "Try to stay on the edges!";
 
+        int earnedPay = isLastLevel && _taskController != null
+            ? Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay())
+            : 0;
+
         string msg = isLastLevel
-            ? (success
-                ? $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\nPerfect work!"
-                : $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\n{failReason}")
+            ? $"All Done!\nLevels: {levelsSucceeded}/{levelShapes.Length}\n€{earnedPay} earned"
             : (success
                 ? $"Success!\nAccuracy: {accuracy:F1}%\nGreat sculpting work!"
                 : $"Fail!\nAccuracy: {accuracy:F1}%\n{failReason}");

@@ -981,6 +981,7 @@ MonoBehaviour:
   handFollowSpeed: 14
   maxUndoSteps: 15
   debugMask: 1
+  bgMusicClip: {fileID: 8300000, guid: c4f81b2e3d9a7e6f0b5c2d1e4f3a8b9c, type: 3}
 --- !u!114 &1664131254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1742,16 +1743,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1638825999}
-        m_TargetAssemblyTypeName: TaskSceneController, Assembly-CSharp
-        m_MethodName: OnLaunchPressed
+      - m_Target: {fileID: 1664131253}
+        m_TargetAssemblyTypeName: SculptingManager, Assembly-CSharp
+        m_MethodName: OnConfirm
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3200000000

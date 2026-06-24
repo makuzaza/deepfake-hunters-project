@@ -18,7 +18,7 @@ MonoBehaviour:
     line without a re-shoot.
   companyTagline: Natural Remedies, Natural Health
   clientPortrait: {fileID: 0}
-  pay: 120
+  pay: 180
   riskLevel: 1
   riskDelta: 5
   sceneName: MiniGame2

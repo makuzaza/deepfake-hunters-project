@@ -48,6 +48,11 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
     [Header("Debug")]
     public bool debugMask = false;
 
+    [Header("Audio")]
+    public AudioClip bgMusicClip;
+    private AudioSource _bgAudio;
+    private TaskSceneController _taskController;
+
     // ── private ────────────────────────────────────────────────────
     Texture2D     overlayTex;
     RectTransform overlayRect;
@@ -91,6 +96,18 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
             brushSlider.onValueChanged.AddListener(v => brushRadius = v);
         }
 
+        if (bgMusicClip != null)
+        {
+            _bgAudio = gameObject.AddComponent<AudioSource>();
+            _bgAudio.clip = bgMusicClip;
+            _bgAudio.loop = true;
+            _bgAudio.spatialBlend = 0f;
+            _bgAudio.playOnAwake = false;
+            _bgAudio.Play();
+        }
+
+        _taskController = FindObjectOfType<TaskSceneController>();
+
         BuildResultText();
         BuildNextButton();
         BuildCompleteButton();
@@ -98,6 +115,12 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
         BuildMarcusText();
         WireSceneButtons();
         BuildOverlay();
+    }
+
+    private void StopBGMusic()
+    {
+        if (_bgAudio != null && _bgAudio.isPlaying)
+            _bgAudio.Stop();
     }
 
     void WireSceneButtons()
@@ -258,8 +281,12 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         if (completeButton != null) completeButton.gameObject.SetActive(false);
 
-        levelsSucceeded = 0;
-        Time.timeScale  = 0f;
+        StopBGMusic();
+        if (_taskController != null)
+        {
+            _taskController.payOverride = Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
+            _taskController.OnLaunchPressed();
+        }
     }
 
     public void OnNext()
@@ -693,10 +720,12 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
 
         string failReason = materialDamage > 0.20f ? "Too much outside painted!" : "Cover more of the face!";
 
+        int earnedPay = isLastLevel && _taskController != null
+            ? Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay())
+            : 0;
+
         string msg = isLastLevel
-            ? (success
-                ? $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\nPerfect painting!"
-                : $"All Done!\nLevels passed: {levelsSucceeded}/{levelShapes.Length}\n{failReason}")
+            ? $"All Done!\nLevels: {levelsSucceeded}/{levelShapes.Length}\n€{earnedPay} earned"
             : (success
                 ? $"Success!\nPainted: {accuracy:F1}%\nGreat brush work!"
                 : $"Fail!\nPainted: {accuracy:F1}%\n{failReason}");

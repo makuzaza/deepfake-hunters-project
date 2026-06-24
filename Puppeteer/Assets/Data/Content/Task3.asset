@@ -18,7 +18,7 @@ MonoBehaviour:
     to twist the meaning.
   companyTagline: ' Natural Remedies, Natural Health'
   clientPortrait: {fileID: 0}
-  pay: 150
+  pay: 130
   riskLevel: 2
   riskDelta: 15
   sceneName: MG3
