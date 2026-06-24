@@ -284,8 +284,18 @@ public class MiniGame4Manager : MonoBehaviour, IPointerDownHandler, IDragHandler
         StopBGMusic();
         if (_taskController != null)
         {
-            _taskController.payOverride = Mathf.RoundToInt((float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
-            _taskController.OnLaunchPressed();
+            // FAIL if no levels were passed -> show the Marcus-takeover fail result.
+            if (levelsSucceeded <= 0)
+            {
+                _taskController.OnFailedTakeover();
+            }
+            else
+            {
+                // Success -> pay scaled by how many levels passed.
+                _taskController.payOverride = Mathf.RoundToInt(
+                    (float)levelsSucceeded / levelShapes.Length * _taskController.GetTaskPay());
+                _taskController.OnLaunchPressed();
+            }
         }
     }
 

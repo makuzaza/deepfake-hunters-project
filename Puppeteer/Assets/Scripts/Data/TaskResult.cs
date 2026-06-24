@@ -5,7 +5,8 @@ public struct TaskResult
     public bool   launched;
     public int    payEarned;
     public int    riskDelta;
-    public string clientFeedback;   // shown in Result screen
+    public string clientFeedback;   // shown in Result screen phone message
+    public string bossLine;         // shown as the BOSS line at the bottom of Result
     public string dianePost;        // shown in Phone screen
-    public string narratorNote;     // italic note under phone (e.g. "Just a normal post.")
+    public string narratorNote;     // italic note under phone
 }

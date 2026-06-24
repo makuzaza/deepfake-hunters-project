@@ -24,7 +24,7 @@ public class Task1Manager : MonoBehaviour
     public TextMeshProUGUI successText2;
 
     //Video Animation stuff
-    [Header("Video Thumbnail & Animation Stuff :)")] 
+    [Header("Video Thumbnail & Animation Stuff :)")]
     public Image videoImage;          // The UI Image showing the animation
     public Sprite pauseSprite;        // Sprite shown when success happens
     public Sprite editedSprite;       // Sprite shown after Edit
@@ -308,14 +308,16 @@ public class Task1Manager : MonoBehaviour
         if (continueButton != null) continueButton.SetActive(true);
     }
 
+    // CHANGED: the Continue button on the FAIL screen now routes to the fail path,
+    // so the Result/Phone screens show failure text (not the success "you're a natural").
+    // OnFailedTakeover() already sets pay to 0 internally, so no payOverride needed here.
     public void OnContinuePressed()
     {
         var controller = GetComponentInParent<TaskSceneController>()
                       ?? FindObjectOfType<TaskSceneController>();
         if (controller != null)
         {
-            controller.payOverride = 0;
-            controller.OnLaunchPressed();
+            controller.OnFailedTakeover();
         }
     }
 
