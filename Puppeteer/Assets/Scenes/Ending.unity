@@ -153,10 +153,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndingController
   endingTitleLabel: {fileID: 1837447121}
   epilogueLabel: {fileID: 1643540921}
+  returnButton: {fileID: 1210394879}
   endingComplicit: {fileID: 11400000, guid: 1c686ae7ea3b4414483b31ec4bcc8c7e, type: 2}
   endingWhistleblower: {fileID: 11400000, guid: 4c8188fc2f534c341b42cc37bb97888b, type: 2}
   endingPassive: {fileID: 11400000, guid: e8804cfcff0064b42ae026ab34331909, type: 2}
-  returnButton: {fileID: 1210394879}
+  endingTitle: Congratulations!
+  epilogueText: 'You completed the challenge.
+
+
+    You just spent a few minutes
+    spotting deepfakes. In the real world, it''s much harder.
+
+
+    Deepfake content
+    has exploded from 500,000 files in 2023 to an estimated 8 million in 2026.
+
+
+    Every
+    share, click, and reaction helps shape what others believe.
+
+
+    Stay skeptical.
+
+    Verify
+    before sharing!'
   typingClip: {fileID: 8300000, guid: b33ee92ca30fc2a40825f88ccdb9c77d, type: 3}
 --- !u!114 &227552757
 MonoBehaviour:
@@ -668,7 +688,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -337.70715, y: 0, z: -293.88354, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -955,7 +975,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Return to Office
+  m_text: Start new game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}

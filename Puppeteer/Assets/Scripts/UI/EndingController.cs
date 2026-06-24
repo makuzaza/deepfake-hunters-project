@@ -68,5 +68,5 @@ public class EndingController : MonoBehaviour
         if (returnButton != null) returnButton.SetActive(true);
     }
 
-    public void GoToMainMenu() => SceneManager.LoadScene("Office");
+    public void GoToMainMenu() => SceneManager.LoadScene("MainMenu");
 }
