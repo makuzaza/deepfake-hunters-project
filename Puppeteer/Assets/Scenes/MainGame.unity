@@ -4817,7 +4817,7 @@ MonoBehaviour:
   - title: "HR \u2014 Onboarding Form"
     subline: Please complete before starting work
     tag: NEW
-    icon: {fileID: 3744026269663304717, guid: 2ad0b04eb41fd644e9ba0a55934abb4f, type: 3}
+    icon: {fileID: 1166218042238767668, guid: 59a44c0d293cd164cb63635bce95bf03, type: 3}
     action: 0
     completed: 0
   - title: Marcus
@@ -8476,7 +8476,7 @@ MonoBehaviour:
   submitButton: {fileID: 1233573842}
   contextPanel: {fileID: 852742738}
   speakerStrip: {fileID: 278872907}
-  daisyPortrait: {fileID: 3744026269663304717, guid: 2ad0b04eb41fd644e9ba0a55934abb4f, type: 3}
+  daisyPortrait: {fileID: 1166218042238767668, guid: 59a44c0d293cd164cb63635bce95bf03, type: 3}
   selectedColor: {r: 0.79, g: 0.69, b: 0.53, a: 1}
   unselectedColor: {r: 0.31, g: 0.2, b: 0.29, a: 1}
 --- !u!225 &1533623125
