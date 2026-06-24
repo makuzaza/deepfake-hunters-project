@@ -4811,6 +4811,8 @@ MonoBehaviour:
   contextName: Human Agency
   contextTagline: "Digital Marketing \xB7 Est. 2019"
   companyLogo: {fileID: 21300000, guid: 0849e9524b6d86346863f042ae2df24c, type: 3}
+  daisyPortrait: {fileID: 0}
+  bossPortrait: {fileID: 0}
   items:
   - title: "HR \u2014 Onboarding Form"
     subline: Please complete before starting work
@@ -4825,7 +4827,7 @@ MonoBehaviour:
     action: 1
     completed: 0
   - title: Brief Queue
-    subline: 2 tasks available today
+    subline: Tasks for today
     tag: 2
     icon: {fileID: 0}
     action: 2
@@ -7624,6 +7626,8 @@ MonoBehaviour:
   contextName: Human Agency
   contextTagline: "Digital Marketing \xB7 Est. 2019"
   companyLogo: {fileID: 0}
+  daisyPortrait: {fileID: 0}
+  bossPortrait: {fileID: 0}
   items:
   - title: "HR \u2014 Onboarding Form"
     subline: Please complete before starting work
@@ -11097,7 +11101,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
