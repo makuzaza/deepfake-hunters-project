@@ -10,7 +10,6 @@ public class ChatScreen : UIScreen
     [SerializeField] private TMP_Text   messageB;    // "Want me to walk you through..."
 
     [Header("Reply Buttons")]
-    [SerializeField] private Button replyWalkThrough;  // "Walk me through it."
     [SerializeField] private Button replyFigureOut;    // "I'll figure it out."
 
     [Header("Context")]
@@ -21,7 +20,6 @@ public class ChatScreen : UIScreen
     protected override void Awake()
     {
         base.Awake();
-        replyWalkThrough.onClick.AddListener(() => GameEvents.ChatReplied());
         replyFigureOut.onClick.AddListener(()   => GameEvents.ChatReplied());
     }
 
