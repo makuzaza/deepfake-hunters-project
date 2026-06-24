@@ -391,7 +391,7 @@ MonoBehaviour:
   m_text: B. Having a positive impact on others
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -651,7 +651,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -909,7 +909,7 @@ MonoBehaviour:
   m_text: M
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_text: Q2. HOW DO YOU PREFER RESULTS?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2807,14 +2807,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.308176, g: 0.56205696, b: 0.61635214, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0849e9524b6d86346863f042ae2df24c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2980,7 +2980,7 @@ MonoBehaviour:
   m_text: B. Qualitative and emotional feedback
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3152,7 +3152,7 @@ MonoBehaviour:
   m_text: A. Earning a fortune
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3827,7 +3827,7 @@ MonoBehaviour:
   m_text: "Hey Alex! I'm Marcus. Looks like we're on the same team \U0001F60A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4549,7 +4549,7 @@ MonoBehaviour:
     yourself?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4767,7 +4767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &753719464
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5043,7 +5043,7 @@ MonoBehaviour:
   m_text: A. Being replaced by AI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5569,10 +5569,10 @@ RectTransform:
   - {fileID: 1924954254}
   m_Father: {fileID: 753719464}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -560, y: 395}
-  m_SizeDelta: {x: 1120, y: 790}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 790}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873838702
 MonoBehaviour:
@@ -5801,7 +5801,7 @@ MonoBehaviour:
   m_text: INTERNAL CHAT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6394,7 +6394,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -2424553518018739129, guid: 73367421989df4b43a0dd273438f96b9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6472,7 +6472,7 @@ MonoBehaviour:
   m_text: "Marcus \u2014 Online"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7426,7 +7426,7 @@ MonoBehaviour:
   m_text: Walk me through it
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7985,7 +7985,7 @@ MonoBehaviour:
   m_text: B. Getting fired due to a critical failure
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8814,7 +8814,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 24}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1593464200
 MonoBehaviour:
@@ -9470,7 +9470,7 @@ MonoBehaviour:
   m_text: EMPLOYEE ONBOARDING FORM
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10342,7 +10342,7 @@ MonoBehaviour:
   m_text: C. Receiving recognition/validation
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10479,7 +10479,7 @@ MonoBehaviour:
   m_text: A. Hard data and metrics
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10985,7 +10985,7 @@ MonoBehaviour:
   m_text: Q3. WHAT BRINGS YOU THE BIGGEST CONCERN IN YOUR CAREER?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11571,7 +11571,7 @@ MonoBehaviour:
   m_text: "Submit & return to desk \u2192"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11783,7 +11783,7 @@ MonoBehaviour:
   m_text: I'll figure it out
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -12041,7 +12041,7 @@ MonoBehaviour:
   m_text: Q1. WHAT BRINGS YOU THE GREATEST FULFILMENT AT WORK?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5951f02a87303094387d13c00615c510, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 5951f02a87303094387d13c00615c510, type: 2}
+  m_sharedMaterial: {fileID: 8701818699545665761, guid: 5951f02a87303094387d13c00615c510, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
