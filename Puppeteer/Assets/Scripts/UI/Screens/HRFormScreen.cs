@@ -25,6 +25,7 @@ public class HRFormScreen : UIScreen
     [Header("Context")]
     [SerializeField] private ContextPanelView contextPanel;
     [SerializeField] private SpeakerStripView speakerStrip;
+    [SerializeField] private Sprite daisyPortrait;
 
     [Header("Colors")]
     [SerializeField] private Color selectedColor   = new Color(0.79f, 0.69f, 0.53f);
@@ -65,8 +66,8 @@ public class HRFormScreen : UIScreen
         ResetGroup(q1Money,q1Impact,q1Recognition);
         ResetGroup(q2Data,q2Qualitative);
         ResetGroup(q3AI,q3Fired,q3Invisible);
-        if (contextPanel) contextPanel.Apply("HR", null, "HR Daisy", "Human Resources");
-        if (speakerStrip) speakerStrip.Say("HR DAISY", "Hey! Thank you for being on time! Please fill in this form.");
+        if (contextPanel) contextPanel.Apply("HR", daisyPortrait, "HR Daisy", "Human Resources");
+        if (speakerStrip) speakerStrip.Say("HR DAISY", "Hey! Thank you for being on time! Please fill in this form.",daisyPortrait);
     }
 
     private void ResetGroup(params Button[] btns)

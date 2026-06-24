@@ -7,7 +7,7 @@ public class BriefQueueScreen : UIScreen
     [Header("References")]
     [SerializeField] private Transform      cardsParent;
     [SerializeField] private TaskCardView   cardPrefab;
-    [SerializeField] private Button         refuseButton;
+    
 
     [Header("Tasks (drag TaskSO assets here)")]
     [SerializeField] public List<TaskSO> availableTasks = new();
@@ -15,6 +15,7 @@ public class BriefQueueScreen : UIScreen
     [Header("Context")]
     [SerializeField] private ContextPanelView contextPanel;
     [SerializeField] private SpeakerStripView speakerStrip;
+    [SerializeField] private Sprite bossPortrait;
 
     private readonly List<TaskCardView>  _spawned    = new();
     private readonly HashSet<TaskSO>     _takenTasks = new();
@@ -22,13 +23,13 @@ public class BriefQueueScreen : UIScreen
     protected override void Awake()
     {
         base.Awake();
-        refuseButton.onClick.AddListener(() => GameEvents.RefusedBoth());
+        
     }
 
     protected override void OnBeforeShow()
     {
-        if (contextPanel) contextPanel.Apply("MANAGER", null, "Boss", "Senior Account Director\n\"You came to the right place.\"");
-        if (speakerStrip) speakerStrip.Say("BOSS", "Here's your queue for today. Pick what you want to work on.");
+        if (contextPanel) contextPanel.Apply("MANAGER", bossPortrait, "Boss", "Senior Account Director\n\"You came to the right place.\"");
+        if (speakerStrip) speakerStrip.Say("BOSS", "Here's your queue for today. Pick what you want to work on.",bossPortrait);
         RebuildCards();
     }
 

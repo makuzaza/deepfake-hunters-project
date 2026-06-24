@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task4
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: Tony
+  clientName: Tony from Natural Remedies
   taskTitle: Apply beauty filter to client video
   description: Paint the digital face mask carefully. Stay inside the outline.
   companyTagline: FaceForward Studio
-  clientPortrait: {fileID: 0}
-  pay: 180
-  riskLevel: 1
-  riskDelta: 15
+  clientPortrait: {fileID: 2041971138900334424, guid: 74e0dea74a9aa7544802f3aed67124ef, type: 3}
+  pay: 800
+  riskLevel: 3
+  riskDelta: 30
   sceneName: MiniGame4
-  act: 1
+  act: 4
   clientFeedback: 'Marcus: Flawless! The client will never know the difference.'
-  dianePost: 'Diane (31) liked a FaceForward Studio post. "Love this beauty filter!"'
+  dianePost: Diane (54) liked a FaceForward Studio post. "Love this beauty filter!"
   narratorNote: A beauty filter. Just pixels. Right?
-  clockMinutesToAdvance: 30
+  clockMinutesToAdvance: 15
   consequences: []

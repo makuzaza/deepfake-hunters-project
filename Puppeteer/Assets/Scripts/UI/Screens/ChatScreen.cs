@@ -16,6 +16,7 @@ public class ChatScreen : UIScreen
     [Header("Context")]
     [SerializeField] private ContextPanelView contextPanel;
     [SerializeField] private SpeakerStripView speakerStrip;
+    [SerializeField] private Sprite marcusPortrait;
 
     protected override void Awake()
     {
@@ -26,7 +27,7 @@ public class ChatScreen : UIScreen
 
     protected override void OnBeforeShow()
     {
-        if (contextPanel) contextPanel.Apply("COLLEAGUE", null, "Marcus", "Junior Account Manager\nJoined 3 months ago");
-        if (speakerStrip) speakerStrip.Say("MARCUS", "Hey! I'm Marcus. Looks like we are on the same team.");
+        if (contextPanel) contextPanel.Apply("COLLEAGUE", marcusPortrait, "Marcus", "Junior Account Manager\nJoined 3 months ago");
+        if (speakerStrip) speakerStrip.Say("MARCUS", "Hey! I'm Marcus. Looks like we are on the same team.",marcusPortrait);
     }
 }

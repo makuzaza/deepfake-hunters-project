@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3360a5ff3bcc4b989797edbc1b038e83, type: 3}
   m_Name: Task3
   m_EditorClassIdentifier: Assembly-CSharp::TaskSO
-  clientName: ' Tony / Natural Remedies'
+  clientName: Tony from Natural Remedies
   taskTitle: Neutralise the competitor clip
-  description: A doctor criticised organic remedies. Cut the damaging statements
-    to twist the meaning.
+  description: A traditional hospital has just released a video interview with a
+    doctor criticising organic remedies. 'Neutralise' this narrative. We're not changing
+    the doctor's words. Could you just cut out the damaging clauses to twist the
+    meaning, please?
   companyTagline: ' Natural Remedies, Natural Health'
-  clientPortrait: {fileID: 0}
-  pay: 130
+  clientPortrait: {fileID: 2041971138900334424, guid: 74e0dea74a9aa7544802f3aed67124ef, type: 3}
+  pay: 700
   riskLevel: 2
   riskDelta: 15
   sceneName: MG3
@@ -28,6 +30,6 @@ MonoBehaviour:
   dianePost: "Diane (54) re-shared the edited clip. \"See \u2014 even doctors admit
     natural is better!\""
   narratorNote: Context clipping. A real person's words now mean the opposite.
-  clockMinutesToAdvance: 60
+  clockMinutesToAdvance: 15
   consequences:
   - {fileID: 0}
