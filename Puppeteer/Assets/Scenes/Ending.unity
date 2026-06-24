@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndingController
   endingTitleLabel: {fileID: 1837447121}
   epilogueLabel: {fileID: 1643540921}
+  returnButton: {fileID: 1210394879}
   endingComplicit: {fileID: 11400000, guid: 1c686ae7ea3b4414483b31ec4bcc8c7e, type: 2}
   endingWhistleblower: {fileID: 11400000, guid: 4c8188fc2f534c341b42cc37bb97888b, type: 2}
   endingPassive: {fileID: 11400000, guid: e8804cfcff0064b42ae026ab34331909, type: 2}
@@ -491,7 +492,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1210394882}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 227552756}
+        m_TargetAssemblyTypeName: EndingController, Assembly-CSharp
+        m_MethodName: GoToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument:
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1210394882
 MonoBehaviour:
   m_ObjectHideFlags: 0

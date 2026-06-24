@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ee90538e394ebba69d0328e089fb07, type: 3}
   m_Name: Ending_C_Passive
   m_EditorClassIdentifier: Assembly-CSharp::EndingSO
-  endingType: 0
-  title: 
-  epilogueText: 
-  condition: 
-  dianeOutcome: 
-  unlockCondition: 
+  endingType: 2
+  title: Passive Resistance
+  epilogueText:
+  condition:
+  dianeOutcome:
+  unlockCondition:
+  lines:
+  - You refused. You walked away.
+  - The work still got done. Someone else did it.
+  - Outside, the city looks the same.
+  - Diane is still watching.
