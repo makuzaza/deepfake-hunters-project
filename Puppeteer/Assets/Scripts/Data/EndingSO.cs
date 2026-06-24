@@ -1,4 +1,3 @@
-// EndingSO.cs — fixed version with all fields
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Puppeteer/Ending")]
@@ -11,4 +10,6 @@ public class EndingSO : ScriptableObject
     public string     condition;
     public string     dianeOutcome;
     public string     unlockCondition;
+    [TextArea(1,2)]
+    public string[]   lines;
 }

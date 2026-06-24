@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ee90538e394ebba69d0328e089fb07, type: 3}
   m_Name: Ending_B_Whistleblower
   m_EditorClassIdentifier: Assembly-CSharp::EndingSO
-  endingType: 0
-  title: 
-  epilogueText: 
-  condition: 
-  dianeOutcome: 
-  unlockCondition: 
+  endingType: 1
+  title: Whistleblower
+  epilogueText:
+  condition:
+  dianeOutcome:
+  unlockCondition:
+  lines:
+  - You send the files.
+  - Your access is revoked by morning.
+  - Marcus calls. You don't pick up.
+  - Diane's posts disappear. Something, at least, is real.

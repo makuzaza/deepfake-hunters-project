@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Ending_A_Complicit
   m_EditorClassIdentifier: Assembly-CSharp::EndingSO
   endingType: 0
-  title: 
-  epilogueText: 
-  condition: 
-  dianeOutcome: 
-  unlockCondition: 
+  title: Complicit
+  epilogueText:
+  condition:
+  dianeOutcome:
+  unlockCondition:
+  lines:
+  - You close the laptop.
+  - Outside, the city looks the same.
+  - Somewhere, Diane is watching a video of a face that isn't quite real.
+  - She believes every word.
