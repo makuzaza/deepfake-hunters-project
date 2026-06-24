@@ -1,21 +1,42 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Interactable : MonoBehaviour
 {
     [Header("Interaction Settings")]
     public string interactionName = "Interact";
-    public KeyCode key = KeyCode.E;
 
     private bool playerInRange = false;
 
-    // prompt that tells the player to press E to interact
     public GameObject prompt;
+    public GameObject startPanel;
 
-    void Update()
+    private PlayerControls controls;
+
+    void Awake()
     {
-        if (playerInRange && Input.GetKeyDown(key))
+        controls = new PlayerControls();
+        controls.Player.Interact.performed += ctx => OnInteract();
+    }
+
+    void OnEnable()
+    {
+        controls.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
+
+    private void OnInteract()
+    {
+        if (playerInRange)
         {
             Debug.Log("Interacted with: " + interactionName);
+
+            if (startPanel != null)
+                startPanel.SetActive(true);
         }
     }
 
@@ -24,21 +45,16 @@ public class Interactable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            
-            if (prompt != null) prompt.SetActive(true);// Prompt activation 
+            if (prompt != null) prompt.SetActive(true);
         }
     }
-
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            if (prompt != null) prompt.SetActive(false); // Prompt deactivation
+            if (prompt != null) prompt.SetActive(false);
         }
-
     }
-
-
 }
