@@ -1,6 +1,6 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class EndingController : MonoBehaviour
@@ -15,70 +15,58 @@ public class EndingController : MonoBehaviour
     [SerializeField] private EndingSO endingWhistleblower;
     [SerializeField] private EndingSO endingPassive;
 
-    private string[] _lines;
-    private int      _lineIndex;
-    private bool     _finished;
+    [Header("Content")]
+    [SerializeField] private string endingTitle = "Congratulations!";
+    [SerializeField] [TextArea(6, 20)] private string epilogueText =
+        "You completed the challenge.\n\n" +
+        "You just spent a few minutes spotting deepfakes. In the real world, it's much harder.\n\n" +
+        "Deepfake content has exploded from 500,000 files in 2023 to an estimated 8 million in 2026.\n\n" +
+        "Every share, click, and reaction helps shape what others believe.\n\n" +
+        "Stay skeptical.\n" +
+        "Verify before sharing!";
 
-    private static readonly string[] EndingLines = {
-        "<color=#aaaaaa>A quick reality check:</color>",
-        "Deepfake files surged from <b>500K (2023) → 8M (2025)</b>.",
-        "Fraud attempts spiked <b>3,000%</b> in 2023,\nwith 1,740% growth in North America.",
-        "Voice cloning is the top attack vector:\n<b>cheap, fast, and convincing.</b>",
-        "Human detection rates are just <b>24.5%</b> for high-quality video.",
-        "You are more than just someone pressing buttons.\n\n<b>The question is: what role will you choose to play now?</b>"
-    };
+    [Header("Audio")]
+    [SerializeField] private AudioClip typingClip;
+
+    private AudioSource _audio;
 
     private void Start()
     {
-        if (returnButton != null) returnButton.SetActive(false);
+        if (returnButton     != null) returnButton.SetActive(false);
+        if (endingTitleLabel != null) endingTitleLabel.text = endingTitle;
 
-        EndingType type = GameManager.PendingEnding;
-        if (PlayerPrefs.HasKey("EndingType"))
-            type = (EndingType)PlayerPrefs.GetInt("EndingType", (int)type);
-
-        EndingSO data = type switch
+        if (typingClip != null)
         {
-            EndingType.Whistleblower     => endingWhistleblower,
-            EndingType.PassiveResistance => endingPassive,
-            _                            => endingComplicit,
-        };
-
-        string title = data != null && !string.IsNullOrEmpty(data.title) ? data.title : type.ToString();
-        if (endingTitleLabel != null) endingTitleLabel.text = title;
-
-        if (epilogueLabel != null)
-            epilogueLabel.text = "<color=#555555><i>click to continue</i></color>";
-
-        _lines = EndingLines;
-    }
-
-    private void Update()
-    {
-        if (_finished) return;
-
-        bool clicked = (Mouse.current    != null && Mouse.current.leftButton.wasPressedThisFrame) ||
-                       (Keyboard.current != null && (Keyboard.current.spaceKey.wasPressedThisFrame ||
-                                                     Keyboard.current.enterKey.wasPressedThisFrame));
-        if (!clicked) return;
-
-        Advance();
-    }
-
-    private void Advance()
-    {
-        if (_lineIndex < _lines.Length)
-        {
-            string line = _lines[_lineIndex++];
-            if (epilogueLabel != null)
-                epilogueLabel.text = _lineIndex == 1 ? line : epilogueLabel.text + "\n\n" + line;
+            _audio             = gameObject.AddComponent<AudioSource>();
+            _audio.clip        = typingClip;
+            _audio.loop        = true;
+            _audio.playOnAwake = false;
         }
 
-        if (_lineIndex >= _lines.Length && !_finished)
-        {
-            _finished = true;
-            if (returnButton != null) returnButton.SetActive(true);
-        }
+        StartCoroutine(TypeEpilogue());
     }
 
-    public void GoToMainMenu() => SceneManager.LoadScene("MainMenu");
+    private IEnumerator TypeEpilogue()
+    {
+        if (epilogueLabel == null) yield break;
+
+        epilogueLabel.text               = epilogueText;
+        epilogueLabel.maxVisibleCharacters = 0;
+        epilogueLabel.ForceMeshUpdate();
+
+        int total = epilogueLabel.textInfo.characterCount;
+
+        if (_audio != null) _audio.Play();
+
+        for (int i = 0; i <= total; i++)
+        {
+            epilogueLabel.maxVisibleCharacters = i;
+            yield return new WaitForSeconds(0.03f);
+        }
+
+        if (_audio != null) _audio.Stop();
+        if (returnButton != null) returnButton.SetActive(true);
+    }
+
+    public void GoToMainMenu() => SceneManager.LoadScene("Office");
 }
