@@ -1,45 +1,72 @@
-// EndingController.cs — FIXED.
-// Problem: read PlayerPrefs.GetInt("EndingType") which NOTHING ever wrote,
-// so every playthrough showed ending 0 (Complicit).
-// Fix: read the static GameManager.PendingEnding that ForceEnding already sets,
-// with a PlayerPrefs fallback for safety.
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndingController : MonoBehaviour
 {
-    [Header("Ending display refs — drag from your Ending scene")]
-    [SerializeField] private TMP_Text endingTitleLabel;
-    [SerializeField] private TMP_Text epilogueLabel;
+    [Header("Ending display refs")]
+    [SerializeField] private TMP_Text   endingTitleLabel;
+    [SerializeField] private TMP_Text   epilogueLabel;
+    [SerializeField] private GameObject returnButton;
 
     [Header("Ending data assets")]
     [SerializeField] private EndingSO endingComplicit;
     [SerializeField] private EndingSO endingWhistleblower;
     [SerializeField] private EndingSO endingPassive;
 
+    [Header("Content")]
+    [SerializeField] private string endingTitle = "Congratulations!";
+    [SerializeField] [TextArea(6, 20)] private string epilogueText =
+        "You completed the challenge.\n\n" +
+        "You just spent a few minutes spotting deepfakes. In the real world, it's much harder.\n\n" +
+        "Deepfake content has exploded from 500,000 files in 2023 to an estimated 8 million in 2026.\n\n" +
+        "Every share, click, and reaction helps shape what others believe.\n\n" +
+        "Stay skeptical.\n" +
+        "Verify before sharing!";
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip typingClip;
+
+    private AudioSource _audio;
+
     private void Start()
     {
-        // Primary: the static field set by GameManager.ForceEnding before scene load.
-        EndingType type = GameManager.PendingEnding;
+        if (returnButton     != null) returnButton.SetActive(false);
+        if (endingTitleLabel != null) endingTitleLabel.text = endingTitle;
 
-        // Fallback (in case GameManager was destroyed): PlayerPrefs.
-        if (PlayerPrefs.HasKey("EndingType"))
-            type = (EndingType)PlayerPrefs.GetInt("EndingType", (int)type);
-
-        ShowEnding(type);
-    }
-
-    private void ShowEnding(EndingType type)
-    {
-        EndingSO data = type switch
+        if (typingClip != null)
         {
-            EndingType.Whistleblower     => endingWhistleblower,
-            EndingType.PassiveResistance => endingPassive,
-            _                            => endingComplicit,
-        };
+            _audio             = gameObject.AddComponent<AudioSource>();
+            _audio.clip        = typingClip;
+            _audio.loop        = true;
+            _audio.playOnAwake = false;
+        }
 
-        if (data == null) return;
-        if (endingTitleLabel) endingTitleLabel.text = data.title;
-        if (epilogueLabel)    epilogueLabel.text    = data.epilogueText;
+        StartCoroutine(TypeEpilogue());
     }
+
+    private IEnumerator TypeEpilogue()
+    {
+        if (epilogueLabel == null) yield break;
+
+        epilogueLabel.text               = epilogueText;
+        epilogueLabel.maxVisibleCharacters = 0;
+        epilogueLabel.ForceMeshUpdate();
+
+        int total = epilogueLabel.textInfo.characterCount;
+
+        if (_audio != null) _audio.Play();
+
+        for (int i = 0; i <= total; i++)
+        {
+            epilogueLabel.maxVisibleCharacters = i;
+            yield return new WaitForSeconds(0.03f);
+        }
+
+        if (_audio != null) _audio.Stop();
+        if (returnButton != null) returnButton.SetActive(true);
+    }
+
+    public void GoToMainMenu() => SceneManager.LoadScene("MainMenu");
 }

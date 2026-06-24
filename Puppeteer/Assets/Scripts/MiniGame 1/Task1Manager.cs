@@ -58,6 +58,7 @@ public class Task1Manager : MonoBehaviour
     public GameObject blackOverlayFail;
     public TextMeshProUGUI failText1;
     public TextMeshProUGUI failText2;
+    public GameObject continueButton;
 
     [Header("Audio")]
     public AudioClip qteBarClip;
@@ -221,7 +222,7 @@ public class Task1Manager : MonoBehaviour
         qte.isRunning = false;
         StopQTESound();
         feedbackText.text = failDialogue;
-        // TODO: play (and create) outro animation here
+        if (continueButton != null) continueButton.SetActive(true);
     }
 
     IEnumerator MarcusTakeoverSequence()
@@ -303,9 +304,20 @@ public class Task1Manager : MonoBehaviour
         }
 
         alternativeOutroUI.SetActive(true);
+
+        if (continueButton != null) continueButton.SetActive(true);
     }
 
-
+    public void OnContinuePressed()
+    {
+        var controller = GetComponentInParent<TaskSceneController>()
+                      ?? FindObjectOfType<TaskSceneController>();
+        if (controller != null)
+        {
+            controller.payOverride = 0;
+            controller.OnLaunchPressed();
+        }
+    }
 
     public void PlaySuccessAnimation()
     {
