@@ -64,7 +64,7 @@ Learning outcomes:
 ## Running the Project
 
 1. Open the project in **Unity 6000.4.8f1**
-2. Open `Assets/Scenes/Start.unity`
+2. Open `Assets/Scenes/MainMenu.unity`
 3. Press Play or build for PC via **File > Build Settings**
 
 ---
