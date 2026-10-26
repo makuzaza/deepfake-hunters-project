@@ -1,7 +1,5 @@
 # The Puppeteer
 
-![Preview](Puppeteer/Assets/Art/docs/puppeteer.jpg)
-
 > A narrative game about deepfakes, misinformation, and the ethical cost of digital manipulation.
 
 [![Demo – click to watch](https://img.shields.io/badge/▶%20Watch%20Demo-blue?style=for-the-badge)](https://github.com/user-attachments/assets/e8abe407-148d-4744-a58f-7081b8af4af6)
